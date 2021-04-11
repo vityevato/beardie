@@ -1,7 +1,6 @@
 ## Supported web media players.
 
 - **BandCamp**
-- **BandCampWhiteLabel**
 - **Deezer**
 - **Digitally Imported**
 - **Flat.FM Flat.Audio**
