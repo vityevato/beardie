@@ -1,5 +1,6 @@
 var BSEventResponder = {
     listenRequest: function(callback) { // analogue of chrome.extension.onRequest.addListener
+
         document.addEventListener("BSEventClient-query", function(event) {
             var node = event.target;
             if (!node || node.nodeType != Node.TEXT_NODE)
@@ -16,6 +17,12 @@ var BSEventResponder = {
                 return node.dispatchEvent(event);
             });
         }, false, true);
+
+        var event = new CustomEvent("BSEventController-installed", {
+            "bubbles": true,
+            "cancelable": false
+        });
+        document.dispatchEvent(event);
     },
 
     // callback function example
@@ -27,11 +34,20 @@ var BSEventResponder = {
 
 BSEventResponder.listenRequest(function(request, sender, callback) {
 
-    // BSLog("(BeardedSpice) BSEventResponder get request.");
+    // BSLog("(Beardie) BSEventResponder get request.");
     // BSLog(request);
     // BSLog(sender);
 
     switch (request.name) {
+        case "injectScript":
+            try {
+                window.eval(request.code);
+                return callback({ "result": true });
+            } catch (error) {
+                BSError("(BeardedSpace) Error injecting script through eval in eventsController.js:" + error);
+                return callback({ "result": false });
+            }
+            break;
         case "accept":
             if (BSAccepters && BSAccepters.evaluate()) {
                 return callback({ "strategyName": BSAccepters.strategyName });

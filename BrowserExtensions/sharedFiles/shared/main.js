@@ -40,7 +40,7 @@ var logError = function(ex) {
 };
 
 function reconnectToNative(event) {
-    BSInfo("(BeardedSpice Control) Attempt to reconnecting.");
+    BSInfo("(Beardie Control) Attempt to reconnecting.");
 
     _clean();
     connectToNative();
@@ -54,7 +54,7 @@ function connectToNative() {
             nativePort = chrome.runtime.connectNative(BSConstants.BS_B_NATIVE_MESSAGING_CONNECTOR_BUNDLE_ID);
             nativePort.onMessage.addListener(respondToNativeMessage);
             nativePort.onDisconnect.addListener(function() {
-                BSLog('(BeardedSpice Control) onSocketDisconnet');
+                BSLog('(Beardie Control) onSocketDisconnet');
                 _clean();
                 timeoutObject = setTimeout(reconnectToNative, RECONNECT_NATIVE_TIMEOUT);
             });
@@ -63,7 +63,7 @@ function connectToNative() {
 }
 
 function respondToNativeMessage(msg){
-    BSLog('(BeardedSpice Control) received from native: %o', msg);
+    BSLog('(Beardie Control) received from native: %o', msg);
     var targetId = msg["id"];
     if (targetId.length > 0) {
         var target = callbackTargets[targetId];
@@ -97,7 +97,7 @@ function respondToMessage(theMessageEvent) {
         });
     };
     if (BSUtils.checkThatTabIsReal(theMessageEvent.target)) {
-        BSLog('(BeardedSpice Control) respondToMessage event: ' + theMessageEvent.name + ' target: ' + theMessageEvent.target.title);
+        BSLog('(Beardie Control) respondToMessage event: ' + theMessageEvent.name + ' target: ' + theMessageEvent.target.title);
         try {
 
             //request accepters

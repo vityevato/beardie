@@ -20,12 +20,12 @@
         {
             "matches": ["<all_urls>"],
             "run_at": "document_start",
-            "js": ["constants.js", "shared/utils.js"]
+            "js": ["constants.js", "shared/utils.js", "shared/init.js"]
         },
         {
             "matches": ["<all_urls>"],
             "run_at": "document_end",
-            "js": [ "shared/init.js", "shared/eventClient.js", "shared/content.js"]
+            "js": [ "shared/eventClient.js", "shared/content.js"]
         }
 
     ],

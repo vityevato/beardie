@@ -1,4 +1,4 @@
-var checkInjectAlready = document.querySelector('#X_BeardedSpice_InjectAlready');
+var checkInjectAlready = document.querySelector('#X_Beardie_InjectAlready');
 if (checkInjectAlready != null) {
     BSLog("(BeardedSpice eventsController) Script already injected!");
 }

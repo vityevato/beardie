@@ -8,7 +8,7 @@
 //  Copyright (c) 2014 Tyler Rhodes / Jose Falcon. All rights reserved.
 
 BSStrategy = {
-  version:4,
+  version:5,
   displayName:"YandexMusic",
   accepts: {
     method: "predicateOnTab",
@@ -27,6 +27,7 @@ BSStrategy = {
     return {
       track:  externalAPI.getCurrentTrack().title,
       artist: externalAPI.getCurrentTrack().artists.map(item => item.title).join(', '),
+      album: externalAPI.getCurrentTrack().album.title,
       favorited: externalAPI.getCurrentTrack().liked,
       image: externalAPI.getCurrentTrack().cover.replace('%%', '400x400')
     };

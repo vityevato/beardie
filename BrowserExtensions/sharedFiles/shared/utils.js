@@ -15,6 +15,9 @@
     BSError = function () {
         console.error.apply(console, [`[${new Date().toISOString().replace("T", " ").replace(/\..+/, "")}]`+ [].shift.call(arguments), ...arguments])
     };
+    BSWarn = function () {
+        console.warn.apply(console, [`[${new Date().toISOString().replace("T", " ").replace(/\..+/, "")}]`+ [].shift.call(arguments), ...arguments])
+    };
     BSInfo = function () {
         console.info.apply(console, [`[${new Date().toISOString().replace("T", " ").replace(/\..+/, "")}]`+ [].shift.call(arguments), ...arguments])
     };
@@ -75,7 +78,7 @@ var BSUtils = {
     },
 
     getActiveTab: function(callback, forWindowWhereTab) {
-        BSLog("(BeardedSpice) getActiveTab.");
+        BSLog("(Beardie) getActiveTab.");
         if (typeof safari !== "undefined" && safari && safari.application) {
 
             var tab = forWindowWhereTab ? forWindowWhereTab.browserWindow.activeTab : safari.application.activeBrowserWindow.activeTab;
@@ -92,7 +95,7 @@ var BSUtils = {
     },
 
     setActiveTab: function(tab, withWindow, callback) {
-        BSLog("(BeardedSpice) setActiveTab withWindow: %s, for tab %o", withWindow, tab);
+        BSLog("(Beardie) setActiveTab withWindow: %s, for tab %o", withWindow, tab);
         if (typeof safari !== "undefined" && safari) {
             if (withWindow) tab.browserWindow.activate();
             tab.activate();
@@ -108,11 +111,11 @@ var BSUtils = {
     storageGet: function(name, callback) {
         if (typeof safari !== "undefined" && safari && safari.extension && safari.extension.settings) {
             var value = safari.extension.settings[name];
-            BSLog("(BeardedSpice) storageGet name: %s, value: %o.",  name, value);
+            BSLog("(Beardie) storageGet name: %s, value: %o.",  name, value);
             if (callback) callback(value);
         } else if (typeof chrome !== "undefined" && chrome && chrome.storage) {
             chrome.storage.local.get(name, function(items) {
-                BSLog("(BeardedSpice) storageGet name: %s, value: %o.",  name, items);
+                BSLog("(Beardie) storageGet name: %s, value: %o.",  name, items);
                 if (callback) callback(items[name]);
             });
         }
@@ -120,13 +123,13 @@ var BSUtils = {
 
     storageSet: function(name, value, callback) {
         if (typeof safari !== "undefined" && safari && safari.extension && safari.extension.settings) {
-            BSLog("(BeardedSpice) storageSet name: %s value: %o.", name, value);
+            BSLog("(Beardie) storageSet name: %s value: %o.", name, value);
             safari.extension.settings[name] = value;
             if (callback) callback();
         } else if (typeof chrome !== "undefined" && chrome && chrome.storage) {
             var val = {};
             val[name] = value;
-            BSLog("(BeardedSpice) storageSet dict: %O", val);
+            BSLog("(Beardie) storageSet dict: %O", val);
             chrome.storage.local.set( val, callback);
         }
     },
@@ -140,7 +143,7 @@ var BSUtils = {
     },
 
     sendMessageToGlobal: function(name, message) {
-        BSLog("(BeardedSpice) sendMessageToGlobal name: %s, message: %o", name, message);
+        BSLog("(Beardie) sendMessageToGlobal name: %s, message: %o", name, message);
         if (typeof safari !== "undefined" && safari && safari.extension) {
             safari.extension.dispatchMessage(name, message);
         } else if (typeof chrome !== "undefined" && chrome && chrome.runtime) {
@@ -166,7 +169,7 @@ var BSUtils = {
 
     sendMessageToTab: function(tab, name, message) {
 
-        BSLog("(BeardedSpice) sendMessageToTab name: %s, message: %o", name, message);
+        BSLog("(Beardie) sendMessageToTab name: %s, message: %o", name, message);
         if (typeof safari !== "undefined" && tab && tab.page) {
             tab.page.dispatchMessage(name, message);
         } else if (typeof chrome !== "undefined" && chrome && chrome.tabs && tab && tab.id) {
@@ -202,44 +205,34 @@ var BSUtils = {
             src = chrome.extension.getURL(script);
         }
         injected.setAttribute("src", src);
-        (document.head || document.documentElement).appendChild(injected);
-        BSLog('(BeardedSpice) injectExtScript: ' + src);
+        injected.setAttribute("class", "x_Beardie_InjectScript");
+        try {
+            (document.head || document.documentElement).appendChild(injected);
+            BSLog('(Beardie) injectExtScript: ' + src);
+        } catch (error) {
+            BSInfo('(Beardie) injectExtScript: ' + src + 'error:' + error);
+        }
     },
 
-    injectScript: function(script) {
-
-        var injected = document.createElement("script");
-        injected.setAttribute("type", "text/javascript");
-        injected.textContent = script;
-        (document.head || document.documentElement).appendChild(injected);
-        BSLog('(BeardedSpice) injectScript');
-    },
-
-    injectAccepters: function(code, parameters) {
-
-        var injected = document.createElement("script");
-        injected.setAttribute("type", "text/javascript");
-        injected.textContent = "var bsParameters = " + JSON.stringify(parameters) + ";" +
-            "var BSAccepters = {" +
-            "    strategyName: null," +
-            "    strategyAccepterFunc: null,"
-
-            +
-            "    evaluate: function () {" +
-            "     var strategyName = null;" +
-            "     var strategyAccepterFunc = null;" +
-            code +
-            "this.strategyName = strategyName;" +
-            "this.strategyAccepterFunc = strategyAccepterFunc;" +
-            "return strategyName && (strategyName.length > 0);" +
-            "}" +
-            "};";
-        (document.head || document.documentElement).appendChild(injected);
-        BSLog('(BeardedSpice) injectAccepters');
+    injectAcceptersScript: function(code, parameters) {
+        return "window.bsParameters = " + JSON.stringify(parameters) + ";" +
+               "window.BSAccepters = { \
+                    strategyName: null,\
+                    strategyAccepterFunc: null,\
+                    evaluate: function () {\
+                        var strategyName = null;\
+                        var strategyAccepterFunc = null;"
+                    + code +
+                       "this.strategyName = strategyName;\
+                        this.strategyAccepterFunc = strategyAccepterFunc;\
+                        return strategyName && (strategyName.length > 0);\
+                    }\
+                };\
+            ";
     },
 
     strategyCommand: function(strategy, command) {
-        BSLog('(BeardedSpice) strategyCommand:');
+        BSLog('(Beardie) strategyCommand:');
         BSLog(strategy);
         BSLog(command);
 
@@ -248,7 +241,7 @@ var BSUtils = {
 
             if (strategy) {
 
-                BSLog('(BeardedSpice) Strategy command obtained.');
+                BSLog('(Beardie) Strategy command obtained.');
 
                 if (command == 'title') {
                     var title = window.document.title == "" ? window.location.href : window.document.title;
@@ -276,12 +269,12 @@ var BSUtils = {
                     if (strategy.onClick) strategy.onClick();
                     return okResult;
                 } else {
-                    BSError('(BeardedSpice) Strategy command not found.');
+                    BSError('(Beardie) Strategy command not found.');
                     return { 'result': false };
                 }
             }
         } catch (ex) {
-            BSInfo('(BeardedSpice) command exception:' + ex);
+            BSInfo('(Beardie) command exception:' + ex);
             return { 'result': false };
         }
 
