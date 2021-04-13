@@ -5,6 +5,6 @@ if (checkInjectAlready != null) {
 else {
     BSUtils.injectExtScript("constants.js");
     BSUtils.injectExtScript("shared/utils.js");
-    BSUtils.injectExtScript("shared/eventsController.js");
+    BSUtils.injectExtScript("shared/eventsController.js", "x_Beardie_EventController");
 }
 

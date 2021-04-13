@@ -194,7 +194,7 @@ var BSUtils = {
         }
     },
 
-    injectExtScript: function(script) {
+    injectExtScript: function(script, className = null) {
 
         var injected = document.createElement("script");
         injected.setAttribute("type", "text/javascript");
@@ -205,7 +205,7 @@ var BSUtils = {
             src = chrome.extension.getURL(script);
         }
         injected.setAttribute("src", src);
-        injected.setAttribute("class", "x_Beardie_InjectScript");
+        injected.setAttribute("class", className || "x_Beardie_InjectScript");
         try {
             (document.head || document.documentElement).appendChild(injected);
             BSLog('(Beardie) injectExtScript: ' + src);

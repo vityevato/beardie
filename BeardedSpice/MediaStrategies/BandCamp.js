@@ -8,6 +8,7 @@
 BSStrategy = {
     version: 4,
     displayName: "BandCamp",
+    homepage: "https://bandcamp.com",
     accepts: {
         method: "predicateOnTab",
         format: "%K LIKE[c] '*bandcamp.com*'",

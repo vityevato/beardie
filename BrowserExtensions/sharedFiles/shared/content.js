@@ -1,7 +1,6 @@
 BSLog("(Beardie) Start content.js");
 
-document.addEventListener("BSEventController-installed", 
-function() {
+var mainScript = function() {
     BSLog("(Beardie) Start injection script");
 
     if (window != window.top) {
@@ -26,13 +25,13 @@ function() {
     var noCSP = false;
     let injectContent = "eval(\"var injected = document.createElement(\\\"div\\\");injected.setAttribute(\\\"id\\\", \\\"BSCheckCSPDiv\\\"); injected.setAttribute(\\\"style\\\", \\\"display: none\\\"); (document.body || document.documentElement).appendChild(injected);\");";
     BSEventClient.sendRequest({"name": "injectScript", "code": injectContent}, (response) => {
-        debugger;
         if(response.result) {
-            noCSP = (document.querySelector('#BSCheckCSPDiv') != null);
-        }
-        try {
-            checkInjected.parentNode.removeChild(checkInjected);
-        } catch (ex) {}
+            let checkInjected = document.querySelector('#BSCheckCSPDiv');
+            noCSP = (checkInjected != null);
+            try {
+                checkInjected.parentNode.removeChild(checkInjected);
+            } catch (ex) {}
+            }
         if (!noCSP) {
             console.warn("(Beardie) Message for Developers: Page under CSP. You have access to DOM objects only!");
         }
@@ -459,4 +458,23 @@ function() {
 
     BSUtils.handleMessageFromGlobal(handleMessage);
 
-}, false, true);
+};
+
+var started = false;
+
+if (document.querySelector('#X_Beardie_EventController_Installed') != null) {
+    BSLog("(Beardie) 'EventController installed' detected");
+    mainScript();
+    started = true;
+}
+
+
+document.addEventListener("BSEventController-installed", () => {
+    if (started == false) {
+        BSLog("(Beardie) start main script from event 'BSEventController-installed'");
+        mainScript();
+        started = true;
+    }
+}
+, false, true);
+

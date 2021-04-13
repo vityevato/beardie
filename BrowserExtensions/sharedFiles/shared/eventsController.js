@@ -18,6 +18,11 @@ var BSEventResponder = {
             });
         }, false, true);
 
+        var injected = document.createElement("div");
+        injected.setAttribute("id", "X_Beardie_EventController_Installed");
+        injected.setAttribute("style", "display: none");
+        (document.body || document.documentElement).appendChild(injected);
+    
         var event = new CustomEvent("BSEventController-installed", {
             "bubbles": true,
             "cancelable": false
