@@ -10,6 +10,7 @@
 BSStrategy = {
   version:5,
   displayName:"YandexMusic",
+  homepage: "https://music.yandex.ru/",
   accepts: {
     method: "predicateOnTab",
     format:"%K LIKE[c] '*music.yandex.*'",

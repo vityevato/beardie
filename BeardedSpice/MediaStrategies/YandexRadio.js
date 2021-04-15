@@ -10,6 +10,7 @@
 BSStrategy = {
   version:4,
   displayName:"YandexRadio",
+  homepage: "https://radio.yandex.ru/",
   accepts: {
     method: "predicateOnTab",
     format:"%K LIKE[c] '*radio.yandex.*'",

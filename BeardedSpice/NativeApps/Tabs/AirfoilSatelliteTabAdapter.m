@@ -132,15 +132,7 @@
 }
 - (BOOL)pause{
     
-    AirfoilSatelliteApplication *app = (AirfoilSatelliteApplication *)[self.application sbApplication];
-    if (app) {
-        if (! [NSString isNullOrEmpty:app.trackTitle]) {
-            [app playpause];
-        }
-    }
-    
-    _showNotification = YES;
-    return YES;
+    return NO;
 }
 - (BOOL)next{
     
