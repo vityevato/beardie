@@ -37,13 +37,7 @@ static NSMutableDictionary *_sharedAppHandler;
             if (! app) {
                 
                 app = [[runningSBApplication alloc] initWithApplication:nil bundleIdentifier:bundleIdentifier];
-                NSRunningApplication *runningApp = [[NSRunningApplication runningApplicationsWithBundleIdentifier:bundleIdentifier] firstObject];
-                if (runningApp) {
-                    app->_processIdentifier = runningApp.processIdentifier;
-                    app->_sbApplication = [SBApplication applicationWithProcessIdentifier:app->_processIdentifier];
-                    _sharedAppHandler[bundleIdentifier] = app;
-                    DDLogDebug(@"sharedApplicationForBundleIdentifier add: %@, %d", app->_bundleIdentifier, app->_processIdentifier);
-
+                if ([app runningApplicationCreateFromBundleId:bundleIdentifier]) {
                     return app;
                 }
             }
@@ -236,8 +230,32 @@ static NSMutableDictionary *_sharedAppHandler;
 #pragma mark Private methods
 
 - (NSRunningApplication *)runningApplication{
-    
+    NSRunningApplication *result;
+    if (self->_processIdentifier) {
+        result = [NSRunningApplication runningApplicationWithProcessIdentifier:self->_processIdentifier];
+    }
+    else {
+        return nil;
+    }
+    if (result == nil) {
+        result = [self runningApplicationCreateFromBundleId:self->_bundleIdentifier];
+    }
     return self->_processIdentifier ? [NSRunningApplication runningApplicationWithProcessIdentifier:self->_processIdentifier] : nil;
+}
+
+- (NSRunningApplication *)runningApplicationCreateFromBundleId:(NSString *)bundleIdentifier {
+    @autoreleasepool {
+        NSRunningApplication *runningApp = [[NSRunningApplication runningApplicationsWithBundleIdentifier:bundleIdentifier] firstObject];
+        if (runningApp) {
+            self->_processIdentifier = runningApp.processIdentifier;
+            self->_sbApplication = [SBApplication applicationWithProcessIdentifier:self->_processIdentifier];
+            _sharedAppHandler[bundleIdentifier] = self;
+            DDLogDebug(@"runningApplicationCreateFromBundleId add: %@, %d", self->_bundleIdentifier, self->_processIdentifier);
+
+            return runningApp;
+        }
+        return nil;
+    }
 }
 
 - (AXUIElementRef)copyMenuBarItemForIndexPath:(NSIndexPath *)indexPath{
