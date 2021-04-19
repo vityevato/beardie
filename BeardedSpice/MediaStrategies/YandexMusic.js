@@ -53,6 +53,7 @@ BSStrategy = {
       let dur = (new Date(progress.duration * 1000).toISOString().substr(11, 8)).replace(/00:(\d{2}:\d{2})/,'$1' ).replace(/0(\d:\d{2}:\d{2})/,'$1' );
       result.progress = pos + " of " + dur;
       result.artist = result.album;
+      delete result.album;
     }
     return result;
   },
