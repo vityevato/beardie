@@ -8,6 +8,7 @@
 BSStrategy = {
   version:1,
   displayName:"Flat.FM Flat.Audio",
+  homepage: "https://flat.audio/",
   accepts: {
     method: "predicateOnTab",
     format:"%K LIKE[c] '*/flat.fm/*' OR %K LIKE[c] '*/flat.audio/*'",

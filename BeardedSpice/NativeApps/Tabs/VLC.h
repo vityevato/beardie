@@ -29,16 +29,21 @@ typedef enum VLCEnum VLCEnum;
 - (BOOL) exists;  // Verify if an object exists.
 - (void) moveTo:(SBObject *)to;  // Move object(s) to a new location.
 - (void) saveAs:(NSString *)as in:(NSURL *)in_;  // Save an object.
+- (void) activateMenuItem;  // Activates the currently focussed menu item.
 - (void) fullscreen;  // Toggle between fullscreen and windowed mode.
-- (void) GetURL;  // Get a URL
-- (void) mute;  // Mute the audio
+- (void) GetURL;  // Get a URL.
+- (void) moveMenuFocusDown;  // Moves the menu focus down.
+- (void) moveMenuFocusLeft;  // Moves the menu focus to the left.
+- (void) moveMenuFocusRight;  // Moves the menu focus to the right.
+- (void) moveMenuFocusUp;  // Moves the menu focus up.
+- (void) mute;  // Mute the audio or unmute it if it was muted.
 - (void) next;  // Go to the next item in the playlist or the next chapter in the DVD/VCD.
-- (void) OpenURL;  // Open a URL
+- (void) OpenURL;  // Open a media URL.
 - (void) play;  // Start playing the current playlistitem or pause it when it is already playing.
 - (void) previous;  // Go to the previous item in the playlist or the previous chapter in the DVD/VCD.
 - (void) stepBackward;  // Step the current playlist item backward the specified step width (default is 2) (1=extraShort, 2=short, 3=medium, 4=long).
 - (void) stepForward;  // Step the current playlist item forward the specified step width (default is 2) (1=extraShort, 2=short, 3=medium, 4=long).
-- (void) stop;  // Stop playing the current playlistitem
+- (void) stop;  // Stop playing the current playlist item.
 - (void) volumeDown;  // Bring the volume down by one step. There are 32 steps from 0 to 400% volume.
 - (void) volumeUp;  // Bring the volume up by one step. There are 32 steps from 0 to 400% volume.
 
@@ -59,7 +64,7 @@ typedef enum VLCEnum VLCEnum;
 @end
 
 // An application's top level scripting object.
-@interface VLCApplication : SBApplication
+@interface VLCApplication : SBApplication <VLCGenericMethods>
 
 - (SBElementArray<VLCDocument *> *) documents;
 - (SBElementArray<VLCWindow *> *) windows;
@@ -215,13 +220,15 @@ typedef enum VLCEnum VLCEnum;
 // VLC's top level scripting object
 @interface VLCApplication (VLCSuite)
 
-@property NSInteger audioVolume;  // The volume of the current playlist item from 0 to 4, where 4 is 400%
+@property NSInteger audioDesync;  // The audio desynchronization preference from -2147483648 to 2147483647, where 0 is default.
+@property NSInteger audioVolume;  // The volume of the current playlist item from 0 to 512, where 256 is 100%.
 @property NSInteger currentTime;  // The current time of the current playlist item in seconds.
 @property (readonly) NSInteger durationOfCurrentItem;  // The duration of the current playlist item in seconds.
-@property BOOL fullscreenMode;  // indicates wheter fullscreen is enabled or not
+@property BOOL fullscreenMode;  // Indicates wheter fullscreen is enabled or not.
 @property (readonly) BOOL muted;  // Is VLC currently muted?
 @property (copy, readonly) NSString *nameOfCurrentItem;  // Name of the current playlist item.
 @property (copy, readonly) NSString *pathOfCurrentItem;  // Path to the current playlist item.
+@property (readonly) BOOL playbackShowsMenu;  // Indicates whether a DVD menu is currently being shown.
 @property (readonly) BOOL playing;  // Is VLC playing an item?
 
 @end

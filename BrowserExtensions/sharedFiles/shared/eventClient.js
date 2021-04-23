@@ -1,5 +1,12 @@
 var BSEventClient = {
+    noEventsController: (document.querySelector("script.x_Beardie_EventController") == null),
     sendRequest: function(data, callback) {
+        
+        if (BSEventClient.noEventsController) {
+            if (callback) {
+                callback({result: false});
+            }
+        }
 
         var request = document.createTextNode("");
 

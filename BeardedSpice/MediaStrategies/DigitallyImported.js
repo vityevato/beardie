@@ -5,9 +5,11 @@
 //  Created by Dennis Lysenko on 4/4/15.
 //  Copyright (c) 2015 Tyler Rhodes / Jose Falcon. All rights reserved.
 //
+
 BSStrategy = {
-  version:2,
+  version:3,
   displayName:"Digitally Imported",
+  homepage: "https://www.di.fm",
   accepts: {
     method: "predicateOnTab",
     format:"%K LIKE[c] '*di.fm*'",
@@ -20,7 +22,10 @@ BSStrategy = {
       return pause ? true : (spinner && sponsor);
   },
   toggle: function () { return document.querySelectorAll('div.controls a')[0].click() },
-  favorite: function () { $('.vote-btn.up').click(); },
+  next: function () {
+    document.querySelector('#webplayer-region div.skip-button > div > div.skip-button').click()
+  },
+  favorite: function () { $('#webplayer-region .track-voting-component__up').get(0).click(); },
   pause:function () {
     var pause = document.querySelectorAll('div.controls a')[0];
     if(pause.classList.contains('icon-pause')){
@@ -36,7 +41,7 @@ BSStrategy = {
     return {
       'artist': artistName,
       'track': trackName.replace(/\s+/, ''),
-      'favorited': ($('.icon-thumbs-up-filled').get(0) ? true : false),
+      'favorited': ($('#webplayer-region .track-voting-component__up.active').get(0) ? true : false),
       'image': $('#webplayer-region .track-region .artwork img').attr('src')
     }
   }

@@ -69,6 +69,9 @@ static NSImage *_lastImage;
     if (self.progress.length == 0) {
         isShowProgressActive = NO;
     }
+    else if (self.album.length == 0) {
+        isShowProgressActive = YES;
+    }
 
     notification.identifier = kBSTrackNameIdentifier;
     notification.title = self.track;

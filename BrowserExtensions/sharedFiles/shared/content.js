@@ -1,45 +1,52 @@
-BSLog("(BeardedSpice) Start injection script");
+BSLog("(Beardie) Start content.js");
 
-(function() {
+var mainScript = function() {
+    BSLog("(Beardie) Start injection script");
 
     if (window != window.top) {
         BSLog(window.top);
-        BSLog("(BeardedSpice) Injection script stopped, because iframe");
+        BSLog("(Beardie) Injection script stopped, because iframe");
         return;
     }
-    BSLog("(BeardedSpice) Injection script running on top window");
+    BSLog("(Beardie) Injection script running on top window");
 
-    var checkInjectAlready = document.querySelector('#X_BeardedSpice_InjectAlready');
+    var checkInjectAlready = document.querySelector('#X_Beardie_InjectAlready');
     if (checkInjectAlready != null) {
-        BSLog("(BeardedSpice) Script already injected!");
+        BSLog("(Beardie) Script already injected!");
          return;
     }
  
     var injected = document.createElement("div");
-    injected.setAttribute("id", "X_BeardedSpice_InjectAlready");
+    injected.setAttribute("id", "X_Beardie_InjectAlready");
     injected.setAttribute("style", "display: none");
     (document.body || document.documentElement).appendChild(injected);
- 
-    var injected = document.createElement("script");
-    injected.setAttribute("type", "text/javascript");
-    injected.textContent = "eval(\"var injected = document.createElement(\\\"div\\\");injected.setAttribute(\\\"id\\\", \\\"BSCheckCSPDiv\\\"); injected.setAttribute(\\\"style\\\", \\\"display: none\\\"); (document.body || document.documentElement).appendChild(injected);\");";
-    (document.head || document.documentElement).appendChild(injected);
 
-    var checkInjected = document.querySelector('#BSCheckCSPDiv');
-    var noCSP = checkInjected != null;
+    // Test webPage for CSP
+    var noCSP = false;
+    let injectContent = "eval(\"var injected = document.createElement(\\\"div\\\");injected.setAttribute(\\\"id\\\", \\\"BSCheckCSPDiv\\\"); injected.setAttribute(\\\"style\\\", \\\"display: none\\\"); (document.body || document.documentElement).appendChild(injected);\");";
+    BSEventClient.sendRequest({"name": "injectScript", "code": injectContent}, (response) => {
+        if(response.result) {
+            let checkInjected = document.querySelector('#BSCheckCSPDiv');
+            noCSP = (checkInjected != null);
+            try {
+                checkInjected.parentNode.removeChild(checkInjected);
+            } catch (ex) {}
+            }
+        if (!noCSP) {
+            console.warn("(Beardie) Message for Developers: Page under CSP. You have access to DOM objects only!");
+        }
+
+        // START
+        BSInfo("Beardie Script Start.");
+        BSUtils.sendMessageToGlobal("accepters");
+
+    });
+
     var bundleId = null;
+    var socket = null;
+    var strategyName = null;
+    var strategy = null;
 
-    try {
-
-        injected.parentNode.removeChild(injected);
-        checkInjected.parentNode.removeChild(checkInjected);
-    } catch (ex) {
-
-    }
-
-    if (!noCSP) {
-        console.warn("(BeardedSpice) Message for Developers: Page under CSP. You have access to DOM objects only!");
-    }
 
     var state = {
         current: { val: 0, str: "init" },
@@ -58,20 +65,16 @@ BSLog("(BeardedSpice) Start injection script");
                 this.inCommandIntervalId = null;
             }
             if (st.val == state.inCommand.val) {
-                    BSLog("(BeardedSpice) inCommand timeout ran");
+                    BSLog("(Beardie) inCommand timeout ran");
                 this.inCommandIntervalId = setInterval(() => {
-                    BSLog("(BeardedSpice) inCommand timeout reached");
+                    BSLog("(Beardie) inCommand timeout reached");
                     state.set(state.ready);
                 }, 2000);
             }
-            BSLog("(BeardedSpice) Set State to \"" + this.current.str + "\"");
+            BSLog("(Beardie) Set State to \"" + this.current.str + "\"");
         },
         inCommandIntervalId: null
     }
-
-    var socket = null;
-    var strategyName = null;
-    var strategy = null;
 
     var bsParameters = {
         'URL': window.location.href,
@@ -156,7 +159,7 @@ BSLog("(BeardedSpice) Start injection script");
 
             if (socket) {
                 socket.send(JSON.stringify(obj));
-                BSLog("(BeardedSpice) Socket send:" + JSON.stringify(obj));
+                BSLog("(Beardie) Socket send:" + JSON.stringify(obj));
             }
         } catch (ex) {
             logError(ex);
@@ -173,14 +176,13 @@ BSLog("(BeardedSpice) Start injection script");
     };
 
     var accept = function(accepters) {
-
         if (!accepters ||
             !(state.current.val == state.init.val ||
                 state.current.val == state.reconnecting.val)) {
             return;
         }
 
-        BSInfo("(BeardedSpice) Accepters run.");
+        BSInfo("(Beardie) Accepters run.");
 
         try {
             var code = accepters.bsJsFunctions +
@@ -191,38 +193,34 @@ BSLog("(BeardedSpice) Start injection script");
                 "if (bsAccepter()) {" +
                 "strategyName = val;" +
                 "strategyAccepterFunc = bsAccepter;" +
-                "BSInfo(\"(BeardedSpice) Strategy found: \" + strategyName + \".\");" +
+                "BSInfo(\"(Beardie) Strategy found: \" + strategyName + \".\");" +
                 "return true;" +
                 "}" +
                 "return false;" +
                 "});";
 
-
             if (noCSP) {
-                BSUtils.injectAccepters(code, bsParameters);
-                BSLog("(BeardedSpice) Accepters run: before delayedFunc.");
-                var intervalId = null;
-                var delayedFunc = function() {
-                    BSEventClient.sendRequest({ "name": "accept" }, function(response) {
-                        BSLog("(BeardedSpice) Accepters run: func delayedFunc.");
+                let injectCode = BSUtils.injectAcceptersScript(code, bsParameters);
+                BSEventClient.sendRequest({ "name": "injectScript", "code": injectCode },
+                    (response) => {
+                        BSLog("(Beardie) Accepters run: without CSP");
+                        if (response.result) {
+                            BSEventClient.sendRequest({ "name": "accept" }, response => {
+                                BSLog("(Beardie) Accepters were ran on web page");
 
-                        strategyName = response.strategyName;
-                        if (strategyName) {
-                            state.set(state.accepted);
-                            BSUtils.sendMessageToGlobal("port");
-                        } else {
-                            state.set(state.init);
+                                strategyName = response.strategyName;
+                                if (strategyName) {
+                                    state.set(state.accepted);
+                                    BSUtils.sendMessageToGlobal("port");
+                                } else {
+                                    state.set(state.init);
+                                }
+                            });
                         }
                     });
-                    if (intervalId) {
-                        clearInterval(intervalId);
-                    }
-                }
-                intervalId = setInterval(delayedFunc, 1000);
-                BSLog("(BeardedSpice) Accepters run: after setTimeout");
             } else {
                 eval(code);
-                BSLog("(BeardedSpice) Accepters run: on CSP");
+                BSLog("(Beardie) Accepters run: on CSP");
                 if (strategyName) {
                     state.set(state.accepted);
                     BSUtils.sendMessageToGlobal("port");
@@ -238,7 +236,7 @@ BSLog("(BeardedSpice) Start injection script");
     };
 
     var serverIsAlive = function(event) {
-        BSInfo("(BeardedSpice) Attempt to connecting on new port.");
+        BSInfo("(Beardie) Attempt to connecting on new port.");
         state.set(state.accepted);
         BSUtils.sendMessageToGlobal("port");
     };
@@ -249,7 +247,7 @@ BSLog("(BeardedSpice) Start injection script");
             return;
         }
 
-        BSInfo("(BeardedSpice) Attempt to reconnecting.");
+        BSInfo("(Beardie) Attempt to reconnecting.");
 
         state.set(state.reconnecting);
         if (socket) {
@@ -260,14 +258,6 @@ BSLog("(BeardedSpice) Start injection script");
         BSUtils.sendMessageToGlobal("accepters");
     };
 
-    // var connectTimeout = function(event) {
-
-    //     BSLog("(BeardedSpice) Connection timeout.");
-    //     var _socket = socket;
-    //     _clean();
-    //     _socket.close();
-    // };
-
     var connect = function(port) {
 
         if (state.current.val !== state.accepted.val) {
@@ -275,7 +265,7 @@ BSLog("(BeardedSpice) Start injection script");
         }
 
         var onSocketDisconnet = function(event) {
-            BSInfo('(BeardedSpice) onSocketDisconnet');
+            BSInfo('(Beardie) onSocketDisconnet');
 
             if (state.current.val === state.reconnecting.val) {
                 return;
@@ -287,7 +277,7 @@ BSLog("(BeardedSpice) Start injection script");
         };
 
         if (port == 0) {
-            BSInfo("(BeardedSpice) Port not specified.");
+            BSInfo("(Beardie) Port not specified.");
             onSocketDisconnet();
             return;
         }
@@ -296,21 +286,21 @@ BSLog("(BeardedSpice) Start injection script");
 
         // Create WebSocket connection.
         var url = 'wss://localhost:' + port;
-        BSInfo("(BeardedSpice) Try connect to '" + url + "'");
+        BSInfo("(Beardie) Try connect to '" + url + "'");
 
         socket = new WebSocket(url);
 
         // Connection opened
         socket.addEventListener('open', function(event) {
-            BSInfo("(BeardedSpice) Socket open.");
+            BSInfo("(Beardie) Socket open.");
         });
 
         socket.addEventListener('close', onSocketDisconnet);
 
         // Listen for messages from Beardie Control Server
         socket.addEventListener('message', function(event) {
-            BSLog('(BeardedSpice) Message from server ', event.data);
-            BSLog('(BeardedSpice) State: ' + state.current.str);
+            BSLog('(Beardie) Message from server ', event.data);
+            BSLog('(Beardie) State: ' + state.current.str);
                                 
             switch (state.current.val) {
                 case state.connecting.val:
@@ -334,13 +324,14 @@ BSLog("(BeardedSpice) Start injection script");
                     break;
                 case state.strategyRequested.val:
                     if (noCSP) {
-                        BSUtils.injectScript(event.data);
-                        BSEventClient.sendRequest({ "name": "checkStrategy" }, function(response) {
-
+                        BSEventClient.sendRequest({ "name": "injectScript", "code": event.data }, response => {
                             if (response.result) {
-//                                BSUtils.injectExtScript("shared/utils.js");
-                                state.set(state.ready);
-                                _sendOk();
+                                BSEventClient.sendRequest({ "name": "checkStrategy" }, function (response) {
+                                    if (response.result) {
+                                        state.set(state.ready);
+                                        _sendOk();
+                                    }
+                                });
                             }
                         });
                     } else {
@@ -348,7 +339,7 @@ BSLog("(BeardedSpice) Start injection script");
                         try {
                             eval('var ' + event.data + ';');
                             if (BSStrategy) {
-                                BSLog('(BeardedSpice) Strategy obtained.');
+                                BSLog('(Beardie) Strategy obtained.');
                                 BSLog(BSStrategy);
                                 strategy = BSStrategy;
                                 state.set(state.ready);
@@ -360,19 +351,20 @@ BSLog("(BeardedSpice) Start injection script");
                         }
                     }
                     break;
-                    //Main Command Loop
+
+                //Main Command Loop
                 case state.ready.val:
                     try {
                         try {
                             var obj = JSON.parse(event.data);
                             if (obj.realBundleId != null) {
                                 bundleId = { "result": obj.realBundleId};
-                                BSLog("(BeardedSpice) Real Bundle ID set on: %s", bundleId);
+                                BSLog("(Beardie) Real Bundle ID set on: %s", bundleId);
                                 _sendOk();
                                 break;
                             }
                         } catch (ex) { 
-                            BSLog("(BeardedSpice) try simple command");
+                            BSLog("(Beardie) try simple command");
                         }
                         state.set(state.inCommand);
                         switch (event.data) {
@@ -411,7 +403,7 @@ BSLog("(BeardedSpice) Start injection script");
     };
 
     var onUrlChangedBy = function(event) {
-        BSLog("(BeardedSpice) onUrlChangedBy");
+        BSLog("(Beardie) onUrlChangedBy");
 
         bsParameters.URL = window.location.href;
 
@@ -420,7 +412,7 @@ BSLog("(BeardedSpice) Start injection script");
             //check strategy validity
             if (noCSP) {
                 BSEventClient.sendRequest({ "name": "checkAccept" }, function(response) {
-                    BSLog("(BeardedSpice) checkAccept run: %o", response);
+                    BSLog("(Beardie) checkAccept run: %o", response);
 
                     if (response["result"]) {
                         //do nothing
@@ -440,7 +432,7 @@ BSLog("(BeardedSpice) Start injection script");
     }
 
     window.addEventListener("popstate", function(event) {
-        BSLog("(BeardedSpice) onPopstate.");
+        BSLog("(Beardie) onPopstate.");
         setTimeout(function() {
             if (bsParameters.URL != window.location.href) {
                 return onUrlChangedBy(event);
@@ -449,7 +441,7 @@ BSLog("(BeardedSpice) Start injection script");
     }, true);
 
     window.addEventListener("click", function(event) {
-        BSLog("(BeardedSpice) onClick");
+        BSLog("(Beardie) onClick");
         if (noCSP) {
             BSEventClient.sendRequest({ "name": "command", "args": "onClick" }, function(response) {});
         } else {
@@ -462,10 +454,27 @@ BSLog("(BeardedSpice) Start injection script");
         }, 1);
     }, true);
 
-    BSInfo("BeardedSpice Script Injected.");
+    BSInfo("Beardie Script Injected.");
 
     BSUtils.handleMessageFromGlobal(handleMessage);
 
-    BSUtils.sendMessageToGlobal("accepters");
+};
 
-})();
+var started = false;
+
+if (document.querySelector('#X_Beardie_EventController_Installed') != null) {
+    BSLog("(Beardie) 'EventController installed' detected");
+    mainScript();
+    started = true;
+}
+
+
+document.addEventListener("BSEventController-installed", () => {
+    if (started == false) {
+        BSLog("(Beardie) start main script from event 'BSEventController-installed'");
+        mainScript();
+        started = true;
+    }
+}
+, false, true);
+

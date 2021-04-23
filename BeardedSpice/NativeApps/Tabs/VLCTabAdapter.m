@@ -66,32 +66,14 @@
     return YES;
 }
 
-// try to find the document which will respond to controls
-// NOTE: this feels brittle, it seems there should be a better way
-- (VLCDocument*) activeDocument {
-    VLCDocument *doc = NULL;
-    VLCApplication *vlc = (VLCApplication *)[self.application sbApplication];
-    if (vlc) {
-        NSEnumerator *e = [[vlc windows] objectEnumerator];
-        id o;
-        while ((o = [e nextObject]) && doc == NULL) {
-            DDLogDebug(@"VLC window %@: %lu: %@", o, [o index], [o name]);
-            if ([[o name] isEqualToString: [vlc nameOfCurrentItem]]) {
-                doc = [[[vlc windows] objectAtIndex: [o index]] document];
-            }
-        }
-    }
-    return doc;
-}
-
 //////////////////////////////////////////////////////////////
 #pragma mark Player control methods
 //////////////////////////////////////////////////////////////
 
 - (BOOL)toggle{
-    VLCDocument *doc = [self activeDocument];
-    if (doc) {
-        [doc play];
+    VLCApplication *vlc = (VLCApplication *)[self.application sbApplication];
+    if (vlc) {
+        [vlc play];
         return YES;
     }
     return NO;
@@ -100,9 +82,8 @@
 - (BOOL)pause{
     VLCApplication *vlc = (VLCApplication *)[self.application sbApplication];
     if (vlc && [vlc playing]) {
-        VLCDocument *doc = [self activeDocument];
-        if (doc) {
-            [doc play];
+        if (vlc) {
+            [vlc play];
             return YES;
         }
     }
@@ -110,18 +91,18 @@
 }
 
 - (BOOL)next{
-    VLCDocument *doc = [self activeDocument];
-    if (doc) {
-        [doc next];
+    VLCApplication *vlc = (VLCApplication *)[self.application sbApplication];
+    if (vlc) {
+        [vlc next];
         return YES;
     }
     return NO;
 }
 
 - (BOOL)previous{
-    VLCDocument *doc = [self activeDocument];
-    if (doc) {
-        [doc previous];
+    VLCApplication *vlc = (VLCApplication *)[self.application sbApplication];
+    if (vlc) {
+        [vlc previous];
         return YES;
     }
     return NO;
