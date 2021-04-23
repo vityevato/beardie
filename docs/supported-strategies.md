@@ -1,9 +1,9 @@
 ## Supported web media players.
 
-- **BandCamp**
-- **Deezer**
-- **Digitally Imported**
-- **Flat.FM Flat.Audio**
+- **BandCamp** (https://bandcamp.com)
+- **Deezer** (https://www.deezer.com/)
+- **Digitally Imported** (https://www.di.fm)
+- **Flat.FM Flat.Audio** (https://flat.audio/)
 - **Mixcloud** (https://www.mixcloud.com)
 - **PocketCasts**
 - **SoundCloud**
@@ -11,8 +11,8 @@
 - **twitch.tv**
 - **Vimeo**
 - **VK**
-- **YandexMusic**
-- **YandexRadio**
+- **YandexMusic** (https://music.yandex.ru/)
+- **YandexRadio** (https://radio.yandex.ru/)
 - **YouTube**
 - **YouTube Music**
 - **Zvooq**
