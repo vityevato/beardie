@@ -1,3 +1,5 @@
+<html>
+<body>
 <ul>
 {% for release in site.github.releases %}
     {% unless release.draft %}
@@ -10,3 +12,5 @@
     {% endunless %}
 {% endfor %}
 </ul>
+</body>
+</html>
