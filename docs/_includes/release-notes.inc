@@ -1,5 +1,5 @@
 <ul>
-{% for release in site.github.releases %}
+{% for release in site.github.releases limit:5 %}
     {% unless release.draft %}
         {% unless release.prerelease and page.release_only %}
             <li>
