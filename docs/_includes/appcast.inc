@@ -4,7 +4,7 @@
         <title>{{ site.github.project_title }}</title>
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
-        {% for release in site.github.releases %}
+        {% for release in site.github.releases limit:1 %}
             {% unless release.draft %}
                 {% unless release.prerelease and page.release_only %}
                     <item>
