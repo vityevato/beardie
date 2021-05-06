@@ -1,6 +1,5 @@
 ---
 layout: release-notes
 title: Release Notes
-release_only: false
 ---
-{%include release-notes.inc %}
+{%include release-notes.inc release_only=false %}

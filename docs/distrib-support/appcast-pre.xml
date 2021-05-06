@@ -1,0 +1,3 @@
+---
+---
+{%include_relative appcast.inc release_only=false release_notes="release-notes-pre"%}

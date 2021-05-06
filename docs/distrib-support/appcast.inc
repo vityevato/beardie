@@ -6,10 +6,12 @@
         <language>en</language>
         {% for release in site.github.releases limit:1 %}
             {% unless release.draft %}
-                {% unless release.prerelease and page.release_only %}
+                {% unless release.prerelease and include.release_only %}
                     <item>
                         <title>{{ release.name }}</title>
-                        <description><![CDATA[{{ release.body | markdownify }}]]></description>
+                        <sparkle:releaseNotesLink>
+                            https://stillness-2.github.io/beardie/distrib-support/{{include.release_notes}}.html
+                        </sparkle:releaseNotesLink>
                         <pubDate>{{ release.published_at | date_to_rfc822 }}</pubDate>
                         {% for asset in release.assets limit:1 %}
                             {% assign build_nums = release.tag_name | remove_first:'v' | split:'.' %}
