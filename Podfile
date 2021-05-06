@@ -15,6 +15,7 @@ target 'Beardie' do
     pod 'MASPreferences', '~> 1.3'
     pod 'MASShortcut', '~> 2.4.0'
     pod 'FMDB'
+    pod 'Sparkle'
 
     # all pods for tests should ONLY go here
     target 'BeardieTests' do

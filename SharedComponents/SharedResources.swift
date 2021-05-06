@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+/// Place for collecting userDefaults keys in Swift sources.
+enum UserDefaultsKeys {
+}

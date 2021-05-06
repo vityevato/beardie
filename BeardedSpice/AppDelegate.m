@@ -73,6 +73,8 @@ BOOL accessibilityApiEnabled = NO;
     BOOL _AXAPIEnabled;
     
     NSDate *_volumeButtonLastPressed;
+    
+    AppUpdater *_updater;
 }
 
 
@@ -89,7 +91,7 @@ BOOL accessibilityApiEnabled = NO;
 - (void)applicationWillFinishLaunching:(NSNotification *)aNotification
 {
 
-    NSDictionary *appDefaults = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"BeardedSpiceUserDefaults" ofType:@"plist"]];
+    NSDictionary *appDefaults = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Defaults" ofType:@"plist"]];
     if (appDefaults)
         [[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
 
@@ -119,7 +121,7 @@ BOOL accessibilityApiEnabled = NO;
 #if !DEBUG_STRATEGY
     /* Check for strategy updates from the master github repo */
     if ([[NSUserDefaults standardUserDefaults] boolForKey:BeardedSpiceUpdateAtLaunch])
-        [self checkForUpdates:self];
+        [self checkForCompUpdates:self];
 #endif
 }
 
@@ -145,6 +147,8 @@ BOOL accessibilityApiEnabled = NO;
     _browserExtensionsController = BSBrowserExtensionsController.singleton;
     [_browserExtensionsController start];
 
+    _updater = [AppUpdater new];
+    
     [self repairLaunchAtLogin];
     [self firstRunInstall];
     
@@ -490,9 +494,12 @@ BOOL accessibilityApiEnabled = NO;
 
 /////////////////////////////////////////////////////////////////////////
 #pragma mark Actions
-/////////////////////////////////////////////////////////////////////////
 
-- (IBAction)checkForUpdates:(id)sender
+- (IBAction)checkForUpdates:(id)sender {
+    [_updater checkForUpdates:sender];
+}
+
+- (IBAction)checkForCompUpdates:(id)sender
 {
     // MainMenu.xib has this menu item tag set as 256
     NSMenuItem *item = [statusMenu itemWithTag:256];
@@ -549,11 +556,6 @@ BOOL accessibilityApiEnabled = NO;
             [UIController removeWindow:NSApp];
         }];
     }];
-}
-
-- (IBAction)exitApp:(id)sender
-{
-    [NSApp terminate: nil];
 }
 
 - (void)updateActiveTabFromMenuItem:(id) sender
