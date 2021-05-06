@@ -9,4 +9,4 @@
 #include "./Config.xcconfig"
 
 BS_CHANNEL = Beta
-BS_UPDATE_APPCAST = https:$(XC_SPL)/stillness-2.github.io/beardie/appcast-pre.xml
+BS_UPDATE_APPCAST = https:$(XC_SPL)/stillness-2.github.io/beardie/distrib-support/appcast-pre.xml

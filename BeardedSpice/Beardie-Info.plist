@@ -4,6 +4,8 @@
 <dict>
 	<key>BSChannel</key>
 	<string>$(BS_CHANNEL)</string>
+	<key>BSVersion</key>
+	<string>$(BS_VERSION)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDocumentTypes</key>
