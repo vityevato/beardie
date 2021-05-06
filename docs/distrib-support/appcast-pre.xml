@@ -1,3 +1,3 @@
 ---
 ---
-{%include_relative appcast.inc release_only=false release_notes="distrib-support/release-notes-pre.md"%}
+{% include_relative appcast.inc release_only=false release_notes="distrib-support/release-notes-pre.md" %}
