@@ -1,0 +1,12 @@
+//
+//  Config.xcconfig
+//  BeardedSpice
+//
+//  Created by Roman Sokolov on 04.06.16.
+//  Copyright © 2016  GPL v3 http://www.gnu.org/licenses/gpl.html
+//
+
+#include "./Config.xcconfig"
+
+BS_CHANNEL = Beta
+BS_UPDATE_APPCAST = https:$(XC_SPL)/stillness-2.github.io/beardie/appcast-pre.xml

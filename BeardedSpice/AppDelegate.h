@@ -42,6 +42,7 @@ extern BOOL accessibilityApiEnabled;
 @property (nonatomic) BOOL inUpdatingStrategiesState;
 
 - (IBAction)checkForUpdates:(id)sender;
+- (IBAction)checkForCompUpdates:(id)sender;
 - (IBAction)openPreferences:(id)sender;
 - (IBAction)clickAboutFromStatusMenu:(id)sender;
 
