@@ -10,6 +10,7 @@ PODS:
   - Kiwi (3.0.0)
   - MASPreferences (1.3)
   - MASShortcut (2.4.0)
+  - Sparkle (1.26.0)
   - VCRURLConnection (0.2.5)
 
 DEPENDENCIES:
@@ -19,6 +20,7 @@ DEPENDENCIES:
   - Kiwi (~> 3.0.0)
   - MASPreferences (~> 1.3)
   - MASShortcut (~> 2.4.0)
+  - Sparkle
   - VCRURLConnection (~> 0.2.5)
 
 SPEC REPOS:
@@ -28,6 +30,7 @@ SPEC REPOS:
     - Kiwi
     - MASPreferences
     - MASShortcut
+    - Sparkle
     - VCRURLConnection
 
 SPEC CHECKSUMS:
@@ -36,8 +39,9 @@ SPEC CHECKSUMS:
   Kiwi: fbeafef0f00e4d8f7dcb3420a4930afe70af77f7
   MASPreferences: c08b8622dd17b47da87669e741efd7c92e970e8c
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
+  Sparkle: d56d028f4b0c123577825f5d1004f6140d77f90e
   VCRURLConnection: 63be6f26a2f8222677294fc43a1d855e817cfd4e
 
-PODFILE CHECKSUM: 78a4e18bb250924e3d2ac8a6f9e750bd5ce4709c
+PODFILE CHECKSUM: 636dcaf0a2eba30d56b8fecb5037f2a5b2e4414a
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1

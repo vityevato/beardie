@@ -3,7 +3,7 @@
         return;
     }
 
-    if (typeof BSConstants !== "undefined" && (BSConstants.BS_B_BUID_CONFIG == "Release")) {
+    if (typeof BSConstants !== "undefined" && (BSConstants.BS_B_BUID_CONFIG != "Debug")) {
         //PREVENTS LOG OUTPUT
         BSLog = function () { };
     }

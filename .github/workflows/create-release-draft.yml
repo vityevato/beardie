@@ -15,6 +15,6 @@ jobs:
     - uses: fregante/release-with-changelog@main
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        exclude: '^skipci:'
+        exclude: '^skipci:|^Merge pull request'
         commit-template: '- {title} ([{hash}]({url}))'
         draft: true

@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BSChannel</key>
+	<string>$(BS_CHANNEL)</string>
+	<key>BSVersion</key>
+	<string>$(BS_VERSION)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDocumentTypes</key>
@@ -53,7 +57,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(BS_VERSION)</string>
+	<string>$(BS_VERSION) $(BS_CHANNEL)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -81,6 +85,8 @@
 	<string>NSApplication</string>
 	<key>OSAScriptingDefinition</key>
 	<string>BeardieSuite.sdef</string>
+	<key>SUFeedURL</key>
+	<string>$(BS_UPDATE_APPCAST)</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(BS_VERSION)</string>
+	<string>$(BS_VERSION) $(BS_CHANNEL)</string>
 	<key>CFBundleVersion</key>
 	<string>$(BS_BUILD)</string>
 	<key>LSMinimumSystemVersion</key>
