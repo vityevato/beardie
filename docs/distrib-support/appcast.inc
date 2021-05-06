@@ -10,14 +10,14 @@
                     <item>
                         <title>{{ release.name }}</title>
                         <sparkle:releaseNotesLink>
-                            https://stillness-2.github.io/beardie/distrib-support/{{include.release_notes}}.html
+                            {% link {{include.release_notes}}.html %}
                         </sparkle:releaseNotesLink>
                         <pubDate>{{ release.published_at | date_to_rfc822 }}</pubDate>
                         {% for asset in release.assets limit:1 %}
                             {% assign build_nums = release.tag_name | remove_first:'v' | split:'.' %}
                             {% if build_nums.size == 5 %}
                                 {% assign version = build_nums[3] %}
-                                {% assign short_version = release.tag_name | remove_first:'v' %}
+                                {% assign short_version = build_nums | shift | shift | join:'.' | push:build_nums[4] | join:' '  %}
                             {% else %}
                                 {% assign version = release.tag_name | remove_first:'v' %}
                             {% endif %}
