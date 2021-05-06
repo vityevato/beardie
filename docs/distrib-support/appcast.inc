@@ -10,14 +10,14 @@
                     <item>
                         <title>{{ release.name }}</title>
                         <sparkle:releaseNotesLink>
-                            {% link {{include.release_notes}} | append: ".html" %}
+                            {% link include.release_notes | append: ".html" %}
                         </sparkle:releaseNotesLink>
                         <pubDate>{{ release.published_at | date_to_rfc822 }}</pubDate>
                         {% for asset in release.assets limit:1 %}
                             {% assign build_nums = release.tag_name | remove_first:'v' | split:'.' %}
                             {% if build_nums.size == 5 %}
                                 {% assign version = build_nums[3] %}
-                                {% assign short_version = build_nums | join: "." %}
+                                {% assign short_version = "." %}
                             {% else %}
                                 {% assign version = release.tag_name | remove_first:'v' %}
                             {% endif %}
