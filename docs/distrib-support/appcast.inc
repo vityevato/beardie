@@ -10,6 +10,7 @@
                     <item>
                         <title>{{ release.name }}</title>
                         <sparkle:releaseNotesLink>
+                            {% link release-notes.md %}
                         </sparkle:releaseNotesLink>
                         <pubDate>{{ release.published_at | date_to_rfc822 }}</pubDate>
                         {% for asset in release.assets limit:1 %}
@@ -23,7 +24,7 @@
                             <enclosure
                                 url="{{ asset.browser_download_url }}"
                                 sparkle:version="{{ version }}"
-                                {% if short_version %}sparkle:shortVersionString="{{ release.tag_name | remove_first:'v' }}"{% endif %}
+                                {% if short_version %}sparkle:shortVersionString="{{ short_version }}"{% endif %}
                                 length="{{ asset.size }}"
                                 type="application/octet-stream" />
                         {% endfor %}
