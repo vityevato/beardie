@@ -2,4 +2,4 @@
 layout: release-notes
 title: Release Notes
 ---
-{%include release-notes.inc release_only=false %}
+{%include_relative release-notes.inc release_only=false %}
