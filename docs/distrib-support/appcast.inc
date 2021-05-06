@@ -10,7 +10,7 @@
                     <item>
                         <title>{{ release.name }}</title>
                         <sparkle:releaseNotesLink>
-                            {{ site.url | append: include.release_notes }}
+                            {{ include.release_notes | absolute_url }}
                         </sparkle:releaseNotesLink>
                         <pubDate>{{ release.published_at | date_to_rfc822 }}</pubDate>
                         {% for asset in release.assets limit:1 %}
