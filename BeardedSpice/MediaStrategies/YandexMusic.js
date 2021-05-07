@@ -5,10 +5,11 @@
 //  Created by Vladimir Burdukov on 3/14/14.
 //  Updated by Ivan Tsyganov     on 2/13/18.
 //  Updated by Arseny Mitin      on 11/18/18.
-//  Copyright (c) 2014 Tyler Rhodes / Jose Falcon. All rights reserved.
+//  Updated by Roman Sokolov     on 05/07/21.
+//  Copyright (c) 2021 GPL v3 http://www.gnu.org/licenses/gpl.html
 
 BSStrategy = {
-  version:5,
+  version:6,
   displayName:"YandexMusic",
   homepage: "https://music.yandex.ru/",
   accepts: {
@@ -37,7 +38,7 @@ BSStrategy = {
     }
   },
   pause: function () {
-    if (self.isPlaying()){externalAPI.togglePause();}
+    if (BSStrategy.isPlaying()){externalAPI.togglePause();}
   },
   trackInfo: function () {
     let result = {
