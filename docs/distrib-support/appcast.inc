@@ -17,7 +17,11 @@
                             {% assign build_nums = release.tag_name | remove_first:'v' | split:'.' %}
                             {% if build_nums.size == 5 %}
                                 {% assign version = build_nums[3] %}
-                                {% assign short_version = build_nums | pop | pop | join: "." | append: " " | append: build_nums[4] %}
+                                {% if build_nums[4] == "Release" %}
+                                    {% assign short_version = build_nums | pop | pop | join: "." %}
+                                {% else %}
+                                    {% assign short_version = build_nums | pop | pop | join: "." | append: " " | append: build_nums[4] %}
+                                {% endif %}
                             {% else %}
                                 {% assign version = release.tag_name | remove_first:'v' %}
                             {% endif %}
