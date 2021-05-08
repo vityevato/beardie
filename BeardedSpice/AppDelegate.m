@@ -274,6 +274,10 @@ BOOL accessibilityApiEnabled = NO;
 #pragma mark Delegate methods
 /////////////////////////////////////////////////////////////////////////
 
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+    return [NSApp validateMenuItem:menuItem];
+}
+
 - (void)menuNeedsUpdate:(NSMenu *)menu{
     ASSIGN_WEAK(self);
     dispatch_async(_workingQueue, ^{

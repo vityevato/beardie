@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -15,7 +15,7 @@
         <menu systemMenu="main" id="29">
             <items>
                 <menuItem title="Beardie" id="56">
-                    <menu key="submenu" title="Beardie" systemMenu="apple" id="57">
+                    <menu key="submenu" title="Beardie" systemMenu="apple" showsStateColumn="NO" id="57">
                         <items>
                             <menuItem title="About Beardie" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -94,7 +94,7 @@
                     </menu>
                 </menuItem>
                 <menuItem title="Window" id="19">
-                    <menu key="submenu" title="Window" systemMenu="window" id="24">
+                    <menu key="submenu" title="Window" systemMenu="window" showsStateColumn="NO" id="24">
                         <items>
                             <menuItem title="Minimize" keyEquivalent="m" id="23">
                                 <connections>
@@ -131,7 +131,7 @@ CQ
                 <menuItem title="About Beardie" id="uWj-A6-IiV">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="clickAboutFromStatusMenu:" target="494" id="7ae-JI-6YF"/>
+                        <action selector="clickAboutFromStatusMenu:" target="494" id="coY-uE-dZp"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="8LP-8F-Tgc"/>
