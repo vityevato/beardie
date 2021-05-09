@@ -4,7 +4,8 @@
     "name": "Beardie",
     "short_name": "Beardie",
     "description": "This is companion extension for Beardie App. Extension allow you to use Beardie for controlling media players on appropriate sites.",
-    "version": "${BS_VERSION}",
+    "version": "${BS_BUILD}",
+    "version_name": "${BS_VERSION}",
     "homepage_url": "${BS_HOMEPAGE}",
 
     "icons":

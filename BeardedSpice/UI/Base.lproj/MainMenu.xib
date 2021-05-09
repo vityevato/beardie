@@ -15,7 +15,7 @@
         <menu systemMenu="main" id="29">
             <items>
                 <menuItem title="Beardie" id="56">
-                    <menu key="submenu" title="Beardie" systemMenu="apple" id="57">
+                    <menu key="submenu" title="Beardie" systemMenu="apple" showsStateColumn="NO" id="57">
                         <items>
                             <menuItem title="About Beardie" id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -30,17 +30,9 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="checkForCompUpdates:" target="494" id="qPO-Qb-pRl"/>
-                                    <binding destination="ibz-Hr-ayC" name="enabled" keyPath="values.InUpdatingStrategiesState" id="6iT-ZA-9Oc">
-                                        <dictionary key="options">
-                                            <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                            <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                            <integer key="NSNullPlaceholder" value="1"/>
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Check for App Updates..." tag="256" id="h41-vN-Rb7" userLabel="Check for Compatibility Updates">
+                            <menuItem title="Check for App Updates..." id="h41-vN-Rb7" userLabel="Check for Compatibility Updates">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="checkForUpdates:" target="494" id="GbZ-qV-jKr"/>
@@ -94,7 +86,7 @@
                     </menu>
                 </menuItem>
                 <menuItem title="Window" id="19">
-                    <menu key="submenu" title="Window" systemMenu="window" id="24">
+                    <menu key="submenu" title="Window" systemMenu="window" showsStateColumn="NO" id="24">
                         <items>
                             <menuItem title="Minimize" keyEquivalent="m" id="23">
                                 <connections>
@@ -131,7 +123,7 @@ CQ
                 <menuItem title="About Beardie" id="uWj-A6-IiV">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="clickAboutFromStatusMenu:" target="494" id="7ae-JI-6YF"/>
+                        <action selector="clickAboutFromStatusMenu:" target="494" id="coY-uE-dZp"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="8LP-8F-Tgc"/>
@@ -139,17 +131,9 @@ CQ
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="checkForCompUpdates:" target="494" id="o2p-8o-zg5"/>
-                        <binding destination="ibz-Hr-ayC" name="enabled" keyPath="values.InUpdatingStrategiesState" id="UOQ-VR-tKh">
-                            <dictionary key="options">
-                                <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                <integer key="NSNullPlaceholder" value="1"/>
-                                <string key="NSValueTransformerName">NSNegateBoolean</string>
-                            </dictionary>
-                        </binding>
                     </connections>
                 </menuItem>
-                <menuItem title="Check for App Updates..." tag="256" id="4xX-Zm-m17" userLabel="Check for Compatibility Updates">
+                <menuItem title="Check for App Updates..." id="4xX-Zm-m17" userLabel="Check for Compatibility Updates">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="checkForUpdates:" target="494" id="lZE-H0-foi"/>
