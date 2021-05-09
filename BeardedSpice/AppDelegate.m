@@ -275,7 +275,16 @@ BOOL accessibilityApiEnabled = NO;
 /////////////////////////////////////////////////////////////////////////
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
-    return [NSApp validateMenuItem:menuItem];
+    if (NSApp.modalWindow == nil) {
+        if ( menuItem.tag == 256) {
+            DDLogError(@"TIPA %@, %@", menuItem.title, (self.inUpdatingStrategiesState? @"NO": @"YES"));
+            return !self.inUpdatingStrategiesState;
+        }
+        DDLogError(@"TIPA %@, YES", menuItem.title);
+        return YES;
+    }
+    DDLogError(@"TIPA %@, NO", menuItem.title);
+    return NO;
 }
 
 - (void)menuNeedsUpdate:(NSMenu *)menu{
@@ -512,7 +521,6 @@ BOOL accessibilityApiEnabled = NO;
         return;
     
     self.inUpdatingStrategiesState = YES;
-    statusMenu.autoenablesItems = NO;
     item.title = BSLocalizedString(@"Checking...", @"Menu Titles");
     
     BOOL checkFromMenu = (sender != self);
@@ -654,6 +662,10 @@ BOOL accessibilityApiEnabled = NO;
             [tabs addObjectsFromArray:_browserExtensionsController.webSocketServer.tabs];
             [tabs addObjectsFromArray:_nativeAppTabsController.tabs];
             
+            __block BOOL enabled = NO;
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                enabled = [self validateMenuItem:self->statusMenu.itemArray.lastObject];
+            });
             for (TabAdapter *tab in tabs) {
                 @try {
                     NSMenuItem *menuItem = [[NSMenuItem alloc]
@@ -662,6 +674,8 @@ BOOL accessibilityApiEnabled = NO;
                                             keyEquivalent:@""];
                     if (menuItem) {
                         
+                        menuItem.target = self;
+                        menuItem.enabled = enabled;
                         [newItems addObject:menuItem];
                         [menuItem setRepresentedObject:tab];
                         

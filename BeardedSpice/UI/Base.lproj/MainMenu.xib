@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -30,17 +30,9 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="checkForCompUpdates:" target="494" id="qPO-Qb-pRl"/>
-                                    <binding destination="ibz-Hr-ayC" name="enabled" keyPath="values.InUpdatingStrategiesState" id="6iT-ZA-9Oc">
-                                        <dictionary key="options">
-                                            <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                            <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                            <integer key="NSNullPlaceholder" value="1"/>
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Check for App Updates..." tag="256" id="h41-vN-Rb7" userLabel="Check for Compatibility Updates">
+                            <menuItem title="Check for App Updates..." id="h41-vN-Rb7" userLabel="Check for Compatibility Updates">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="checkForUpdates:" target="494" id="GbZ-qV-jKr"/>
@@ -139,17 +131,9 @@ CQ
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="checkForCompUpdates:" target="494" id="o2p-8o-zg5"/>
-                        <binding destination="ibz-Hr-ayC" name="enabled" keyPath="values.InUpdatingStrategiesState" id="UOQ-VR-tKh">
-                            <dictionary key="options">
-                                <integer key="NSNoSelectionPlaceholder" value="1"/>
-                                <integer key="NSNotApplicablePlaceholder" value="1"/>
-                                <integer key="NSNullPlaceholder" value="1"/>
-                                <string key="NSValueTransformerName">NSNegateBoolean</string>
-                            </dictionary>
-                        </binding>
                     </connections>
                 </menuItem>
-                <menuItem title="Check for App Updates..." tag="256" id="4xX-Zm-m17" userLabel="Check for Compatibility Updates">
+                <menuItem title="Check for App Updates..." id="4xX-Zm-m17" userLabel="Check for Compatibility Updates">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="checkForUpdates:" target="494" id="lZE-H0-foi"/>
