@@ -3,12 +3,12 @@
 - **BandCamp** (https://bandcamp.com)
 - **Deezer** (https://www.deezer.com/)
 - **Digitally Imported** (https://www.di.fm)
-- **Flat.FM Flat.Audio** (https://flat.audio/)
+- **Flat.FM, Flat.Audio** (https://flat.audio/)
 - **Mixcloud** (https://www.mixcloud.com)
 - **PocketCasts**
 - **SoundCloud**
 - **Spotify**
-- **twitch.tv**
+- **Twitch**
 - **Vimeo**
 - **VK**
 - **YandexMusic** (https://music.yandex.ru/)
