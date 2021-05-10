@@ -23,6 +23,7 @@ In order for the Beardie to control web players, you need to enable the **Enable
 The Beardie will offer to install a self-signed certificate in the keychain, this certificate will be used to encrypt the exchange between the application and the extensions. The exchange takes place over the WebSockets over SSL/TLS protocol.
 
 You should also install the extension in the browser you are using.
+
 ![Get Extensions](images/get_exts.png)
 
 The **Google Chrome** extension can be installed in other browsers that support extensions from the Chrome extension store, and most likely everything will work as expected. :)
@@ -39,6 +40,7 @@ Beardie tries to automatically guess which *player* it should control for you. W
 
 ### Keyboard Shortcuts
 Beardie comes with a handy list of Keyboard Shortcuts that can be configured under the `Shortcuts` tab of the Beardie Preferences. Here is a default settings:
+
 ![Keyboard Shortcuts](images/keys.png)
 
 Very usefull command is **Raise/Hide Active Player Window**. For example, you are working with a document, and you are tired of the current playlist, which is playing from the site on one of the tabs in some browser window. Press the combination and Beardie will bring up the browser window and switch to the player tab. Change the playlist and press the combination again. Beardie will take you back to the document window, while restoring the sequence of windows and tabs in the browser as it was before.
