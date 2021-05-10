@@ -2,7 +2,7 @@
 
 Beardie is a utility that allows you to control various media players with your keyboard. It is a fork of the [BeardedSpice project](https://github.com/beardedspice/beardedspice). 
 
-It allows you to manage web based players (*SoundCloud*, *YouTube* ... [List of supported sites to date](#supported-sites)) and native application players (*Music*, *Spotify* ...). 
+It allows you to manage web based players (*SoundCloud*, *YouTube* ... [List of supported sites to date](#supported-sites)) and native application players (*Apple Music*, *Spotify* ...). 
 
 Beardie is more than just play/pause, it has some additional controls that add to the convenience. You can keep several player applications open, and several tabs of several browsers with web players, since Beardie "understands" what exactly you want to control at the moment. :) It also allows you to easily switch between running (open) players.
 
@@ -16,8 +16,10 @@ Beardie is more than just play/pause, it has some additional controls that add t
 
 You can download the [latest release here](https://github.com/Stillness-2/beardie/releases/latest), or find a full list of all our [previously released binaries here](https://github.com/Stillness-2/beardie/releases).
 
-In order for the Beardie to control web players, you need to enable the **Enable Browser Extensions** option in the settings.
+In order for the Beardie to control web players, you need to enable the **Enable Browser Extensions** option in the `General` tab of the Beardie Preferences ((available through the menubar icon)).
+
 ![Extensions](images/exts.png)
+
 The Beardie will offer to install a self-signed certificate in the keychain, this certificate will be used to encrypt the exchange between the application and the extensions. The exchange takes place over the WebSockets over SSL/TLS protocol.
 
 You should also install the extension in the browser you are using.
@@ -36,7 +38,7 @@ Beardie supports players control with standard media keys of an Apple keyboards.
 Beardie tries to automatically guess which *player* it should control for you. When you press any Beardie shortcut or media key with Beardie open, it will automatically control the site (native app) currently playing media, if you have no playing player, it will try to control the browser tab (if it is one of our supported sites) or native player app, which is currently focused, if Beardie failed to do either, it will automatically control the first.
 
 ### Keyboard Shortcuts
-Beardie comes with a handy list of Keyboard Shortcuts that can be configured under the `Shortcuts` tab of Beardie Preferences (available through the menubar icon). Here is a default settings:
+Beardie comes with a handy list of Keyboard Shortcuts that can be configured under the `Shortcuts` tab of the Beardie Preferences. Here is a default settings:
 ![Keyboard Shortcuts](images/keys.png)
 
 Very usefull command is **Raise/Hide Active Player Window**. For example, you are working with a document, and you are tired of the current playlist, which is playing from the site on one of the tabs in some browser window. Press the combination and Beardie will bring up the browser window and switch to the player tab. Change the playlist and press the combination again. Beardie will take you back to the document window, while restoring the sequence of windows and tabs in the browser as it was before.
@@ -46,10 +48,12 @@ If you are like me, love music, listen to it from different sources and cannot d
 If the **smart mode** does not work properly, you can force the player to be active. To do this, use the **Set Active Player Window** command.
 
 ### Automatic Updates
-BeardedSpice will automatically notify you when a new release is available.
+
+Beardie will automatically notify you when a new release is available.
 
 ### Up to Date Media Strategies
-First, what is a Media Strategy? This is what we call a [template](template-explained.js) with custom javascript aimed at a specific website, allowing the BeardedSpice program to control it with the media keys.
+
+First, what is a Media Strategy? This is what we call a [template](template-explained.js) with custom javascript aimed at a specific website, allowing the Beardie program to control it with the media keys.
 
 Second, the Compatibility Updates option allows you to check for added or changed Media Strategies that were contributed since the last official release.
 
@@ -62,7 +66,7 @@ Since Beardie is a fork of BeardedSpice it fully supports the strategies created
 ![Controllers](images/str.png)
 
 ### Disabling certain handlers
-From the **Controllers** preferences tab, uncheck any types of webpages that you don't want Beardie to have control over. By default, all implemented handlers are enabled.
+From the `Controllers` preferences tab, uncheck any types of webpages that you don't want Beardie to have control over. By default, all implemented handlers are enabled.
 
 ### Supported Mac OS X applications
 - [iTunes](http://www.apple.com/itunes/)
@@ -81,7 +85,7 @@ From the **Controllers** preferences tab, uncheck any types of webpages that you
 ### Supported Browsers
 
  - [Safari](https://www.apple.com/safari/)
- - [Google Chrome](https://www.google.com/chrome/browser/desktop/) and others browsers, which support extensions for Google Chrome
+ - [Google Chrome](https://www.google.com/chrome/browser/desktop/) and other browsers, which support extensions for Google Chrome
  
 
 ### Supported Sites
