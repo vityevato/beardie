@@ -16,7 +16,7 @@ Beardie is more than just play/pause, it has some additional controls that add t
 
 You can download the [latest release here](https://github.com/Stillness-2/beardie/releases/latest), or find a full list of all our [previously released binaries here](https://github.com/Stillness-2/beardie/releases).
 
-In order for the Beardie to control web players, you need to enable the **Enable Browser Extensions** option in the `General` tab of the Beardie Preferences ((available through the menubar icon)).
+In order for the Beardie to control web players, you need to enable the **Enable Browser Extensions** option in the `General` tab of the Beardie Preferences (available through the menubar icon).
 
 ![Extensions](images/exts.png)
 
