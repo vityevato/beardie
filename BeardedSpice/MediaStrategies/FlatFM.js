@@ -7,7 +7,7 @@
 //
 BSStrategy = {
   version:1,
-  displayName:"Flat.FM Flat.Audio",
+  displayName:"Flat Audio",
   homepage: "https://flat.audio/",
   accepts: {
     method: "predicateOnTab",

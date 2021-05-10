@@ -10,7 +10,7 @@
 
 BSStrategy = {
   version:5,
-  displayName:"YandexRadio",
+  displayName:"Yandex Radio",
   homepage: "https://radio.yandex.ru/",
   accepts: {
     method: "predicateOnTab",
