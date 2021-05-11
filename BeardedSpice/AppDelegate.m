@@ -277,13 +277,10 @@ BOOL accessibilityApiEnabled = NO;
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
     if (NSApp.modalWindow == nil) {
         if ( menuItem.tag == 256) {
-            DDLogError(@"TIPA %@, %@", menuItem.title, (self.inUpdatingStrategiesState? @"NO": @"YES"));
             return !self.inUpdatingStrategiesState;
         }
-        DDLogError(@"TIPA %@, YES", menuItem.title);
         return YES;
     }
-    DDLogError(@"TIPA %@, NO", menuItem.title);
     return NO;
 }
 
