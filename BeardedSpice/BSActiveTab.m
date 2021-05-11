@@ -117,9 +117,7 @@ dispatch_queue_t notificationQueue() {
                     needsActivated = YES;
                 }
                 if ([self.activeTab deactivateTab]) {
-                    if (! [self.activeTab.application isEqual:tab.application]) {
-                        [self.activeTab deactivateApp];
-                    }
+                    [self.activeTab deactivateApp];
                 }
             }
             
