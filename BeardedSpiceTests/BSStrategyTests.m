@@ -70,13 +70,13 @@ describe(@"BSStrategyCache properly loads all strategies.", ^{
     cache = [BSStrategyCache new];
     [cache updateStrategiesFromSourceURL: [NSURL URLForBundleStrategies]];
 
-    [[theValue([cache allKeys].count) should] beGreaterThan:theValue(0)];
+    [[theValue([cache allStrategies].count) should] beGreaterThan:theValue(0)];
 });
 
-for (NSString *strategyName in [cache allKeys])
+for (BSMediaStrategy *strategy in [cache allStrategies])
 {
-    describe([NSString stringWithFormat:@"Test %@ for valid javascript", strategyName], ^{
-        itBehavesLike(@"MediaStrategy", @{ @"strategyName": strategyName, @"strategy": [cache strategyForFileName:strategyName] });
+    describe([NSString stringWithFormat:@"Test %@ for valid javascript", strategy.fileName], ^{
+        itBehavesLike(@"MediaStrategy", @{ @"strategyName": strategy.fileName, @"strategy": strategy });
     });
     //break;
 }
