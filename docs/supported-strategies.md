@@ -5,7 +5,7 @@
 - **Digitally Imported** (https://www.di.fm)
 - **Flat Audio** (https://flat.audio/)
 - **Mixcloud** (https://www.mixcloud.com)
-- **PocketCasts**
+- **Pocket Casts** (https://play.pocketcasts.com/)
 - **SoundCloud**
 - **Spotify**
 - **Twitch**
