@@ -6,7 +6,7 @@
 - **Flat Audio** (https://flat.audio/)
 - **Mixcloud** (https://www.mixcloud.com)
 - **Pocket Casts** (https://play.pocketcasts.com/)
-- **SoundCloud**
+- **SoundCloud** (https://soundcloud.com/)
 - **Spotify**
 - **Twitch**
 - **Vimeo**
