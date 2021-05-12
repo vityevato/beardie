@@ -70,11 +70,7 @@ NSString *BSMediaStrategyErrorDomain = @"BSMediaStrategyErrorDomain";
         NSString *fileName = [strategyURL lastPathComponent];
         strategy = [_cache objectForKey:fileName];
         if (strategy){
-            // do not update strategy if it was loaded from custom folder already,
-            // or update if path is equal
-            if (!strategy.custom || [[strategyURL path] isEqualToString:[strategy.strategyURL path]]) {
-                result = [strategy reloadDataFromURL:strategyURL];
-            }
+            result = [strategy reloadDataFromURL:strategyURL];
         }
         else{
             result = [NSError errorWithDomain:BSMediaStrategyErrorDomain code:BSSC_ERROR_STRATEGY_NOTFOUND userInfo:nil];

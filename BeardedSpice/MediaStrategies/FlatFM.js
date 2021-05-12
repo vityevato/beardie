@@ -6,7 +6,7 @@
 //  Copyright (c) 2015-2020 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 BSStrategy = {
-  version:1,
+  version:2,
   displayName:"Flat Audio",
   homepage: "https://flat.audio/",
   accepts: {
@@ -31,7 +31,7 @@ BSStrategy = {
     if (newPosition > timeEnd) newPosition = timeEnd;
     let elem = document.querySelector('div.player__seekbar_stream');
     let elemRect = elem.getBoundingClientRect();
-    let x = newPosition*elemRect.width/timeEnd;
+    let x = newPosition*elemRect.width/timeEnd + elemRect.x;
     let y = elemRect.y+ elemRect.height/2;
     let eventData = {'view': window, 'bubbles': true, 'cancelable': true, 'clientX': x, 'clientY': y};
     elem.dispatchEvent((new MouseEvent('mousedown', eventData)));
