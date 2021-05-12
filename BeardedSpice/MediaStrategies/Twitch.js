@@ -6,7 +6,7 @@
 //
 BSStrategy = {
   version:1,
-  displayName:"twitch.tv",
+  displayName:"Twitch",
   accepts: {
     method: "predicateOnTab",
     format:"%K LIKE[c] '*twitch.tv/*'",

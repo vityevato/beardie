@@ -1,0 +1,22 @@
+name: Update gh-pages on Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Merge master to gh-pages
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: 'gh-pages'
+    - name: Merge from master
+      run: git merge master
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}

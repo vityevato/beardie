@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Tyler Rhodes / Jose Falcon. All rights reserved.
 //
 BSStrategy = {
-    version: 4,
+    version: 5,
     displayName: "BandCamp",
     homepage: "https://bandcamp.com",
     accepts: {
@@ -262,6 +262,8 @@ BSStrategy = {
                     }
                 }
                 imgElem = p.querySelector("div.col-8-15 > a > img");
+                nextElem = controller.parentElement.nextElementSibling;
+                prevElem = controller.parentElement.previousElementSibling;
                 found = true;
             }
         }

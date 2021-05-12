@@ -5,11 +5,12 @@
 //  Created by Leonid Ponomarev 15.06.15
 //  Updated by Ivan Tsyganov    13.02.18
 //  Updated by Arseny Mitin     18.11.18
-//  Copyright (c) 2014 Tyler Rhodes / Jose Falcon. All rights reserved.
+//  Updated by Roman Sokolov     on 05/07/21.
+//  Copyright (c) 2021 GPL v3 http://www.gnu.org/licenses/gpl.html
 
 BSStrategy = {
-  version:4,
-  displayName:"YandexRadio",
+  version:5,
+  displayName:"Yandex Radio",
   homepage: "https://radio.yandex.ru/",
   accepts: {
     method: "predicateOnTab",
@@ -22,7 +23,7 @@ BSStrategy = {
   favorite: function () {externalAPI.toggleLike();},
   previous: function () {},
   pause: function () {
-    if (self.isPlaying()){externalAPI.togglePause();}
+    if (BSStrategy.isPlaying()){externalAPI.togglePause();}
   },
   trackInfo: function () {
     return {

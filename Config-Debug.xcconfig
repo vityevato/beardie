@@ -12,7 +12,7 @@ DEBUG_STRATEGY = 0
 
 #include "./Config.xcconfig"
 
-BS_CHANNEL = Debug
+BS_CHANNEL = $() Debug
 BS_UPDATE_APPCAST = https:$(XC_SPL)/stillness-2.github.io/beardie/distrib-support/appcast-pre.xml
 
 // Macro definition
