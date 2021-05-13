@@ -715,7 +715,7 @@ BOOL accessibilityApiEnabled = NO;
         default: // null or many
 
             // try to set active tab to focus
-            if ((forceFocused || !_activeApp) && [self setActiveTabShortcut]) {
+            if ((forceFocused || !_activeApp.activeTab) && [self setActiveTabShortcut]) {
                 return;
             }
 
