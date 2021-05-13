@@ -7,7 +7,7 @@
 - **Mixcloud** (https://www.mixcloud.com)
 - **Pocket Casts** (https://play.pocketcasts.com/)
 - **SoundCloud** (https://soundcloud.com/)
-- **Spotify**
+- **Spotify** (https://spotify.com/)
 - **Twitch**
 - **Vimeo**
 - **VK**
