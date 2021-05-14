@@ -10,7 +10,7 @@
 - **Spotify** (https://spotify.com/)
 - **Twitch TV** (https://www.twitch.tv/)
 - **Vimeo** (https://vimeo.com/)
-- **VK**
+- **VK** (https://vk.com/)
 - **Yandex Music** (https://music.yandex.ru/)
 - **Yandex Radio** (https://radio.yandex.ru/)
 - **YouTube**
