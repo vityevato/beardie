@@ -8,7 +8,7 @@
 - **Pocket Casts** (https://play.pocketcasts.com/)
 - **SoundCloud** (https://soundcloud.com/)
 - **Spotify** (https://spotify.com/)
-- **Twitch**
+- **Twitch TV** (https://www.twitch.tv/)
 - **Vimeo**
 - **VK**
 - **Yandex Music** (https://music.yandex.ru/)
