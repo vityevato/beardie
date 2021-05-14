@@ -9,7 +9,7 @@
 - **SoundCloud** (https://soundcloud.com/)
 - **Spotify** (https://spotify.com/)
 - **Twitch TV** (https://www.twitch.tv/)
-- **Vimeo**
+- **Vimeo** (https://vimeo.com/)
 - **VK**
 - **Yandex Music** (https://music.yandex.ru/)
 - **Yandex Radio** (https://radio.yandex.ru/)
