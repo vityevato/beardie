@@ -3,14 +3,16 @@
 //  BeardedSpice
 //
 //  Created by Max Kupetskii on 21/07/16.
+//  Modified by Roman Spkolov on 05/14/2021
 //  Copyright © 2016 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 BSStrategy = {
-        version: 3,
-        displayName: "VK",
-        accepts: {
+    version: 4,
+    displayName: "VK",
+    homepage: "https://vk.com/",
+    accepts: {
         method: "predicateOnTab",
-        format:"%K LIKE[c] '*vk.com*'",
+        format: "%K LIKE[c] '*vk.com*'",
         args: ["URL"]
     },
     isPlaying: function () {
@@ -69,14 +71,11 @@ BSStrategy = {
             
     },
     trackInfo: function () {
-        var fullTitle = document.querySelector('#top_audio_player > div.top_audio_player_title_wrap > div');
-        var fullTitleText = fullTitle.textContent.split(" – ");
-        if (!fullTitle) {
-            return {};
-        }
         return {
-            'artist': fullTitleText[0],
-            'track': fullTitleText[1]
+            'artist': document.querySelector('div.audio_page_player_title_performer').textContent,
+            'track': document.querySelector('span.audio_page_player_title_song_title').textContent,
+            'image':document.querySelector('div.audio_page_player__cover').style['background-image'].slice(5, -2),
+            'favorited': !!(document.querySelector('.audio_player_btn_added'))
         };
     },
 }
