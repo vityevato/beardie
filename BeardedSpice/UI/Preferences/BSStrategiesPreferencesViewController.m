@@ -536,7 +536,7 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
                                        attributes:@{
                                                     NSFontAttributeName :
                                                         [NSFont systemFontOfSize:[NSFont labelFontSize]],
-                                                    NSForegroundColorAttributeName : [NSColor grayColor]
+                                                    NSForegroundColorAttributeName : [NSColor secondaryLabelColor]
                                                     }];
         [name appendAttributedString:version];
     }
