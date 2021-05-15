@@ -6,12 +6,13 @@
 //  Updated by Alin Panaitiu on 3/2/18.
 //  Updated by Vladislav Gapurov on 07/28/18
 //  Updated by Andreas Willi on 02/24/19
-//  Copyright (c) 2013 Tyler Rhodes / Jose Falcon. All rights reserved.
+//  Copyright (c) 2021 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 
 BSStrategy = {
-  version: 4,
+  version: 5,
   displayName: "YouTube",
+  homepage: "https://www.youtube.com/",
   accepts: {
     method: "predicateOnTab",
     format: "%K LIKE[c] '*youtube.com/watch*' && !%@ LIKE[c] '*music.youtube.com*'",
@@ -33,9 +34,9 @@ BSStrategy = {
     };
 
     function secondsToTimeString(seconds) {
-      hours = Math.floor(seconds / 3600);
-      minutes = Math.floor(seconds / 60);
-      seconds = Math.floor(seconds % 60);
+      let hours = Math.floor(seconds / 3600);
+      let minutes = Math.floor(seconds / 60);
+      let seconds = Math.floor(seconds % 60);
 
       if (hours > 0) {
         return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
@@ -44,13 +45,13 @@ BSStrategy = {
       }
     };
 
-    playerManager = document.querySelector('yt-player-manager');
-    player = playerManager.player_;
-    videoData = player.getVideoData();
+    let playerManager = document.querySelector('yt-player-manager');
+    let player = playerManager.player_;
+    let videoData = player.getVideoData();
 
-    progress = player.getProgressState();
-    played = secondsToTimeString(progress.current);
-    duration = secondsToTimeString(progress.duration);
+    let progress = player.getProgressState();
+    let played = secondsToTimeString(progress.current);
+    let duration = secondsToTimeString(progress.duration);
 
     return {
       'image': `https://i.ytimg.com/vi/${videoData.video_id}/hqdefault.jpg`,

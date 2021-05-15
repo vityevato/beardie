@@ -6,7 +6,7 @@
 //  Copyright (c) 2021 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 BSStrategy = {
-  version:2,
+  version:3,
   displayName:"Twitch TV",
   homepage: "https://www.twitch.tv/",
   accepts: {
@@ -19,7 +19,7 @@ BSStrategy = {
   },
   toggle: function () {
     if (!BSStrategy.pause()) {
-      let au = BSStrategy.lastPlayed || document.querySelectorAll('audio[src]')[0];
+      let au = BSStrategy.lastPlayed || document.querySelectorAll('video[src]')[0];
       if (au) au.play();
     }
   },
@@ -33,7 +33,6 @@ BSStrategy = {
   },
   // custom (private)
   lastPlayed: null,
-  lastControllerData: null,
   pVideo: function () {
     let video = document.querySelectorAll('video[src]');
     for (var i = 0; i < video.length; i++) {

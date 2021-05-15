@@ -3,12 +3,13 @@
 //  BeardedSpice
 //
 //  Created by Vladislav Gapurov on 07/28/18
-//  Copyright (c) 2013 Tyler Rhodes / Jose Falcon. All rights reserved.
+//  Copyright (c) 2021 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 
 BSStrategy = {
-  version: 1,
+  version: 2,
   displayName: "YouTube Music",
+  homepage: "https://music.youtube.com/",
   accepts: {
     method: "predicateOnTab",
     format: "%K LIKE[c] '*music.youtube.com/*'",
@@ -27,11 +28,11 @@ BSStrategy = {
     document.querySelector('ytmusic-like-button-renderer .ytmusic-like-button-renderer.like').click()
   },
   trackInfo: function() {
-    timeInfo = document.querySelector('.ytmusic-player-bar.time-info').innerHTML.split('/');
-    thumb = document.querySelector('.ytmusic-player-bar img');
-    title = document.querySelector('.ytmusic-player-bar.title');
-    byline = document.querySelector('.byline.ytmusic-player-bar');
-    like = document.querySelector('ytmusic-like-button-renderer');
+    let timeInfo = document.querySelector('.ytmusic-player-bar.time-info').innerHTML.split('/');
+    let thumb = document.querySelector('.ytmusic-player-bar img');
+    let title = document.querySelector('.ytmusic-player-bar.title');
+    let byline = document.querySelector('.byline.ytmusic-player-bar');
+    let like = document.querySelector('ytmusic-like-button-renderer');
 
     return {
       'image': thumb.src,
