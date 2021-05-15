@@ -13,6 +13,4 @@
 - **VK** (https://vk.com/)
 - **Yandex Music** (https://music.yandex.ru/)
 - **Yandex Radio** (https://radio.yandex.ru/)
-- **YouTube**
-- **YouTube Music**
-- **Zvooq**
+- **YouTube Music** (https://music.youtube.com/)
