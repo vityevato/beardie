@@ -64,6 +64,6 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>$(BS_COPYRIGHT)</string>
 	<key>NSHumanReadableDescription</key>
-	<string>This is a Safari Extension. You should tell us what your extension does here.</string>
+	<string>Beardie is the application for Mac for controlling various media players through keyboard shotcuts. This extension allow you to use Beardie for controlling media players on appropriate sites.</string>
 </dict>
 </plist>
