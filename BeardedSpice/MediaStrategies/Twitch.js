@@ -2,42 +2,45 @@
 //  Twitch.plist
 //  BeardedSpice
 //
-//  Copyright (c) 2015 GPL v3 http://www.gnu.org/licenses/gpl.html
+//  Modified by Roman Spkolov on 05/14/2021
+//  Copyright (c) 2021 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 BSStrategy = {
-  version:1,
-  displayName:"Twitch",
+  version:3,
+  displayName:"Twitch TV",
+  homepage: "https://www.twitch.tv/",
   accepts: {
     method: "predicateOnTab",
-    format:"%K LIKE[c] '*twitch.tv/*'",
+    format: "%K LIKE[c] '*twitch.tv/*'",
     args: ["URL"]
   },
   isPlaying: function () {
-      var doc = document;
-      var frame = $('iframe[src^=\'http://player.twitch.tv/?channel=\']').get(0);
-      if (frame) {
-          doc = frame.contentDocument || frame.contentWindow.document;
-      }
-      return (doc.querySelector('.player[data-paused=\"false\"]') != null);
+    return BSStrategy.pVideo() != null;
   },
   toggle: function () {
-    var doc = document;
-    var frame = $("iframe[src^='http://player.twitch.tv/?channel=']").get(0);
-    if (frame) {
-        doc = frame.contentDocument || frame.contentWindow.document;
+    if (!BSStrategy.pause()) {
+      let au = BSStrategy.lastPlayed || document.querySelectorAll('video[src]')[0];
+      if (au) au.play();
     }
-    doc.querySelector('.js-control-playpause-button').click()
   },
-  next: function () {},
-  favorite: function () {},
-  previous: function () {},
   pause: function () {
-      var doc = document;
-      var frame = $('iframe[src^=\'http://player.twitch.tv/?channel=\']').get(0);
-      if (frame) {
-          doc = frame.contentDocument || frame.contentWindow.document;
-      }
-      doc.querySelector('.player[data-paused="false"] .js-control-playpause-button').click()
+    let au = BSStrategy.pVideo();
+    if (au != null) {
+      au.pause();
+      return true;
+    }
+    return false;
   },
-  trackInfo: function () {}
+  // custom (private)
+  lastPlayed: null,
+  pVideo: function () {
+    let video = document.querySelectorAll('video[src]');
+    for (var i = 0; i < video.length; i++) {
+      if (video[i].paused == false) {
+        BSStrategy.lastPlayed = video[i];
+        return BSStrategy.lastPlayed;
+      }
+    }
+    return null;
+  }
 }

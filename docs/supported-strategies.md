@@ -7,12 +7,11 @@
 - **Mixcloud** (https://www.mixcloud.com)
 - **Pocket Casts** (https://play.pocketcasts.com/)
 - **SoundCloud** (https://soundcloud.com/)
-- **Spotify**
-- **Twitch**
-- **Vimeo**
-- **VK**
+- **Spotify** (https://spotify.com/)
+- **Twitch TV** (https://www.twitch.tv/)
+- **Vimeo** (https://vimeo.com/)
+- **VK** (https://vk.com/)
 - **Yandex Music** (https://music.yandex.ru/)
 - **Yandex Radio** (https://radio.yandex.ru/)
-- **YouTube**
-- **YouTube Music**
-- **Zvooq**
+- **YouTube** (https://www.youtube.com/)
+- **YouTube Music** (https://music.youtube.com/)

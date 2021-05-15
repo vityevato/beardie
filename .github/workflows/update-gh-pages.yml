@@ -3,6 +3,8 @@ name: Update gh-pages on Release
 on:
   release:
     types: [published]
+  push:
+    branches: [ master ]
 
 jobs:
   build:
@@ -12,9 +14,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: 'gh-pages'
+        ref: gh-pages
+        fetch-depth: 0
     - name: Merge from master
-      run: git merge master
+      run: |
+        git merge origin/master
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:

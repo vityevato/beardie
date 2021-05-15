@@ -32,7 +32,7 @@ BSStrategy = {
     let elem = document.querySelector('div.player__seekbar_stream');
     let elemRect = elem.getBoundingClientRect();
     let x = newPosition*elemRect.width/timeEnd + elemRect.x;
-    let y = elemRect.y+ elemRect.height/2;
+    let y = elemRect.y+ elemRect.height/2.0;
     let eventData = {'view': window, 'bubbles': true, 'cancelable': true, 'clientX': x, 'clientY': y};
     elem.dispatchEvent((new MouseEvent('mousedown', eventData)));
     elem.dispatchEvent((new MouseEvent('mouseup', eventData)));
@@ -41,8 +41,8 @@ BSStrategy = {
   isPlaying: function() {return (document.querySelector('svg#topbarPlayerButtons>use').href.baseVal == "#icon-playback-topbar-playing")},
   pause: function () { if (document.querySelector('svg#topbarPlayerButtons>use').href.baseVal == "#icon-playback-topbar-playing") document.querySelector('div.player__button_stream-center').click(); },
   toggle: function () { document.querySelector('div.player__button_stream-center').click(); },
-  next: function() {BSStrategy.seek(30);},
-  previous: function() {if (BSStrategy.seek(-30) < 0) document.querySelector('div.player__button_stream-other-left').click();},
+  next: function() {BSStrategy.seek(30.0);},
+  previous: function() {if (BSStrategy.seek(-30.0) < 0) document.querySelector('div.player__button_stream-other-left').click();},
   trackInfo: function () {
       let result = {
       'track': document.querySelector('div.mix-shortcut-time__topbar__title>span:nth-child(2)').textContent,

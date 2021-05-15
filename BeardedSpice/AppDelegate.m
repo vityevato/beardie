@@ -43,6 +43,7 @@
 #import "Beardie-Swift.h"
 
 #define VOLUME_RELAXING_TIMEOUT             2 //seconds
+#define AUTOUPDATE_COMPATIBILITY_INTERVAL   3600*24 // 24 hours
 
 NSString *const InUpdatingStrategiesState = @"InUpdatingStrategiesState";
 
@@ -120,8 +121,7 @@ BOOL accessibilityApiEnabled = NO;
     
 #if !DEBUG_STRATEGY
     /* Check for strategy updates from the master github repo */
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:BeardedSpiceUpdateAtLaunch])
-        [self checkForCompUpdates:self];
+    [self setAutoCompUpdates];
 #endif
 }
 
@@ -715,7 +715,7 @@ BOOL accessibilityApiEnabled = NO;
         default: // null or many
 
             // try to set active tab to focus
-            if ((forceFocused || !_activeApp) && [self setActiveTabShortcut]) {
+            if ((forceFocused || !_activeApp.activeTab) && [self setActiveTabShortcut]) {
                 return;
             }
 
@@ -964,6 +964,22 @@ BOOL accessibilityApiEnabled = NO;
         loginItem.startAtLogin = st;
     });
 
+}
+
+- (void)setAutoCompUpdates {
+    static dispatch_source_t updateTimer;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        updateTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+        int64_t begin = [[NSUserDefaults standardUserDefaults] boolForKey:BeardedSpiceUpdateAtLaunch] ? 0 : AUTOUPDATE_COMPATIBILITY_INTERVAL;
+        dispatch_source_set_timer(updateTimer, dispatch_time(DISPATCH_TIME_NOW, begin * NSEC_PER_SEC),
+                                  AUTOUPDATE_COMPATIBILITY_INTERVAL * NSEC_PER_SEC,
+                                  AUTOUPDATE_COMPATIBILITY_INTERVAL * NSEC_PER_SEC);
+        dispatch_source_set_event_handler(updateTimer, ^{
+            [self checkForCompUpdates:self];
+        });
+        dispatch_resume(updateTimer);
+    });
 }
 
 /////////////////////////////////////////////////////////////////////////

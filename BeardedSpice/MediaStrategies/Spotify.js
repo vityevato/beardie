@@ -3,43 +3,43 @@
 //  BeardedSpice
 //
 //  Created by Jose Falcon on 12/19/13.
-//  Copyright (c) 2013 Tyler Rhodes / Jose Falcon. All rights reserved.
+//  Modified by Roman Spkolov on 05/13/2021
+//  Copyright (c) 2021 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 BSStrategy = {
-  version:2,
+  version:3,
   displayName:"Spotify",
+  homepage: 'https://spotify.com/',
   accepts: {
     method: "predicateOnTab",
     format:"%K LIKE[c] '*open.spotify.com*'",
     args: ["URL"]
   },
   isPlaying: function() {
-    return document.querySelector('.control-button--circled').classList.contains('spoticon-pause-16');
+    return !!(document.querySelector('div.player-controls__buttons button[data-testid="control-button-pause"]'));
   },
   toggle: function () {
-    document.querySelector('.control-button--circled').click();
+    (document.querySelector('div.player-controls__buttons button[data-testid="control-button-play"]') 
+    || document.querySelector('div.player-controls__buttons button[data-testid="control-button-pause"]')).click();
   },
   next: function () {
-    document.querySelector('.spoticon-skip-forward-16').click();
+    document.querySelector('div.player-controls__buttons button[data-testid="control-button-skip-forward"]').click();
   },
   favorite: function () {
-    if (document.querySelector('.spoticon-add-16')) {
-      document.querySelector('.spoticon-add-16').click();
-    }
+    document.querySelector('div.control-button.control-button-heart > button').click()    
   },
   previous: function () {
-    document.querySelector('.spoticon-skip-back-16').click();
+    document.querySelector('div.player-controls__buttons > button:nth-child(2)').click();
   },
   pause: function () {
-    if (document.querySelector('.control-button--circled').classList.contains('spoticon-pause-16')) {
-      document.querySelector('.control-button--circled').click();
-    }
+    document.querySelector('div.player-controls__buttons button[data-testid="control-button-pause"]').click();
   },
   trackInfo: function () {
     return {
-      'image': document.querySelector('.cover-art-image-loaded').style.backgroundImage.split("\"")[1],
-      'track': document.querySelector('.track-info__name').querySelector('a').innerText,
-      'artist': document.querySelector('.track-info__artists').querySelector('a').innerText
+      'image': document.querySelector('div.Root__now-playing-bar img[data-testid="cover-art-image"]').src,
+      'track': document.querySelector('div.Root__now-playing-bar a[data-testid="nowplaying-track-link"]').textContent,
+      'artist': document.querySelector('div.Root__now-playing-bar div[data-testid="track-info-artists"]').textContent,
+      'favorited': !!(document.querySelector('div.control-button.control-button-heart > button.a65d8d62fe56eed3e660b937a9be8a93-scss'))
     };
   }
 }

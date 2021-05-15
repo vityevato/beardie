@@ -3,7 +3,8 @@
 //  BeardedSpice
 //
 //  Created by Jose Falcon on 12/16/13.
-//  Copyright (c) 2013 Tyler Rhodes / Jose Falcon. All rights reserved.
+//  Modified by Roman Spkolov on 05/13/2021
+//  Copyright (c) 2021 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 BSStrategy = {
   version:4,
@@ -20,11 +21,11 @@ BSStrategy = {
   },
   toggle: function () {return document.querySelectorAll('.playControl')[0].click()},
   next: function() {
-    if (BSStrategy.isLongPlay()) { return !!(BSStrategy.seek(30));}
+    if (BSStrategy.isLongPlay()) { return !!(BSStrategy.seek(30.0));}
     else { return !!(document.querySelectorAll('.skipControl__next')[0].click());}
 },
   previous: function() {
-    if ( !BSStrategy.isLongPlay() || BSStrategy.seek(-30) < 0) 
+    if ( !BSStrategy.isLongPlay() || BSStrategy.seek(-30.0) < 0) 
       return !!(document.querySelectorAll('.skipControl__previous')[0].click());
     return true;
 },
