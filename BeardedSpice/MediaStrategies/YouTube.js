@@ -33,10 +33,10 @@ BSStrategy = {
       }
     };
 
-    function secondsToTimeString(seconds) {
-      let hours = Math.floor(seconds / 3600);
-      let minutes = Math.floor(seconds / 60);
-      let seconds = Math.floor(seconds % 60);
+    function secondsToTimeString(sec) {
+      let hours = Math.floor(sec / 3600);
+      let minutes = Math.floor(sec / 60);
+      let seconds = Math.floor(sec % 60);
 
       if (hours > 0) {
         return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
