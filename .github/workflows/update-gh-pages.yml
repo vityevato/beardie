@@ -13,9 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+      with:
+        ref: gh-pages
     - name: Merge from master
       run: |
-        git checkout gh-pages
         git merge master
     - name: Push changes
       uses: ad-m/github-push-action@master
