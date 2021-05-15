@@ -18,7 +18,7 @@ jobs:
         fetch-depth: 0
     - name: Merge from master
       run: |
-        git merge master
+        git merge origin/master
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
