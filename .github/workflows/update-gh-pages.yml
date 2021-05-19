@@ -3,9 +3,7 @@ name: Update gh-pages on Release
 on:
   release:
     types: [published]
-  push:
-    branches: [ master ]
-
+    
 jobs:
   build:
     name: Merge master to gh-pages
