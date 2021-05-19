@@ -121,6 +121,8 @@
 		65B166621ED4C82700646F9A /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E567071B76104300AD2D46 /* CoreAudio.framework */; };
 		65B166641ED58E3700646F9A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65B166631ED58E3700646F9A /* AudioToolbox.framework */; };
 		65B32B8E1AD99D1600F696B9 /* TabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B32B8D1AD99D1600F696B9 /* TabAdapter.m */; };
+		65B39582265576B300DBD144 /* BeardedSpiceHostAppProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */; };
+		65B39583265576B300DBD144 /* BeardedSpiceHostAppProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */; };
 		65C511721AED802B00EBA6A5 /* BSNativeAppTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C511711AED802B00EBA6A5 /* BSNativeAppTabAdapter.m */; };
 		65D57FCB1D02CBFE0016F270 /* MediaStrategies in Resources */ = {isa = PBXBuildFile; fileRef = 65D57FCA1D02CBFE0016F270 /* MediaStrategies */; };
 		65D57FCC1D02CC250016F270 /* MediaStrategies in Resources */ = {isa = PBXBuildFile; fileRef = 65D57FCA1D02CBFE0016F270 /* MediaStrategies */; };
@@ -544,6 +546,7 @@
 		65B166631ED58E3700646F9A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		65B32B8C1AD99D1600F696B9 /* TabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabAdapter.h; sourceTree = "<group>"; };
 		65B32B8D1AD99D1600F696B9 /* TabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabAdapter.m; sourceTree = "<group>"; };
+		65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeardedSpiceHostAppProtocol.m; sourceTree = "<group>"; };
 		65C511691AED66A700EBA6A5 /* SpotifyTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifyTabAdapter.m; sourceTree = "<group>"; };
 		65C5116B1AED66B700EBA6A5 /* SpotifyTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifyTabAdapter.h; sourceTree = "<group>"; };
 		65C5116C1AED688800EBA6A5 /* Spotify.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spotify.h; sourceTree = "<group>"; };
@@ -874,6 +877,7 @@
 				65384DBA2187BC5C0029D9E9 /* BSSharedResources.m */,
 				656A003F1C8B037A00BD29F5 /* BeardedSpiceControllersProtocol.h */,
 				656A00401C8B037A00BD29F5 /* BeardedSpiceHostAppProtocol.h */,
+				65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */,
 				65E58D3B24968BA900DB66DB /* SharedResources.swift */,
 			);
 			path = SharedComponents;
@@ -1906,6 +1910,7 @@
 				65E63AC721905A5F00C039B7 /* EHFileLocker.m in Sources */,
 				65A8501D1C9330F800D54C77 /* BSCShortcutMonitor.m in Sources */,
 				6566ABE12189071A008BEC2F /* BSSharedResources.m in Sources */,
+				65B39583265576B300DBD144 /* BeardedSpiceHostAppProtocol.m in Sources */,
 				656A00221C8AD3E200BD29F5 /* NSObject+SPInvocationGrabbing.m in Sources */,
 				656A001C1C8AD3C800BD29F5 /* NSXReturnThrowError.m in Sources */,
 				656A00161C8AD3C800BD29F5 /* DDHidElement.m in Sources */,
@@ -1976,6 +1981,7 @@
 				654D044825EBC83200270533 /* UIController.swift in Sources */,
 				656A00351C8AD41A00BD29F5 /* NSString+Utils.m in Sources */,
 				657C77382379E31D00A55EFE /* BSNativeAppTabsController.m in Sources */,
+				65B39582265576B300DBD144 /* BeardedSpiceHostAppProtocol.m in Sources */,
 				653BCAD21AB25DAC0034D27F /* ShortcutsPreferencesViewController.m in Sources */,
 				658D64441FA697A2004D1546 /* PSWebSocketNetworkThread.m in Sources */,
 				65AA828D239C349A000442A2 /* ExtensionsMaintenance.swift in Sources */,

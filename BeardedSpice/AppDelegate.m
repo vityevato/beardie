@@ -395,7 +395,7 @@ BOOL accessibilityApiEnabled = NO;
     [self switchPlayerWithDirection:SwitchPlayerPrevious];
 }
 
-- (void)volumeUp{
+- (void)volumeUp:(BS_XPCEvent *)event{
     
     __weak typeof(self) wself = self;
     
@@ -406,12 +406,13 @@ BOOL accessibilityApiEnabled = NO;
             __strong typeof(wself) sself = self;
             [sself autoSelectTabForVolumeButtons];
             BSVolumeControlResult result = BSVolumeControlNotSupported;
-            if ((result = [sself.activeApp volumeUp]) == BSVolumeControlNotSupported
+            if ( (event && event.keyPressed == NO) ||
+                (result = [sself.activeApp volumeUp]) == BSVolumeControlNotSupported
                 ) {
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     __strong typeof(wself) sself = self;
-                    [sself pressKey:NX_KEYTYPE_SOUND_UP];
+                    [sself sendEvent:event orPressKey:NX_KEYTYPE_SOUND_UP];
                 });
             }
             else {
@@ -424,11 +425,11 @@ BOOL accessibilityApiEnabled = NO;
     else
         dispatch_async(dispatch_get_main_queue(), ^{
             __strong typeof(wself) sself = self;
-            [sself pressKey:NX_KEYTYPE_SOUND_UP];
+            [sself sendEvent:event orPressKey:NX_KEYTYPE_SOUND_UP];
         });
 }
 
-- (void)volumeDown{
+- (void)volumeDown:(BS_XPCEvent *)event{
     
     __weak typeof(self) wself = self;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:BeardedSpiceCustomVolumeControl]) {
@@ -438,13 +439,13 @@ BOOL accessibilityApiEnabled = NO;
             __strong typeof(wself) sself = self;
             [sself autoSelectTabForVolumeButtons];
             BSVolumeControlResult result = BSVolumeControlNotSupported;
-            if (
+            if ( (event && event.keyPressed == NO) ||
                 (result = [sself.activeApp volumeDown]) == BSVolumeControlNotSupported
                 ) {
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     __strong typeof(wself) sself = self;
-                    [sself pressKey:NX_KEYTYPE_SOUND_DOWN];
+                    [sself sendEvent:event orPressKey:NX_KEYTYPE_SOUND_DOWN];
                 });
             }
             else {
@@ -457,11 +458,11 @@ BOOL accessibilityApiEnabled = NO;
     else
         dispatch_async(dispatch_get_main_queue(), ^{
             __strong typeof(wself) sself = self;
-            [sself pressKey:NX_KEYTYPE_SOUND_DOWN];
+            [sself sendEvent:event orPressKey:NX_KEYTYPE_SOUND_DOWN];
         });
 }
 
-- (void)volumeMute{
+- (void)volumeMute:(BS_XPCEvent *)event{
     
     __weak typeof(self) wself = self;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:BeardedSpiceCustomVolumeControl]) {
@@ -471,13 +472,13 @@ BOOL accessibilityApiEnabled = NO;
             __strong typeof(wself) sself = self;
             [sself autoSelectTabForVolumeButtons];
             BSVolumeControlResult result = BSVolumeControlNotSupported;
-            if (
+            if ( (event && event.keyPressed == NO) ||
                 (result = [sself.activeApp volumeMute]) == BSVolumeControlNotSupported
                 ) {
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     __strong typeof(wself) sself = self;
-                    [sself pressKey:NX_KEYTYPE_MUTE];
+                    [sself sendEvent:event orPressKey:NX_KEYTYPE_MUTE];
                 });
             }
             else {
@@ -490,7 +491,7 @@ BOOL accessibilityApiEnabled = NO;
     else
         dispatch_async(dispatch_get_main_queue(), ^{
             __strong typeof(wself) sself = self;
-            [sself pressKey:NX_KEYTYPE_MUTE];
+            [sself sendEvent:event orPressKey:NX_KEYTYPE_MUTE];
         });
 }
 
@@ -583,13 +584,17 @@ BOOL accessibilityApiEnabled = NO;
 #pragma mark System Key Press Methods
 /////////////////////////////////////////////////////////////////////////
 
-- (void)pressKey:(NSUInteger)keytype {
-    [self keyEvent:keytype state:0xA];  // key down
-    [self keyEvent:keytype state:0xB];  // key up
+- (void)sendEvent:(BS_XPCEvent *)event orPressKey:(NSUInteger)keytype {
+    if (event) {
+        CGEventPost(0, [[event NSEvent] CGEvent]);
+        return;
+    }
+    CGEventPost(0, [[self keyEvent:keytype state:0xA] CGEvent]);  // key down
+    CGEventPost(0, [[self keyEvent:keytype state:0xB] CGEvent]);  // key up
 }
 
-- (void)keyEvent:(NSUInteger)keytype state:(NSUInteger)state {
-    NSEvent *event = [NSEvent otherEventWithType:NSEventTypeSystemDefined
+- (NSEvent *)keyEvent:(NSUInteger)keytype state:(NSUInteger)state {
+    return [NSEvent otherEventWithType:NSEventTypeSystemDefined
                                         location:NSZeroPoint
                                    modifierFlags:(state << 2)
                                        timestamp:0
@@ -599,7 +604,6 @@ BOOL accessibilityApiEnabled = NO;
                                            data1:(keytype << 16) | (state << 8)
                                            data2:SPPassthroughEventData2Value];
 
-    CGEventPost(0, [event CGEvent]);
 }
 
 /////////////////////////////////////////////////////////////////////////
