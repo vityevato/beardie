@@ -192,7 +192,7 @@ static BSCService *bscSingleton;
 // Performs Pause method
 - (void)headphoneUnplugAction{
     DDLogDebug(@"headphoneUnplugAction");
-    [self sendMessagesToConnections:@selector(headphoneUnplug)];
+    [self sendMessagesToConnections:@selector(headphoneUnplug) object:nil];
 }
 
 - (void)headphonePlugAction
@@ -212,44 +212,69 @@ static BSCService *bscSingleton;
     BOOL keyIsPressed = (((keyFlags & 0xFF00) >> 8)) == 0xA;
     int keyRepeat = (keyFlags & 0x1);
 
+    BS_XPCEvent *xpcEvent = [[BS_XPCEvent alloc] initWithModifierFlags:event.modifierFlags
+                                                                 data1:event.data1
+                                                                 data2:event.data2
+                                                            keyPressed:keyIsPressed];
+    NSString *debugString = @"";
     if (keyIsPressed) {
-
-        NSString *debugString = [NSString stringWithFormat:@"%@", keyRepeat?@", repeated.":@"."];
+        
+        debugString = [NSString stringWithFormat:@"%@", keyRepeat?@", repeated.":@"."];
         switch (keyCode) {
             case NX_KEYTYPE_PLAY:
                 debugString = [@"Play/pause pressed" stringByAppendingString:debugString];
-                [self sendMessagesToConnections:@selector(playPauseToggle)];
+                [self sendMessagesToConnections:@selector(playPauseToggle) object:nil];
                 break;
             case NX_KEYTYPE_FAST:
             case NX_KEYTYPE_NEXT:
                 debugString = [@"Ffwd pressed" stringByAppendingString:debugString];
-                [self sendMessagesToConnections:@selector(nextTrack)];
+                [self sendMessagesToConnections:@selector(nextTrack) object:nil];
                 break;
             case NX_KEYTYPE_REWIND:
             case NX_KEYTYPE_PREVIOUS:
                 debugString = [@"Rewind pressed" stringByAppendingString:debugString];
-                [self sendMessagesToConnections:@selector(previousTrack)];
+                [self sendMessagesToConnections:@selector(previousTrack) object:nil];
                 break;
             case NX_KEYTYPE_SOUND_UP:
                 debugString = [@"Sound Up pressed" stringByAppendingString:debugString];
-                [self sendMessagesToConnections:@selector(volumeUp)];
+                [self sendMessagesToConnections:@selector(volumeUp:) object:xpcEvent];
                 break;
             case NX_KEYTYPE_SOUND_DOWN:
                 debugString = [@"Sound Down pressed" stringByAppendingString:debugString];
-                [self sendMessagesToConnections:@selector(volumeDown)];
+                [self sendMessagesToConnections:@selector(volumeDown:) object:xpcEvent];
                 break;
             case NX_KEYTYPE_MUTE:
                 debugString = [@"Sound Mute pressed" stringByAppendingString:debugString];
-                [self sendMessagesToConnections:@selector(volumeMute)];
+                [self sendMessagesToConnections:@selector(volumeMute:) object:xpcEvent];
                 break;
             default:
                 debugString = [NSString stringWithFormat:@"Key %d pressed%@", keyCode, debugString];
                 break;
                 // More cases defined in hidsystem/ev_keymap.h
         }
-
-        DDLogDebug(@"%@", debugString);
     }
+    else {
+        switch (keyCode) {
+            case NX_KEYTYPE_SOUND_UP:
+                debugString = @"Sound Up unpressed";
+                [self sendMessagesToConnections:@selector(volumeUp:) object:xpcEvent];
+                break;
+            case NX_KEYTYPE_SOUND_DOWN:
+                debugString = @"Sound Down unpressed";
+                [self sendMessagesToConnections:@selector(volumeDown:) object:xpcEvent];
+                break;
+            case NX_KEYTYPE_MUTE:
+                debugString = @"Sound Mute unpressed";
+                [self sendMessagesToConnections:@selector(volumeMute:) object:xpcEvent];
+                break;
+            default:
+                debugString = [NSString stringWithFormat:@"Key %d unpressed", keyCode];
+                break;
+                // More cases defined in hidsystem/ev_keymap.h
+        }
+        
+    }
+    DDLogDebug(@"%@", debugString);
 }
 
 - (void) ddhidAppleMikey:(DDHidAppleMikey *)mikey press:(unsigned)usageId upOrDown:(BOOL)upOrDown
@@ -260,21 +285,21 @@ static BSCService *bscSingleton;
     if (upOrDown == TRUE) {
         switch (usageId) {
             case kHIDUsage_GD_SystemMenu:
-                [self sendMessagesToConnections:@selector(playPauseToggle)];
+                [self sendMessagesToConnections:@selector(playPauseToggle) object:nil];
                 break;
             case kHIDUsage_GD_SystemMenuRight:
-                [self sendMessagesToConnections:@selector(nextTrack)];
+                [self sendMessagesToConnections:@selector(nextTrack) object:nil];
                 break;
             case kHIDUsage_GD_SystemMenuLeft:
-                [self sendMessagesToConnections:@selector(previousTrack)];
+                [self sendMessagesToConnections:@selector(previousTrack) object:nil];
                 break;
             case kHIDUsage_GD_SystemMenuUp:
             case kHIDUsage_Csmr_VolumeIncrement:
-                [self sendMessagesToConnections:@selector(volumeUp)];
+                [self sendMessagesToConnections:@selector(volumeUp:) object:nil];
                 break;
             case kHIDUsage_GD_SystemMenuDown:
             case kHIDUsage_Csmr_VolumeDecrement:
-                [self sendMessagesToConnections:@selector(volumeDown)];
+                [self sendMessagesToConnections:@selector(volumeDown:) object:nil];
                 break;
             case kHIDUsage_Csmr_PlayOrPause:
                 [self catchCommandFromMiKeys];
@@ -312,15 +337,15 @@ static BSCService *bscSingleton;
                                block:^{
                                    switch (counter) {
                                        case 1:
-                                           [self sendMessagesToConnections:@selector(playPauseToggle)];
+                                           [self sendMessagesToConnections:@selector(playPauseToggle) object:nil];
                                            break;
                                            
                                        case 2:
-                                           [self sendMessagesToConnections:@selector(nextTrack)];
+                                           [self sendMessagesToConnections:@selector(nextTrack) object:nil];
                                            break;
                                            
                                        case 3:
-                                           [self sendMessagesToConnections:@selector(previousTrack)];
+                                           [self sendMessagesToConnections:@selector(previousTrack) object:nil];
                                            break;
 
                                        default:
@@ -395,7 +420,7 @@ static BSCService *bscSingleton;
                 if (shortcut){
                     [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
 
-                        [self sendMessagesToConnections:@selector(playPauseToggle)];
+                        [self sendMessagesToConnections:@selector(playPauseToggle) object:nil];
                     }];
                 }
 
@@ -403,7 +428,7 @@ static BSCService *bscSingleton;
                 if (shortcut){
                     [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
 
-                        [self sendMessagesToConnections:@selector(nextTrack)];
+                        [self sendMessagesToConnections:@selector(nextTrack) object:nil];
                     }];
                 }
 
@@ -411,7 +436,7 @@ static BSCService *bscSingleton;
                 if (shortcut){
                     [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
 
-                        [self sendMessagesToConnections:@selector(previousTrack)];
+                        [self sendMessagesToConnections:@selector(previousTrack) object:nil];
                     }];
                 }
 
@@ -421,7 +446,7 @@ static BSCService *bscSingleton;
 
                         [self refreshMediaKeys];
                         
-                        [self sendMessagesToConnections:@selector(activeTab)];
+                        [self sendMessagesToConnections:@selector(activeTab) object:nil];
                     }];
                 }
 
@@ -429,7 +454,7 @@ static BSCService *bscSingleton;
                 if (shortcut){
                     [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
 
-                        [self sendMessagesToConnections:@selector(favorite)];
+                        [self sendMessagesToConnections:@selector(favorite) object:nil];
                     }];
                 }
 
@@ -439,7 +464,7 @@ static BSCService *bscSingleton;
 
                         [self refreshMediaKeys];
                         
-                        [self sendMessagesToConnections:@selector(notification)];
+                        [self sendMessagesToConnections:@selector(notification) object:nil];
                     }];
                 }
 
@@ -449,7 +474,7 @@ static BSCService *bscSingleton;
                         
                         [self refreshMediaKeys];
 
-                        [self sendMessagesToConnections:@selector(activatePlayingTab)];
+                        [self sendMessagesToConnections:@selector(activatePlayingTab) object:nil];
                     }];
                 }
 
@@ -459,7 +484,7 @@ static BSCService *bscSingleton;
 
                         [self refreshMediaKeys];
 
-                        [self sendMessagesToConnections:@selector(playerNext)];
+                        [self sendMessagesToConnections:@selector(playerNext) object:nil];
                     }];
                 }
 
@@ -469,7 +494,7 @@ static BSCService *bscSingleton;
 
                         [self refreshMediaKeys];
                         
-                        [self sendMessagesToConnections:@selector(playerPrevious)];
+                        [self sendMessagesToConnections:@selector(playerPrevious) object:nil];
                     }];
                 }
 
@@ -478,7 +503,7 @@ static BSCService *bscSingleton;
     });
 }
 
-- (void)sendMessagesToConnections:(SEL)selector{
+- (void)sendMessagesToConnections:(SEL)selector object:(id)object{
 
     dispatch_async(workingQueue, ^{
         @autoreleasepool {
@@ -489,7 +514,12 @@ static BSCService *bscSingleton;
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                [obj performSelector:selector];
+                if (object) {
+                    [obj performSelector:selector withObject:object];
+                }
+                else {
+                    [obj performSelector:selector];
+                }
 #pragma clang diagnostic pop
             }
         }

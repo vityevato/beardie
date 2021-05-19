@@ -8,6 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
+@interface BS_XPCEvent: NSObject <NSCoding, NSSecureCoding>
+@property (readonly) NSEventModifierFlags modifierFlags;
+@property (readonly) NSInteger data1;
+@property (readonly) NSInteger data2;
+@property (readonly) BOOL keyPressed;
+
+- (instancetype)initWithModifierFlags:(NSEventModifierFlags)modifierFlags
+                                data1:(NSInteger)data1
+                                data2:(NSInteger)data2
+                           keyPressed:(BOOL)keyPressed;
+
+- (NSEvent *)NSEvent;
+@end
+
 @protocol BeardedSpiceHostAppProtocol
 
 - (void)playPauseToggle;
@@ -22,9 +36,9 @@
 - (void)playerNext;
 - (void)playerPrevious;
 
-- (void)volumeUp;
-- (void)volumeDown;
-- (void)volumeMute;
+- (void)volumeUp:(BS_XPCEvent *)event;
+- (void)volumeDown:(BS_XPCEvent *)event;
+- (void)volumeMute:(BS_XPCEvent *)event;
 
 - (void)headphoneUnplug;
 
