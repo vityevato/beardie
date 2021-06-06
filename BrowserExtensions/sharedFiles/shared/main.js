@@ -73,7 +73,12 @@ function respondToNativeMessage(msg){
                     BSUtils.sendMessageToTab(target, "bundleId", { 'result': msg["body"]});
                     break;
             
-                case "accepters":
+                case "logLevel":
+                    let body =  msg["body"];
+                    BSUtils.setLogLevel(body.debug);
+                    BSUtils.sendMessageToTab(target, "logLevel", { 'result': body});
+                    break;
+                    case "accepters":
                     BSUtils.sendMessageToTab(target, "accepters", msg["body"]);
                     break;
                 case "port":
@@ -100,14 +105,18 @@ function respondToMessage(theMessageEvent) {
         BSLog('(Beardie Control) respondToMessage event: ' + theMessageEvent.name + ' target: ' + theMessageEvent.target.title);
         try {
 
-            //request accepters
             switch (theMessageEvent.name) {
+                // request log level
+                case "logLevel":
+                    nativePort.postMessage({ 'msg': 'logLevel', 'id': idForTarget(theMessageEvent.target) });
+                    break;
+                //request accepters
                 case "accepters":
-                    nativePort.postMessage({'msg':'accepters', 'id': idForTarget(theMessageEvent.target)});
+                    nativePort.postMessage({ 'msg': 'accepters', 'id': idForTarget(theMessageEvent.target) });
                     break;
                 case "port":
                     // request port
-                    nativePort.postMessage({'msg':'port', 'id': idForTarget(theMessageEvent.target)});
+                    nativePort.postMessage({ 'msg': 'port', 'id': idForTarget(theMessageEvent.target) });
                     break;
                 case "frontmost":
                     BSUtils.frontmostTab(theMessageEvent.target, val => {
@@ -120,10 +129,10 @@ function respondToMessage(theMessageEvent) {
                     });
                     break;
                 case "bundleId":
-                    nativePort.postMessage({'msg':'bundleId', 'id': idForTarget(theMessageEvent.target)});
+                    nativePort.postMessage({ 'msg': 'bundleId', 'id': idForTarget(theMessageEvent.target) });
                     break;
                 case "serverIsAlive":
-                    nativePort.postMessage({'msg':'serverIsAlive', 'id': idForTarget(theMessageEvent.target)});
+                    nativePort.postMessage({ 'msg': 'serverIsAlive', 'id': idForTarget(theMessageEvent.target) });
                     break;
                 case "activate":
                     BSUtils.getActiveTab(tab => {

@@ -41,7 +41,8 @@ extension MessageProcessing {
         "bundleId": bundleIdCmd,
         "accepters": acceptersCmd,
         "port": portCmd,
-        "serverIsAlive": serverIsAliveCmd
+        "serverIsAlive": serverIsAliveCmd,
+        "logLevel": logLevelCmd
     ]
 
     private static func responseDictionary(_ message: ExchangeDictionary, response: Any) -> ExchangeDictionary {
@@ -79,5 +80,10 @@ extension MessageProcessing {
         let running = (NSRunningApplication.runningApplications(withBundleIdentifier: BS_BUNDLE_ID).count > 0) && BSSharedResources.tabPort > 0;
         DDLogDebug("serverIsAlive requested, value: \(running)")
         response(responseDictionary(message, response: running))
+    }
+    
+    private static let logLevelCmd: RequestFunc = { (message, response) in
+        DDLogDebug("Debug log level: \(BSSharedResources.logLevelDebug)")
+        response(responseDictionary(message, response: ["debug": BSSharedResources.logLevelDebug]))
     }
 }

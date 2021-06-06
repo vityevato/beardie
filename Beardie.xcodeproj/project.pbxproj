@@ -404,6 +404,7 @@
 		651967BF1AB3858800B48D3A /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
 		651967C01AB3A0B200B48D3A /* iTunesTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = iTunesTabAdapter.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		651967C11AB3A0B200B48D3A /* iTunesTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTunesTabAdapter.m; sourceTree = "<group>"; };
+		6519DAC2266D23690045C6B3 /* Components.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Components.entitlements; sourceTree = "<group>"; };
 		651F4E3B1F5365C800D7F94F /* BSPredicateToJSTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSPredicateToJSTests.m; sourceTree = "<group>"; };
 		652AD3361CC04A7C005396CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GeneralPreferencesView.xib; sourceTree = "<group>"; };
 		652AD3371CC04A7C005396CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ShortcutsPreferencesView.xib; sourceTree = "<group>"; };
@@ -514,7 +515,6 @@
 		658D643D1FA69705004D1546 /* PSWebSocketUTF8Decoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PSWebSocketUTF8Decoder.h; sourceTree = "<group>"; };
 		658D643E1FA69705004D1546 /* PSWebSocketUTF8Decoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PSWebSocketUTF8Decoder.m; sourceTree = "<group>"; };
 		6590426423BACC2300890457 /* Processing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Processing.swift; sourceTree = "<group>"; };
-		6590428823BF3BB400890457 /* NM_Connector.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NM_Connector.entitlements; sourceTree = "<group>"; };
 		6590428923BF853300890457 /* Icon-48.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-48.png"; sourceTree = "<group>"; };
 		659643CD25DEE3E900A5D582 /* QuodLibetTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuodLibetTabAdapter.h; sourceTree = "<group>"; };
 		659643CE25DEE3E900A5D582 /* QuodLibetTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuodLibetTabAdapter.m; sourceTree = "<group>"; };
@@ -1089,7 +1089,6 @@
 		65E6E0532370AC7A009C9448 /* beardie-nm-connector */ = {
 			isa = PBXGroup;
 			children = (
-				6590428823BF3BB400890457 /* NM_Connector.entitlements */,
 				65E6E0542370AC7A009C9448 /* main.swift */,
 				6583E9ED23A6DF2400A9C91A /* Bridging-Header.h */,
 				6590426423BACC2300890457 /* Processing.swift */,
@@ -1189,6 +1188,7 @@
 			children = (
 				6506A715237607F300DAC132 /* Beardie-Bridging-Header.h */,
 				65384DB8218760980029D9E9 /* BeardedSpice.entitlements */,
+				6519DAC2266D23690045C6B3 /* Components.entitlements */,
 				967933411855173100A49AC7 /* AppDelegate.h */,
 				967933421855173100A49AC7 /* AppDelegate.m */,
 				65D57FCA1D02CBFE0016F270 /* MediaStrategies */,
@@ -2437,6 +2437,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BeardedSpice/Components.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2457,6 +2458,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BeardedSpice/Components.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2701,6 +2703,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BeardedSpice/Components.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2825,7 +2828,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/beardie-nm-connector/NM_Connector.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BeardedSpice/Components.entitlements";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -2934,7 +2937,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/beardie-nm-connector/NM_Connector.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BeardedSpice/Components.entitlements";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2965,7 +2968,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/beardie-nm-connector/NM_Connector.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/BeardedSpice/Components.entitlements";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;

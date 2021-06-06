@@ -8,12 +8,6 @@
 
 #define LOG_LEVEL_DEF ddLogLevel
 
-#ifdef DEBUG
-#define DD_LOG_LEVEL DDLogLevelDebug
-#else
-#define DD_LOG_LEVEL DDLogLevelInfo
-#endif
-
 #import <Foundation/Foundation.h>
 @import CocoaLumberjack;
 
@@ -23,6 +17,8 @@ typedef void (^BSSListenerBlock)(void);
 #pragma mark - BSSharedResources Constants
 
 extern DDLogLevel ddLogLevel;
+extern DDLogLevel defLogLevel;
+extern DDLogLevel verboseLogLevel;
 
 extern NSString *const BeardedSpicePlayPauseShortcut;
 extern NSString *const BeardedSpiceNextTrackShortcut;
@@ -45,10 +41,17 @@ extern NSString *const BeardieBrowserExtensionsFirstRun;
 /////////////////////////////////////////////////////////////////////
 #pragma mark - BSSharedResources
 
+@protocol BSSharedResourcesSwiftExtension <NSObject>
+
+@optional
++ (void)setSwiftLogLevel:(BOOL)debug;
+
+@end
+
 /**
      Class, which provides exchanging data between app and extension.
  */
-@interface BSSharedResources : NSObject
+@interface BSSharedResources : NSObject <BSSharedResourcesSwiftExtension>
 
 /////////////////////////////////////////////////////////////////////
 #pragma mark Properties and public methods
@@ -62,9 +65,14 @@ extern NSString *const BeardieBrowserExtensionsFirstRun;
  */
 @property (class, readonly) NSUserDefaults *sharedDefaults;
 
-/// Init logger for process.
+/// Init logger for main app.
 /// @param name Name of the folder where will be log files (use bundleId, product name and so on)
-+ (void)initLoggerFor:(NSString *)name;
++ (void)initLoggerForAppWithName:(NSString *)name;
+
+/// Init logger for process, which is component.
+/// @param name Name of the folder where will be log files (use bundleId, product name and so on)
+/// @param changedBlock performed when new log level obtained
++ (void)initLoggerForComponentWithName:(NSString *)name changed:(dispatch_block_t)changedBlock;
 
 /**
  Performs flush of the shared user defaults.
@@ -79,6 +87,12 @@ extern NSString *const BeardieBrowserExtensionsFirstRun;
 + (void)setListenerOnTabPortChanged:(BSSListenerBlock)block;
 
 @property (class) NSUInteger tabPort;
+
+/// Register listener for changing the log level.
+/// @param block Performed on internal thread when catched notification.
++ (void)setListenerOnLogLevelChanged:(BSSListenerBlock)block;
+
+@property (class, readonly) BOOL logLevelDebug;
 
 /**
  Register listener for changing the accepters.

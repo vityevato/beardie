@@ -70,7 +70,7 @@ struct Main {
     
 }
 
-BSSharedResources.initLogger(for: BS_B_NATIVE_MESSAGING_CONNECTOR_BUNDLE_ID)
+BSSharedResources.initLoggerForComponent(withName: BS_B_NATIVE_MESSAGING_CONNECTOR_BUNDLE_ID, changed: nil)
 
 // MARK: MAIN
 Main.listen()

@@ -12,12 +12,13 @@
 #import "EHFileLocker.h"
 
 #define DEFAULTS_KEY_TABPORT                    @"TabPort"
+#define DEFAULTS_KEY_LOGLEVEL                   @"DebugLogLevel"
 
 #define DATA_KEY_ACCEPTERS                      @"accepters.data"
 
 #define NOTIFICATION_TABPORT                    BS_BUNDLE_ID @".notify.tabport"
 #define NOTIFICATION_ACCEPTERS                  BS_BUNDLE_ID @".notify.accepters"
-
+#define NOTIFICATION_LOGLEVEL                   BS_BUNDLE_ID @".notify.loglevel"
 
 /////////////////////////////////////////////////////////////////////
 #pragma mark - BSSharedResources Constants
@@ -51,9 +52,18 @@ static NSUserDefaults *_sharedUserDefaults;
 
 static BSSListenerBlock _onAcceptersChangedBlock;
 static BSSListenerBlock _onTabPortChangedBlock;
+static BSSListenerBlock _onLogLevelChangedBlock;
 static NSURL *_logsDirectory;
 
-DDLogLevel ddLogLevel = DD_LOG_LEVEL;
+#ifdef DEBUG
+DDLogLevel defLogLevel = DDLogLevelDebug;
+DDLogLevel verboseLogLevel = DDLogLevelVerbose;
+#else
+DDLogLevel defLogLevel = DDLogLevelInfo;
+DDLogLevel verboseLogLevel = DDLogLevelDebug;
+#endif
+
+DDLogLevel ddLogLevel = DDLogLevelAll;
 
 + (void)initialize{
     
@@ -79,7 +89,7 @@ DDLogLevel ddLogLevel = DD_LOG_LEVEL;
 }
 
 /////////////////////////////////////////////////////////////////////
-#pragma mark   Events (public methods)
+#pragma mark  Public
 
 + (NSURL *)sharedResuorcesURL{
     
@@ -91,25 +101,41 @@ DDLogLevel ddLogLevel = DD_LOG_LEVEL;
     return _sharedUserDefaults;
 }
 
-+ (void)initLoggerFor:(NSString *)name {
++ (void)initLoggerForAppWithName:(NSString *)name {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSString *path = [@"Library/Logs/" stringByAppendingPathComponent:name];
-        NSURL *logsDirectory = [self directoryWithUrl:[[self sharedResuorcesURL] URLByAppendingPathComponent:path isDirectory:YES]
-                                          title:@"Logs"];
-        if (logsDirectory == nil) {
-                    [[NSException exceptionWithName:NSGenericException reason:@"Can't create logs directiory, find error in Console.app" userInfo:nil] raise];
-        }
-        DDLogFileManagerDefault *defaultLogFileManager = [[DDLogFileManagerDefault alloc] initWithLogsDirectory:[logsDirectory path]];
+        
+        [self initLoggerFor:name];
+        
+        [self bind:@"logLevelDebugBinding"
+          toObject:[NSUserDefaultsController sharedUserDefaultsController]
+       withKeyPath:[@"values." stringByAppendingString:DEFAULTS_KEY_LOGLEVEL]
+           options:@{}];
 
-       DDFileLogger *fileLogger = [[DDFileLogger alloc] initWithLogFileManager:defaultLogFileManager];
-        fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-        fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-        fileLogger.maximumFileSize = 1024*1024;
+        self.logLevelDebug = [NSUserDefaults.standardUserDefaults boolForKey:DEFAULTS_KEY_LOGLEVEL];
+    });
 
-        [DDLog addLogger:fileLogger];
-        [DDLog addLogger:[DDOSLogger sharedInstance]];
-        _logsDirectory = logsDirectory;
+}
++ (void)initLoggerForComponentWithName:(NSString *)name changed:(dispatch_block_t)changedBlock {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+
+        [self initLoggerFor:name];
+        
+        ASSIGN_WEAK(self);
+        BSSListenerBlock block = ^{
+            ASSIGN_STRONG(self);
+            ddLogLevel = USE_STRONG(self).logLevelDebug ? verboseLogLevel: defLogLevel;
+            if ([USE_STRONG(self) respondsToSelector:@selector(setSwiftLogLevel:)]) {
+                [USE_STRONG(self) setSwiftLogLevel:USE_STRONG(self).logLevelDebug];
+            }
+            if (changedBlock) {
+                changedBlock();
+            }
+            DDLogInfo(@"Log level changed to debug: %@", USE_STRONG(self).logLevelDebug ? @"YES" : @"NO");
+        };
+        [self setListenerOnLogLevelChanged:block];
+        block();
     });
 
 }
@@ -118,6 +144,10 @@ DDLogLevel ddLogLevel = DD_LOG_LEVEL;
 
     [_sharedUserDefaults synchronize];
 }
+
+/////////////////////////////////////////////////////////////////////
+#pragma mark   Events (public methods)
+
 
 + (void)setListenerOnTabPortChanged:(BSSListenerBlock)block {
     [self setListenerForNotification:NOTIFICATION_TABPORT
@@ -159,8 +189,66 @@ DDLogLevel ddLogLevel = DD_LOG_LEVEL;
     [self loadObjectWithKey:DATA_KEY_ACCEPTERS class:[NSDictionary class] completion:completion];
 }
 
++ (void)setListenerOnLogLevelChanged:(BSSListenerBlock)block {
+    [self setListenerForNotification:NOTIFICATION_LOGLEVEL
+                            blockPtr:&_onLogLevelChangedBlock
+                               block:block];
+}
+
++ (void)setLogLevelDebug:(BOOL)logLevelDebug {
+    [self willChangeValueForKey:@"logLevelDebug"];
+    
+    ddLogLevel = logLevelDebug ? verboseLogLevel: defLogLevel;
+    
+    if ([self respondsToSelector:@selector(setSwiftLogLevel:)]) {
+        [self setSwiftLogLevel:logLevelDebug];
+    }
+    
+    [[self sharedDefaults] setBool:logLevelDebug forKey:DEFAULTS_KEY_LOGLEVEL];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)NOTIFICATION_LOGLEVEL, NULL, NULL, YES);
+    });
+    [self didChangeValueForKey:@"logLevelDebug"];
+}
+
++ (BOOL)logLevelDebug {
+    return [[self sharedDefaults] boolForKey:DEFAULTS_KEY_LOGLEVEL];
+}
+
+/////////////////////////////////////////////////////////////////////
+#pragma mark   Binding
+
++ (id)valueForUndefinedKey:(NSString *)key{
+
+    return nil;
+}
+
++ (void)setLogLevelDebugBinding:(id)logLevelDebugBinding {
+    DDLogError(@"Trace");
+    [self setLogLevelDebug:[NSUserDefaults.standardUserDefaults boolForKey:DEFAULTS_KEY_LOGLEVEL]];
+}
+
 /////////////////////////////////////////////////////////////////////
 #pragma mark Helper methods (private)
+
++ (void)initLoggerFor:(NSString *)name {
+        NSString *path = [@"Library/Logs/" stringByAppendingPathComponent:name];
+        NSURL *logsDirectory = [self directoryWithUrl:[[self sharedResuorcesURL] URLByAppendingPathComponent:path isDirectory:YES]
+                                          title:@"Logs"];
+        if (logsDirectory == nil) {
+                    [[NSException exceptionWithName:NSGenericException reason:@"Can't create logs directiory, find error in Console.app" userInfo:nil] raise];
+        }
+        DDLogFileManagerDefault *defaultLogFileManager = [[DDLogFileManagerDefault alloc] initWithLogsDirectory:[logsDirectory path]];
+
+       DDFileLogger *fileLogger = [[DDFileLogger alloc] initWithLogFileManager:defaultLogFileManager];
+        fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+        fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
+        fileLogger.maximumFileSize = 1024*1024;
+
+        [DDLog addLogger:fileLogger];
+        [DDLog addLogger:[DDOSLogger sharedInstance]];
+        _logsDirectory = logsDirectory;
+}
 
 + (void)setListenerForNotification:(NSString *)notificationName
                           blockPtr:(__strong BSSListenerBlock *)blockPtr
@@ -332,6 +420,9 @@ static void onChangedNotify(CFNotificationCenterRef center, void *observer, CFSt
     }
     else if ([nName isEqualToString:NOTIFICATION_ACCEPTERS]) {
         block = _onAcceptersChangedBlock;
+    }
+    else if ([nName isEqualToString:NOTIFICATION_LOGLEVEL]) {
+        block = _onLogLevelChangedBlock;
     }
 
     if (block) {

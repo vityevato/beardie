@@ -38,7 +38,7 @@ var mainScript = function() {
 
         // START
         BSInfo("Beardie Script Start.");
-        BSUtils.sendMessageToGlobal("accepters");
+        BSUtils.sendMessageToGlobal("logLevel");
 
     });
 
@@ -86,12 +86,12 @@ var mainScript = function() {
     var handleMessage = function(event) {
         BSLog(event.name);
         BSLog(event.message);
-        if (event.name === 'serverIsAlive' 
+        if (event.name === 'serverIsAlive'
             || event.name === 'reconnect') {
-            
+
             if (handleMessage.intervalId) {
                 clearInterval(handleMessage.intervalId);
-                BSLog("Cleared interval: " +handleMessage.intervalId);
+                BSLog("Cleared interval: " + handleMessage.intervalId);
                 handleMessage.intervalId = null
             }
             if (event.message["result"]) {
@@ -104,13 +104,22 @@ var mainScript = function() {
                 return;
             }
             else {
-               handleMessage.intervalId = setInterval(function() {
-                   BSUtils.sendMessageToGlobal(event.name);
-               },
-               10000);
-           }
-       }
-       switch (state.current.val) {
+                handleMessage.intervalId = setInterval(function () {
+                    BSUtils.sendMessageToGlobal(event.name);
+                },
+                    10000);
+            }
+        }
+        if (event.name === 'logLevel') {
+            BSUtils.setLogLevel(event.message.result.debug);
+            BSEventClient.sendRequest({ "name": "logLevel", "debug": event.message.result.debug });
+            if (state.current.val == state.init.val) {
+
+                //GET ACCEPTERS AFTER GETTING LOGLEVEL
+                BSUtils.sendMessageToGlobal("accepters");
+            }
+        }
+        switch (state.current.val) {
             case state.init.val:
             case state.reconnecting.val:
                 if (event.name === 'accepters') {

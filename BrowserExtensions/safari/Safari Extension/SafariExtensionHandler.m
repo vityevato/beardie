@@ -71,7 +71,12 @@ static SFSafariTab *_previousTabOnNewWindow;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [BSSharedResources initLoggerFor:BS_SAFARI_EXTENSION_BUNDLE_ID];
+        [BSSharedResources initLoggerForComponentWithName:BS_SAFARI_EXTENSION_BUNDLE_ID changed:nil];
+
+        [BSSharedResources setListenerOnLogLevelChanged:^{
+            ddLogLevel = BSSharedResources.logLevelDebug ? verboseLogLevel : defLogLevel;
+            DDLogInfo(@"(Beardie Control) Changed log level. Debug: %@", BSSharedResources.logLevelDebug ? @"YES" : @"NO");
+        }];
     }
     return self;
 }
@@ -125,7 +130,12 @@ static SFSafariTab *_previousTabOnNewWindow;
         if (properties.url) {
             @autoreleasepool {
                 
-                if ([messageName isEqualToString:@"accepters"]) {
+                if ([messageName isEqualToString:@"logLevel"]) {
+                    NSDictionary *response = @{@"result": @{@"debug": @(BSSharedResources.logLevelDebug)}};
+                    [page dispatchMessageToScriptWithName:@"logLevel" userInfo:response];
+                    DDLogDebug(@"(Beardie Control) response on '%@': %@", messageName, response);
+                }
+                else if ([messageName isEqualToString:@"accepters"]) {
                     //request accepters
                     [BSSharedResources acceptersWithCompletion:^(NSDictionary *accepters) {
                         [page dispatchMessageToScriptWithName:@"accepters" userInfo:accepters ?: @{}];

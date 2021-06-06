@@ -7,7 +7,15 @@
 //
 
 import Foundation
+import CocoaLumberjack
 
 /// Place for collecting userDefaults keys in Swift sources.
 enum UserDefaultsKeys {
+}
+
+extension BSSharedResources {
+    
+    @objc(setSwiftLogLevel:) static func setSwiftLogLevel(debug: Bool) {
+        dynamicLogLevel = debug ? verboseLogLevel : defLogLevel
+    }
 }

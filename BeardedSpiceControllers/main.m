@@ -64,7 +64,7 @@ int main(int argc, const char *argv[])
 {
     @autoreleasepool {
         
-        [BSSharedResources initLoggerFor:BS_CONTROLLER_BUNDLE_ID];
+        [BSSharedResources initLoggerForComponentWithName:BS_CONTROLLER_BUNDLE_ID changed:nil];
         
         // Create the delegate for the service.
         ServiceDelegate *delegate = [ServiceDelegate new];

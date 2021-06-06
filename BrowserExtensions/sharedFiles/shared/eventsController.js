@@ -53,6 +53,9 @@ BSEventResponder.listenRequest(function(request, sender, callback) {
                 return callback({ "result": false });
             }
             break;
+        case "logLevel":
+            BSUtils.setLogLevel(request.debug);
+            break;
         case "accept":
             if (BSAccepters && BSAccepters.evaluate()) {
                 return callback({ "strategyName": BSAccepters.strategyName });

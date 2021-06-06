@@ -127,7 +127,7 @@ BOOL accessibilityApiEnabled = NO;
 
 - (void)awakeFromNib
 {
-    [BSSharedResources initLoggerFor:BS_BUNDLE_ID];
+    [BSSharedResources initLoggerForAppWithName:BS_BUNDLE_ID];
 
     UIController.statusBarMenu = [[StatusBarMenu alloc] init:statusMenu];
 
