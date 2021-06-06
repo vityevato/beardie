@@ -21,6 +21,7 @@
 #import "BSTVTabAdapter.h"
 #import "AmazonMusicTabAdapter.h"
 #import "QuodLibetTabAdapter.h"
+#import "BSSwinsianTabAdapter.h"
 
 NSString *BSNativeAppTabsRegistryChangedNotification = @"BSNativeAppTabsRegistryChangedNotification";
 
@@ -102,7 +103,8 @@ static NativeAppTabsRegistry *singletonNativeAppTabsRegistry;
         [BSTVTabAdapter class],
         [AmazonMusicTabAdapter class],
         [QuodLibetTabAdapter class],
-        [TidalTabAdapter class]
+        [TidalTabAdapter class],
+        [BSSwinsianTabAdapter class]
     ];
 }
 

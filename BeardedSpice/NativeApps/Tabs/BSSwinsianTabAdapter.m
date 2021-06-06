@@ -1,33 +1,21 @@
 //
-//  BSMusicTabAdapter.m
+//  BSSwinsianTabAdapter.m
 //  Beardie
 //
-//  Created by Roman Sokolov on 11.11.2019.
-//  Copyright © 2019 GPL v3 http://www.gnu.org/licenses/gpl.html
+//  Created by Roman Sokolov on 06.06.2021.
+//  Copyright © 2021 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 
-#import "BSMusicTabAdapter.h"
+#import "BSSwinsianTabAdapter.h"
 #import "runningSBApplication.h"
 #import "BSMediaStrategy.h"
 #import "BSTrack.h"
 #import "NSString+Utils.h"
 
-#define APPID                  @"com.apple.Music"
-#define APPNAME                @"Music"
+#define APPID                  @"com.swinsian.Swinsian"
+#define APPNAME                @"Swinsian"
 
-@implementation BSMusicTabAdapter {
-    BOOL _musicNeedDisplayNotification;
-}
-
-+ (id)tabAdapterWithApplication:(runningSBApplication *)application {
-
-    BSMusicTabAdapter *tab = [super tabAdapterWithApplication:application];
-    if (tab) {
-        tab->_musicNeedDisplayNotification = YES;
-    }
-
-    return tab;
-}
+@implementation BSSwinsianTabAdapter
 
 + (NSString *)displayName {
     static NSString *name;
@@ -46,8 +34,8 @@
 
     @autoreleasepool {
 
-        MusicApplication *music = (MusicApplication *)[self.application sbApplication];
-        MusicTrack *currentTrack = [music currentTrack];
+        SwinsianApplication *music = (SwinsianApplication *)[self.application sbApplication];
+        SwinsianTrack *currentTrack = [music currentTrack];
 
         NSString *title;
         if (currentTrack) {
@@ -68,7 +56,7 @@
             title = BSLocalizedString(@"no-track-title", @"No tack title for tabs menu and default notification ");
         }
 
-        return [NSString stringWithFormat:@"%@ (%@)", title, BSMusicTabAdapter.displayName];
+        return [NSString stringWithFormat:@"%@ (%@)", title, BSSwinsianTabAdapter.displayName];
     }
 }
 
@@ -86,7 +74,7 @@
 // We have only one window.
 -(BOOL) isEqual:(__autoreleasing id)otherTab{
 
-    if (otherTab == nil || ![otherTab isKindOfClass:[BSMusicTabAdapter class]]) return NO;
+    if (otherTab == nil || ![otherTab isKindOfClass:[BSSwinsianTabAdapter class]]) return NO;
 
     return YES;
 }
@@ -97,55 +85,55 @@
 
 - (BOOL)toggle{
 
-    MusicApplication *music = (MusicApplication *)[self.application sbApplication];
+    SwinsianApplication *music = (SwinsianApplication *)[self.application sbApplication];
     if (music) {
         [music playpause];
     }
-    _musicNeedDisplayNotification = YES;
+//    _musicNeedDisplayNotification = YES;
     return YES;
 }
 - (BOOL)pause{
 
-    MusicApplication *music = (MusicApplication *)[self.application sbApplication];
+    SwinsianApplication *music = (SwinsianApplication *)[self.application sbApplication];
     if (music) {
         [music pause];
     }
-    _musicNeedDisplayNotification = YES;
+//    _musicNeedDisplayNotification = YES;
     return YES;
 }
 - (BOOL)next{
 
-    MusicApplication *music = (MusicApplication *)[self.application sbApplication];
+    SwinsianApplication *music = (SwinsianApplication *)[self.application sbApplication];
     if (music) {
         [music nextTrack];
     }
-    _musicNeedDisplayNotification = NO;
+//    _musicNeedDisplayNotification = NO;
     return YES;
 }
 - (BOOL)previous{
 
-    MusicApplication *music = (MusicApplication *)[self.application sbApplication];
+    SwinsianApplication *music = (SwinsianApplication *)[self.application sbApplication];
     if (music) {
         [music previousTrack];
     }
-    _musicNeedDisplayNotification = NO;
+//    _musicNeedDisplayNotification = NO;
     return YES;
 }
 
 - (BOOL)favorite{
 
-    MusicApplication *music = (MusicApplication *)[self.application sbApplication];
+    SwinsianApplication *music = (SwinsianApplication *)[self.application sbApplication];
     if (music) {
-        MusicTrack *track = [music currentTrack];
+        SwinsianTrack *track = [music currentTrack];
         @try {
-            if ([track loved])
-                track.loved = NO;
+            if ([[track rating] integerValue])
+                track.rating = @(0);
             else
-                track.loved = YES;
+                track.rating = @(5);
         }
         @catch (NSException *exception) {
 
-            DDLogError(@"Error when calling [Music loved]: %@", exception);
+            DDLogError(@"Error when calling [Swinsian rating]: %@", exception);
             ERROR_TRACE;
         }
     }
@@ -154,34 +142,34 @@
 
 - (BSTrack *)trackInfo{
 
-    MusicApplication *music = (MusicApplication *)[self.application sbApplication];
+    SwinsianApplication *music = (SwinsianApplication *)[self.application sbApplication];
     if (music) {
 
-        MusicTrack *track = [music currentTrack];
+        SwinsianTrack *track = [music currentTrack];
         if (track) {
             BSTrack *trackInfo = [BSTrack new];
 
             trackInfo.track = track.name ?: BSLocalizedString(@"apple-music-track-info-not-supported", @"");
             trackInfo.album = track.album;
             trackInfo.artist = track.artist;
-
-            NSArray *artworks = [[track artworks] get];
-            MusicArtwork *art = [artworks firstObject];
-            id image = art.data;
-            if ([image isKindOfClass:[NSImage class]] == NO) {
+            id image = track.albumArt;
+            if ([image isKindOfClass:[NSImage class]]) {
+                trackInfo.image = image;
+            }
+            else if ([image isKindOfClass:[NSAppleEventDescriptor class]]) {
                 image = nil;
-                NSData *data = [[art.rawData get] data];
+                NSData *data = [(NSAppleEventDescriptor *)track.albumArt data];
                 if (data.length) {
-                    image = [[NSImage alloc] initWithData:data];
+                    trackInfo.image = [[NSImage alloc] initWithData:data];
                 }
             }
-            trackInfo.image = image;
+
 
             @try {
-                trackInfo.favorited = @(track.loved);
+                trackInfo.favorited = @([track.rating boolValue]);
             }
             @catch (NSException *exception) {
-                DDLogError(@"Error when calling [Music loved]: %@", exception);
+                DDLogError(@"Error when calling [Swinsian rating]: %@", exception);
                 ERROR_TRACE;
             }
 
@@ -194,13 +182,13 @@
 
 - (BOOL)isPlaying{
 
-    MusicApplication *music = (MusicApplication *)[self.application sbApplication];
+    SwinsianApplication *music = (SwinsianApplication *)[self.application sbApplication];
     if (music) {
 
         switch (music.playerState) {
 
-            case MusicEPlSPaused:
-            case MusicEPlSStopped:
+            case SwinsianPlayerStateStopped:
+            case SwinsianPlayerStatePaused:
 
                 return NO;
 
@@ -213,8 +201,8 @@
     return NO;
 }
 
-- (BOOL)showNotifications{
-    return _musicNeedDisplayNotification;
-}
+//- (BOOL)showNotifications{
+//    return _musicNeedDisplayNotification;
+//}
 
 @end

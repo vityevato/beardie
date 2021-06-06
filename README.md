@@ -83,6 +83,7 @@ From the `Controllers` preferences tab, uncheck any types of webpages that you d
 - [Airfoil Satellite](https://rogueamoeba.com/airfoil/satellite/)
 - [Amazon Music](https://www.amazon.com/music/)
 - [Quod Libet](https://github.com/quodlibet/quodlibet)
+- [Swinsian](https://swinsian.com)
 
 ### Supported Browsers
 

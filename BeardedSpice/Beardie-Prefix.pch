@@ -23,3 +23,4 @@
 
 #pragma mark - Other
 
+#define ERROR_TRACE                         DDLogError(@"Error trace - %s[%p]: %@", __FILE__, self, NSStringFromSelector(_cmd));

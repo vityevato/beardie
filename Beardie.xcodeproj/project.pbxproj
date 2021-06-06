@@ -124,6 +124,7 @@
 		65B39582265576B300DBD144 /* BeardedSpiceHostAppProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */; };
 		65B39583265576B300DBD144 /* BeardedSpiceHostAppProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */; };
 		65C511721AED802B00EBA6A5 /* BSNativeAppTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C511711AED802B00EBA6A5 /* BSNativeAppTabAdapter.m */; };
+		65D09F0D266D60B400C8B46C /* BSSwinsianTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D09F0C266D60B400C8B46C /* BSSwinsianTabAdapter.m */; };
 		65D57FCB1D02CBFE0016F270 /* MediaStrategies in Resources */ = {isa = PBXBuildFile; fileRef = 65D57FCA1D02CBFE0016F270 /* MediaStrategies */; };
 		65D57FCC1D02CC250016F270 /* MediaStrategies in Resources */ = {isa = PBXBuildFile; fileRef = 65D57FCA1D02CBFE0016F270 /* MediaStrategies */; };
 		65D57FCD1D02CCB00016F270 /* NSURL+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 656A002E1C8AD41A00BD29F5 /* NSURL+Utils.m */; };
@@ -554,6 +555,9 @@
 		65C511711AED802B00EBA6A5 /* BSNativeAppTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSNativeAppTabAdapter.m; sourceTree = "<group>"; };
 		65C8DB9A2619B47D000E19B9 /* Tidal-Pause-Names.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tidal-Pause-Names.h"; sourceTree = "<group>"; };
 		65C8DB9B2619B47D000E19B9 /* extruct-pause-names.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "extruct-pause-names.sh"; sourceTree = "<group>"; };
+		65D09F0A266D601300C8B46C /* Swinsian.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Swinsian.h; sourceTree = "<group>"; };
+		65D09F0B266D60B400C8B46C /* BSSwinsianTabAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BSSwinsianTabAdapter.h; sourceTree = "<group>"; };
+		65D09F0C266D60B400C8B46C /* BSSwinsianTabAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BSSwinsianTabAdapter.m; sourceTree = "<group>"; };
 		65D57FCA1D02CBFE0016F270 /* MediaStrategies */ = {isa = PBXFileReference; lastKnownFileType = folder; path = MediaStrategies; sourceTree = "<group>"; };
 		65D57FCF1D02E64F0016F270 /* Config-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Debug.xcconfig"; sourceTree = "<group>"; };
 		65D795BD2643F87B00F4C713 /* Config-Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Beta.xcconfig"; sourceTree = "<group>"; };
@@ -956,6 +960,9 @@
 			children = (
 				65C8DB992619B081000E19B9 /* Tidal */,
 				65A27DB325FA9AEB007C0CB7 /* Deezer */,
+				65D09F0A266D601300C8B46C /* Swinsian.h */,
+				65D09F0B266D60B400C8B46C /* BSSwinsianTabAdapter.h */,
+				65D09F0C266D60B400C8B46C /* BSSwinsianTabAdapter.m */,
 				5E80769C1D58CE180002855D /* Downcast.h */,
 				5E80769D1D58CE180002855D /* DowncastTabAdapter.h */,
 				5E80769E1D58CE180002855D /* DowncastTabAdapter.m */,
@@ -1977,6 +1984,7 @@
 				657BE28B1F95576C0051EC8E /* MYAnonymousIdentity.m in Sources */,
 				6507A3061F49A4E800775D14 /* BSPredicateToJS.m in Sources */,
 				9679333C1855173100A49AC7 /* main.m in Sources */,
+				65D09F0D266D60B400C8B46C /* BSSwinsianTabAdapter.m in Sources */,
 				65D795C226440F6C00F4C713 /* SharedResources.swift in Sources */,
 				654D044825EBC83200270533 /* UIController.swift in Sources */,
 				656A00351C8AD41A00BD29F5 /* NSString+Utils.m in Sources */,
