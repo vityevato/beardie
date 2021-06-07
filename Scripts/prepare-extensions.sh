@@ -6,9 +6,11 @@
 #  Created by Roman Sokolov on 08.01.2018.
 #  Copyright © 2018 GPL v3 http://www.gnu.org/licenses/gpl.html
 
+if [ ! "$1" == "build" ]; then
 echo "================================================="
 echo "Prepare browser extensions..."
 echo "================================================="
+fi
 
 EXTENSIONS="${SRCROOT}/BrowserExtensions"
 EXTENSION_CHROME="${EXTENSIONS_BUILD}/Beardie.chrome"
