@@ -20,7 +20,7 @@ XC_SPL = /
 BS_NAME = Beardie
 BS_COPYRIGHT = Copyright © 2021 Beardie. All rights reserved.
 BS_VERSION = 3.0.11
-BS_BUILD = 71
+BS_BUILD = 72
 BS_CHANNEL =
 BS_UPDATE_APPCAST = https:$(XC_SPL)/stillness-2.github.io/beardie/distrib-support/appcast.xml
 BS_HOMEPAGE = https:$(XC_SPL)/github.com/Stillness-2/beardie
@@ -66,7 +66,8 @@ BS_DEFAULT_CHROME_BUNDLE_ID                 = com.google.Chrome
 HEADER_SEARCH_PATHS = $(inherited) $(OBJROOT)
 
 BEARDIE_LOCAL_BUILD_DIR = $(SRCROOT)/build/${CONFIGURATION}
-EXTENSIONS_BUILD = $(BEARDIE_LOCAL_BUILD_DIR)/extensions
+EXTENSION_BUILD_NAME = web-extensions
+EXTENSIONS_BUILD_DIR = $(BEARDIE_LOCAL_BUILD_DIR)/$(EXTENSION_BUILD_NAME)
 
 // Macro definition
 PREPROCESSOR_DEFINITIONS = $(inherited) JSC_OBJC_API_ENABLED=1
