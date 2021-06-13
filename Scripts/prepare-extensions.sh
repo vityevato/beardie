@@ -13,10 +13,10 @@ echo "================================================="
 fi
 
 EXTENSIONS="${SRCROOT}/BrowserExtensions"
-EXTENSION_CHROME="${EXTENSIONS_BUILD}/Beardie.chrome"
+EXTENSION_CHROME="${EXTENSIONS_BUILD_DIR}/Beardie.chrome"
 
-rm -Rf "${EXTENSIONS_BUILD}"
-mkdir -pv "${EXTENSIONS_BUILD}"
+rm -Rf "${EXTENSIONS_BUILD_DIR}"
+mkdir -pv "${EXTENSIONS_BUILD_DIR}"
 
 echo " "
 echo "Prepare Google Chrome browser extension..."
@@ -46,7 +46,7 @@ echo "-------------------------------------------------"
 APPLESCRIPTFOROPENFOLDER="
 tell application \"Finder\"
 activate
-reveal (\"${EXTENSIONS_BUILD}/\" as POSIX file)
+reveal (\"${EXTENSIONS_BUILD_DIR}/\" as POSIX file)
 end tell
 "
 
