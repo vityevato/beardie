@@ -53,6 +53,7 @@
 		653B0A3325D9ADBF005C5807 /* beardie_restarter in Copy Restarter */ = {isa = PBXBuildFile; fileRef = 653B09CF25D98146005C5807 /* beardie_restarter */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		653BCAD21AB25DAC0034D27F /* ShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 653BCAD01AB25DAC0034D27F /* ShortcutsPreferencesViewController.m */; };
 		654D044825EBC83200270533 /* UIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D044725EBC83200270533 /* UIController.swift */; };
+		654D71A9268F60D2005774D5 /* SonosTabAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D71A8268F60D2005774D5 /* SonosTabAdapter.swift */; };
 		654EC7DB1ED0F33A006490F2 /* TidalTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 654EC7DA1ED0F33A006490F2 /* TidalTabAdapter.m */; };
 		654EC7DD1ED1909A006490F2 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 654EC7DC1ED1909A006490F2 /* libsqlite3.tbd */; };
 		6557B4901F6ADCA800295997 /* BSBrowserExtensionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6557B48F1F6ADCA800295997 /* BSBrowserExtensionsController.m */; };
@@ -432,6 +433,7 @@
 		653BCAD01AB25DAC0034D27F /* ShortcutsPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShortcutsPreferencesViewController.m; sourceTree = "<group>"; };
 		653F6FB11ECA441E00ACA294 /* BSVolumeControlProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BSVolumeControlProtocol.h; sourceTree = "<group>"; };
 		654D044725EBC83200270533 /* UIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIController.swift; sourceTree = "<group>"; };
+		654D71A8268F60D2005774D5 /* SonosTabAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SonosTabAdapter.swift; sourceTree = "<group>"; };
 		654EC7D91ED0F33A006490F2 /* TidalTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TidalTabAdapter.h; sourceTree = "<group>"; };
 		654EC7DA1ED0F33A006490F2 /* TidalTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TidalTabAdapter.m; sourceTree = "<group>"; };
 		654EC7DC1ED1909A006490F2 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -809,6 +811,14 @@
 				653B09D125D98146005C5807 /* main.swift */,
 			);
 			path = restarter;
+			sourceTree = "<group>";
+		};
+		654D71A7268F60A1005774D5 /* Sonos */ = {
+			isa = PBXGroup;
+			children = (
+				654D71A8268F60D2005774D5 /* SonosTabAdapter.swift */,
+			);
+			path = Sonos;
 			sourceTree = "<group>";
 		};
 		6557B48D1F6ADBC800295997 /* BrowserExtensionsController */ = {
@@ -1216,7 +1226,7 @@
 				65FBCE3B1EC0F8F3004EFFC7 /* UI */,
 				657C77372379D96A00A55EFE /* WebApps */,
 				657C77352379D90800A55EFE /* NativeApps */,
-				658BE121268A788000DF58BA /* Sonos */,
+				654D71A7268F60A1005774D5 /* Sonos */,
 				6557B48D1F6ADBC800295997 /* BrowserExtensionsController */,
 				653F6FB11ECA441E00ACA294 /* BSVolumeControlProtocol.h */,
 				657EAEA71AAAEB9300D00456 /* runningSBApplication.h */,
@@ -2000,6 +2010,7 @@
 				9679333C1855173100A49AC7 /* main.m in Sources */,
 				65D09F0D266D60B400C8B46C /* BSSwinsianTabAdapter.m in Sources */,
 				65D795C226440F6C00F4C713 /* SharedResources.swift in Sources */,
+				654D71A9268F60D2005774D5 /* SonosTabAdapter.swift in Sources */,
 				654D044825EBC83200270533 /* UIController.swift in Sources */,
 				656A00351C8AD41A00BD29F5 /* NSString+Utils.m in Sources */,
 				657C77382379E31D00A55EFE /* BSNativeAppTabsController.m in Sources */,
