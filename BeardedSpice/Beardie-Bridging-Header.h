@@ -5,6 +5,8 @@
 #import "ConfigConstants.h"
 #import "NSString+Utils.h"
 #import "BSNativeAppTabAdapter.h"
+#import "TabAdapter.h"
+#import "BSTrack.h"
 #import "runningSBApplication.h"
 #import "BSSharedResources.h"
 #import <Sparkle/Sparkle.h>
