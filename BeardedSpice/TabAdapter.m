@@ -116,12 +116,6 @@
     return [[self key] hash];
 }
 
-- (BOOL)check{
-
-    NSNumber *result = [self executeJavascript:CHECK_EXEC];
-    return [result boolValue];
-}
-
 /////////////////////////////////////////////////////////////////////////
 #pragma mark Virtual methods
 

@@ -17,7 +17,6 @@
 -(NSString *) title;
 -(NSString *) URL;
 -(NSString *) key;
-- (BOOL)check;
 
 - (BOOL)activateApp;
 - (BOOL)deactivateApp;

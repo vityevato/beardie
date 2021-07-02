@@ -16,7 +16,8 @@ target 'Beardie' do
     pod 'MASShortcut', '~> 2.4.0'
     pod 'FMDB'
     pod 'Sparkle'
-
+    pod 'RxSonosLib', '~> 0.14'
+    
     # all pods for tests should ONLY go here
     target 'BeardieTests' do
         pod 'Kiwi', '~> 3.0.0'
