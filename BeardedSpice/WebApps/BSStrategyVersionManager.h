@@ -31,7 +31,7 @@ extern NSString *const BSVMStrategyErrorDomain;
 @property (class, readonly) BSStrategyVersionManager *singleton;
 
 /**
- Downloads the versions.plist file from the target repository URL and checks if any new strategy template
+ Downloads the manifest.json file from the target repository URL and checks if any new strategy template
  versions are marked as higher version than the currently loaded number.
  */
 - (void)updateStrategiesWithCompletion:(void (^)(NSArray<NSString *> *updatedNames, NSError *error))completion;

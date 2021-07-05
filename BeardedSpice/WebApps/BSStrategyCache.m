@@ -152,7 +152,7 @@ NSString *BSMediaStrategyErrorDomain = @"BSMediaStrategyErrorDomain";
 
     for (NSString *fileName in elements)
     {
-        if ([fileName isEqualToString:@"versions.plist"])
+        if ([fileName isEqualToString:@"manifest.json"])
             continue;
 
         NSURL *filePath = [[NSURL alloc] initWithString:fileName relativeToURL:path];

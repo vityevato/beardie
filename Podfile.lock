@@ -11,7 +11,7 @@ PODS:
   - Kiwi (3.0.0)
   - MASPreferences (1.3)
   - MASShortcut (2.4.0)
-  - RxSonosLib (0.14.0):
+  - RxSonosLib (0.14.1):
     - AEXML (~> 4.4)
     - RxSSDP (~> 5.0)
     - RxSwift (~> 4.5)
@@ -28,7 +28,7 @@ DEPENDENCIES:
   - Kiwi (~> 3.0.0)
   - MASPreferences (~> 1.3)
   - MASShortcut (~> 2.4.0)
-  - RxSonosLib (~> 0.14)
+  - RxSonosLib (from `https://github.com/Stillness-2/RxSonosLib`)
   - Sparkle
   - VCRURLConnection (~> 0.2.5)
 
@@ -40,11 +40,19 @@ SPEC REPOS:
     - Kiwi
     - MASPreferences
     - MASShortcut
-    - RxSonosLib
     - RxSSDP
     - RxSwift
     - Sparkle
     - VCRURLConnection
+
+EXTERNAL SOURCES:
+  RxSonosLib:
+    :git: https://github.com/Stillness-2/RxSonosLib
+
+CHECKOUT OPTIONS:
+  RxSonosLib:
+    :commit: df91e42eb1198a2159cff6d3864d05a868c74fd5
+    :git: https://github.com/Stillness-2/RxSonosLib
 
 SPEC CHECKSUMS:
   AEXML: 2fbb73d8724797ed2cde888731e176fa4d44dd83
@@ -53,12 +61,12 @@ SPEC CHECKSUMS:
   Kiwi: fbeafef0f00e4d8f7dcb3420a4930afe70af77f7
   MASPreferences: c08b8622dd17b47da87669e741efd7c92e970e8c
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
-  RxSonosLib: 673bec656aeea4df6ad5873e4ce1f5b6985fb32f
+  RxSonosLib: 59eb78c831812d1d6833845149ad3661a26f3606
   RxSSDP: 662ce91a7ca8b340faf40f04590d608ac62b40df
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
   Sparkle: d56d028f4b0c123577825f5d1004f6140d77f90e
   VCRURLConnection: 63be6f26a2f8222677294fc43a1d855e817cfd4e
 
-PODFILE CHECKSUM: 2c3d4fe3c959c3fa9d04ba67b72befd3e0a010f0
+PODFILE CHECKSUM: 4030ab5757a3697f6973c60fdd68709f7e554562
 
 COCOAPODS: 1.10.1

@@ -12,19 +12,12 @@
 #import "BSTrack.h"
 #import "runningSBApplication.h"
 #import "EHExecuteBlockDelayed.h"
+#import "Beardie-Swift.h"
 
 // Create serial queue for notification
 // We need queue because track info may contain image,
 // which retrieved from URL, this may cause blocking of the main thread.
-dispatch_queue_t notificationQueue() {
-    static dispatch_queue_t notifQueue;
-    static dispatch_once_t setupQueue;
-    dispatch_once(&setupQueue, ^{
-        notifQueue = dispatch_queue_create("com.beardedspice.notification.serial", DISPATCH_QUEUE_SERIAL);
-    });
-
-    return notifQueue;
-}
+dispatch_queue_t notificationQueue(void);
 
 @implementation BSActiveTab
 
@@ -51,6 +44,8 @@ dispatch_queue_t notificationQueue() {
 - (NSString *)displayName {
     if ([self isNativeAdapter]) {
         return [_activeTab.class displayName];
+    } else if ([self isSonosAdapter]) {
+        return [(SonosTabAdapter *)_activeTab displayName];
     } else if ([self isWebAdapter]) {
         BSMediaStrategy *strategy = [(BSWebTabAdapter *)_activeTab strategy];
         return strategy.displayName;
@@ -60,7 +55,9 @@ dispatch_queue_t notificationQueue() {
 
 - (NSString *)title {
     if ([self isNativeAdapter]) {
-        return [_activeTab.class displayName];
+        return [_activeTab title];
+    } else if ([self isSonosAdapter]) {
+        return [_activeTab title];
     } else if ([self isWebAdapter]){
         NSString *result;
         @try {
@@ -83,6 +80,9 @@ dispatch_queue_t notificationQueue() {
 
 - (BOOL)isWebAdapter {
     return [_activeTab isKindOfClass:BSWebTabAdapter.class];
+}
+- (BOOL)isSonosAdapter {
+    return [_activeTab isKindOfClass:SonosTabAdapter.class];
 }
 
 - (BOOL)isTabAdapter {
@@ -355,3 +355,13 @@ dispatch_queue_t notificationQueue() {
 }
 
 @end
+
+dispatch_queue_t notificationQueue() {
+    static dispatch_queue_t notifQueue;
+    static dispatch_once_t setupQueue;
+    dispatch_once(&setupQueue, ^{
+        notifQueue = dispatch_queue_create("com.beardedspice.notification.serial", DISPATCH_QUEUE_SERIAL);
+    });
+
+    return notifQueue;
+}

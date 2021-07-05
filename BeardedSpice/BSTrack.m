@@ -131,4 +131,8 @@ static NSImage *_lastImage;
     return _lastImage;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"[BSTrack: %p, title: %@, album: %@, artist: %@, progress: %@, favorited: %@, image: %@]", self, _track, _album, _artist, _progress, (_favorited.boolValue ? @"YES" : @"NO"), (_image == nil ? @"none" : @"exists")];
+}
+
 @end

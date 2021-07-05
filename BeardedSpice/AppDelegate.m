@@ -70,6 +70,7 @@ BOOL accessibilityApiEnabled = NO;
     
     BSBrowserExtensionsController *_browserExtensionsController;
     BSNativeAppTabsController *_nativeAppTabsController;
+    SonosRoomsController *_sonosRoomsController;
     
     BOOL _AXAPIEnabled;
     
@@ -144,8 +145,10 @@ BOOL accessibilityApiEnabled = NO;
     
     DDLogInfo(@"Info: %@", notification.userInfo);
     _nativeAppTabsController = BSNativeAppTabsController.singleton;
+    
     _browserExtensionsController = BSBrowserExtensionsController.singleton;
     [_browserExtensionsController start];
+    _sonosRoomsController = SonosRoomsController.singleton;
 
     _updater = [AppUpdater new];
     
@@ -615,6 +618,7 @@ BOOL accessibilityApiEnabled = NO;
     @try {
         NSArray <TabAdapter *> *tabs = _browserExtensionsController.webSocketServer.tabs;
         tabs = [tabs arrayByAddingObjectsFromArray:_nativeAppTabsController.tabs];
+        tabs = [tabs arrayByAddingObjectsFromArray:_sonosRoomsController.tabs];
 
         for (TabAdapter *tab in tabs) {
             if (tab.frontmost) {
@@ -662,7 +666,8 @@ BOOL accessibilityApiEnabled = NO;
             NSMutableArray <TabAdapter *> *tabs = [NSMutableArray new];
             [tabs addObjectsFromArray:_browserExtensionsController.webSocketServer.tabs];
             [tabs addObjectsFromArray:_nativeAppTabsController.tabs];
-            
+            [tabs addObjectsFromArray:_sonosRoomsController.tabs];
+
             __block BOOL enabled = NO;
             dispatch_sync(dispatch_get_main_queue(), ^{
                 enabled = [self validateMenuItem:self->statusMenu.itemArray.lastObject];

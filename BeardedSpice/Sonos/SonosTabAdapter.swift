@@ -10,7 +10,7 @@ import Cocoa
 import RxSwift
 import RxSonosLib
 
-class SonosTabAdapter: TabAdapter {
+final class SonosTabAdapter: TabAdapter {
 
     // MARK: Init
     
@@ -19,44 +19,232 @@ class SonosTabAdapter: TabAdapter {
         
         super.init()
         
-        SonosInteractor.getTransportState(group).subscribe { [weak self] event in
-            switch event {
-            case .next(let val):
-                self?.playingState = val == .playing
-            default:
-                self?.playingState = false
-            }
-        }
-        .disposed(by: disposeBag)
-        SonosInteractor.getTrack(group).subscribe { [weak self] event in
-            guard let self = self else {return}
-            switch event {
-            case .next(let track):
-                guard let track = track else {
-                    self.track = nil
-                    return
-                }
-                let bsTrack = BSTrack()
-                bsTrack.track = track.title
-                bsTrack.artist = track.artist
-                bsTrack.album = track.album
-                bsTrack.progress = String(track.duration)
-            default:
-                self.track = nil
-            }
-            
-        }
+        
+        DDLogDebug("Init tab for group: \(group.name)")
     }
     
     // MARK: Public
-    override func isPlaying() -> Bool {
-        return playingState
+    @objc var displayName: String {"\(self.group.name) (Sonos)"}
+    
+    // MARK: Overrides
+    
+    override var application: runningSBApplication! {
+        runningSBApplication.sharedApplication(forBundleIdentifier: "com.sonos.macController2")
     }
     
+    override func title() -> String! {
+        let localBag = DisposeBag()
+        let sync = DispatchGroup()
+        var title: String?
+        sync.enter()
+        SonosInteractor.getTrack(self.group)
+            .timeout(SonosRoomsController.timeout, scheduler: ConcurrentDispatchQueueScheduler(qos: .userInteractive))
+            .first()
+            .subscribe { event in
+                if case .success(let track) = event {
+                    title = track??.title
+                }
+                sync.leave()
+            }
+            .disposed(by: localBag)
+        sync.wait()
+        
+        if let title = title {
+            return "\(title) (\(self.group.name) Sonos)"
+        }
+        return self.displayName
+    }
+    
+    override func url() -> String! {
+        return self.group.master.ip.absoluteString
+    }
+    override func key() -> String! {
+        return self.group.master.uuid
+    }
+    override func activateTab() -> Bool {
+        self.wasActivated = super.activateTab()
+        return self.wasActivated
+    }
+    override func deactivateTab() -> Bool {
+        self.wasActivated = super.deactivateTab()
+        return self.wasActivated
+    }
+    override func toggleTab() {
+        
+        let result = self.deactivateTab()
+        if result {
+            self.deactivateApp()
+        }
+        if !result {
+
+            _ = self.activateApp()
+            _ = self.activateTab()
+        }
+
+    }
+    override func frontmost() -> Bool {
+        super.frontmost() && wasActivated
+    }
+    
+    override func toggle() -> Bool {
+        var result = false
+        let sync = DispatchGroup()
+        let bag = DisposeBag()
+        sync.enter()
+        SonosInteractor.getTransportState(self.group)
+            .first()
+            .catchErrorJustReturn(nil)
+            .map { (state) -> TransportState? in
+                return state ?? .stopped == .playing ? .paused : state?.reverseState()
+            }
+            .asObservable()
+            .asSingle()
+            .subscribe { [weak self] event in
+                defer {
+                    sync.leave()
+                }
+                guard let self = self else {return}
+                if case .success(let state) = event {
+                    if let state = state {
+                        sync.enter()
+                        SonosInteractor.setTransport(state: state, for: self.group)
+                            .subscribe { event in
+                                if case .completed = event { result = true }
+                                sync.leave()
+                            }
+                            .disposed(by: bag)
+                    }
+                }
+            }
+            .disposed(by: bag)
+        
+        sync.wait()
+        
+        return result
+    }
+    
+    override func next() -> Bool {
+        var result = false
+        let sync = DispatchGroup()
+        let bag = DisposeBag()
+        sync.enter()
+        SonosInteractor.setNextTrack(self.group)
+            .subscribe { event in
+                if case .completed = event { result = true }
+                sync.leave()
+            }
+            .disposed(by: bag)
+        
+        sync.wait()
+        
+        return result
+    }
+    
+    override func previous() -> Bool {
+        
+        var result = false
+        let sync = DispatchGroup()
+        let bag = DisposeBag()
+        sync.enter()
+        SonosInteractor.setPreviousTrack(self.group)
+            .subscribe { event in
+                if case .completed = event { result = true }
+                sync.leave()
+            }
+            .disposed(by: bag)
+        
+        sync.wait()
+        
+        return result
+    }
+
+    override func isPlaying() -> Bool {
+        var result = false
+        let sync = DispatchGroup()
+        sync.enter()
+        let subscr = SonosInteractor.getTransportState(self.group)
+            .first()
+            .subscribe({  event in
+                switch event {
+                case .success(let val):
+                    result = val == .playing
+                default:
+                    result = false
+                }
+                sync.leave()
+            })
+        sync.wait()
+        subscr.dispose()
+        DDLogDebug("isPlaying result: \(result)")
+        return result
+    }
+    
+    override func trackInfo() -> BSTrack! {
+        var result: BSTrack! = BSTrack()
+        let localBag = DisposeBag()
+        let sync = DispatchGroup()
+        sync.enter()
+        SonosInteractor.getProgress(self.group)
+            .withLatestFrom(SonosInteractor.getTrack(self.group))
+            { (pr: GroupProgress, tr: Track? ) -> (GroupProgress, Track?) in
+                DDLogDebug("Combine - Progress observable: \(pr), Track info: \(String(describing: tr))")
+                return (pr, tr)
+            }
+            .timeout(SonosRoomsController.timeout, scheduler: ConcurrentDispatchQueueScheduler(qos: .userInteractive))
+            .first()
+            .subscribe { [weak self] event in
+                defer {
+                    sync.leave()
+                }
+                guard let self = self else {return}
+                DDLogDebug("Progress Event: \(event)")
+                switch event {
+                case .success(let data):
+                    guard let (progress, track) = data else {
+                        result = nil
+                        return
+                    }
+                    if progress.duration > 0 {
+                        result.progress = "\(progress.timeString) of \(progress.durationString)"
+                    }
+                    guard let track = track else {
+                        return
+                    }
+                    result.track = track.title
+                    result.artist = track.artist
+                    result.album = track.album
+                    sync.enter()
+                    SonosInteractor.getTrackImage(track)
+                        .first()
+                        .subscribe { [weak self] event in
+                            defer {
+                                sync.leave()
+                            }
+                            guard let self = self else { return }
+                            switch event {
+                            case .success(let data):
+                                result?.image = data == nil ? nil : NSImage(data: data!!)
+                            default:
+                                result?.image = nil
+                            }
+                            DDLogDebug("Group (\(self.group.name)) image track: \(String(describing: result))")
+                        }
+                        .disposed(by: localBag)
+                    
+                default:
+                    result = nil
+                }
+                DDLogDebug("Group (\(self.group.name)) track: \(String(describing: result))")
+                
+            }
+            .disposed(by: localBag)
+        
+        sync.wait()
+        
+        return result
+    }
     
     // MARK: Private
     private let group: Group
-    private var playingState = false
-    private let disposeBag = DisposeBag()
-    private var track: BSTrack?
+    private var wasActivated = false
 }

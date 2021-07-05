@@ -87,6 +87,9 @@
 }
 
 - (void)toggleTab{
+    if (! [self deactivateApp]) {
+        [self activateApp];
+    }
 }
 
 - (BOOL)frontmost{
