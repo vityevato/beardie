@@ -38,8 +38,9 @@ final class SonosTabAdapter: TabAdapter {
         var title: String?
         sync.enter()
         SonosInteractor.getTrack(self.group)
-            .timeout(SonosRoomsController.timeout, scheduler: ConcurrentDispatchQueueScheduler(qos: .userInteractive))
+            .timeout(SonosRoomsController.requestTimeout, scheduler: ConcurrentDispatchQueueScheduler(qos: .userInteractive))
             .first()
+            .observeOn(self.queue)
             .subscribe { event in
                 if case .success(let track) = event {
                     title = track??.title
@@ -87,40 +88,10 @@ final class SonosTabAdapter: TabAdapter {
     }
     
     override func toggle() -> Bool {
-        var result = false
-        let sync = DispatchGroup()
-        let bag = DisposeBag()
-        sync.enter()
-        SonosInteractor.getTransportState(self.group)
-            .first()
-            .catchErrorJustReturn(nil)
-            .map { (state) -> TransportState? in
-                return state ?? .stopped == .playing ? .paused : state?.reverseState()
-            }
-            .asObservable()
-            .asSingle()
-            .subscribe { [weak self] event in
-                defer {
-                    sync.leave()
-                }
-                guard let self = self else {return}
-                if case .success(let state) = event {
-                    if let state = state {
-                        sync.enter()
-                        SonosInteractor.setTransport(state: state, for: self.group)
-                            .subscribe { event in
-                                if case .completed = event { result = true }
-                                sync.leave()
-                            }
-                            .disposed(by: bag)
-                    }
-                }
-            }
-            .disposed(by: bag)
-        
-        sync.wait()
-        
-        return result
+        self.switchState()
+    }
+    override func pause() -> Bool {
+        self.switchState(onlyPause: true)
     }
     
     override func next() -> Bool {
@@ -129,6 +100,7 @@ final class SonosTabAdapter: TabAdapter {
         let bag = DisposeBag()
         sync.enter()
         SonosInteractor.setNextTrack(self.group)
+            .observeOn(self.queue)
             .subscribe { event in
                 if case .completed = event { result = true }
                 sync.leave()
@@ -147,6 +119,7 @@ final class SonosTabAdapter: TabAdapter {
         let bag = DisposeBag()
         sync.enter()
         SonosInteractor.setPreviousTrack(self.group)
+            .observeOn(self.queue)
             .subscribe { event in
                 if case .completed = event { result = true }
                 sync.leave()
@@ -164,6 +137,7 @@ final class SonosTabAdapter: TabAdapter {
         sync.enter()
         let subscr = SonosInteractor.getTransportState(self.group)
             .first()
+            .observeOn(self.queue)
             .subscribe({  event in
                 switch event {
                 case .success(let val):
@@ -190,8 +164,9 @@ final class SonosTabAdapter: TabAdapter {
                 DDLogDebug("Combine - Progress observable: \(pr), Track info: \(String(describing: tr))")
                 return (pr, tr)
             }
-            .timeout(SonosRoomsController.timeout, scheduler: ConcurrentDispatchQueueScheduler(qos: .userInteractive))
+            .timeout(60, scheduler: ConcurrentDispatchQueueScheduler(qos: .userInteractive))
             .first()
+            .observeOn(self.queue)
             .subscribe { [weak self] event in
                 defer {
                     sync.leave()
@@ -216,6 +191,7 @@ final class SonosTabAdapter: TabAdapter {
                     sync.enter()
                     SonosInteractor.getTrackImage(track)
                         .first()
+                        .observeOn(self.queue)
                         .subscribe { [weak self] event in
                             defer {
                                 sync.leave()
@@ -245,6 +221,50 @@ final class SonosTabAdapter: TabAdapter {
     }
     
     // MARK: Private
+    private let queue = SerialDispatchQueueScheduler(internalSerialQueueName: "SonosTabAdapterQueue")
     private let group: Group
     private var wasActivated = false
+    
+    private func switchState(onlyPause: Bool = false) -> Bool {
+        var result = false
+        let sync = DispatchGroup()
+        let bag = DisposeBag()
+        sync.enter()
+        SonosInteractor.getTransportState(self.group)
+            .first()
+            .catchErrorJustReturn(nil)
+            .map { (state) -> TransportState? in
+                return state ?? .stopped == .playing ? .paused : state?.reverseState()
+            }
+            .asObservable()
+            .asSingle()
+            .observeOn(self.queue)
+            .subscribe { [weak self] event in
+                defer {
+                    sync.leave()
+                }
+                guard let self = self else {return}
+                if case .success(let state) = event {
+                    if let state = state {
+                       if state == .paused || !onlyPause {
+                        sync.enter()
+                        SonosInteractor.setTransport(state: state, for: self.group)
+                            .observeOn(self.queue)
+                            .subscribe { event in
+                                if case .completed = event { result = true }
+                                sync.leave()
+                            }
+                            .disposed(by: bag)
+                       }
+                       else { result = true }
+                    }
+                }
+            }
+            .disposed(by: bag)
+        
+        sync.wait()
+        
+        return result
+    }
+
 }

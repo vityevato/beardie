@@ -51,7 +51,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   RxSonosLib:
-    :commit: df91e42eb1198a2159cff6d3864d05a868c74fd5
+    :commit: d7d979388ddf96ee47f5cbf5268aa6d808e851ad
     :git: https://github.com/Stillness-2/RxSonosLib
 
 SPEC CHECKSUMS:

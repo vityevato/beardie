@@ -10,14 +10,21 @@ import Cocoa
 import RxSwift
 import RxSonosLib
 
+@objc protocol SonosRoom {
+    @objc var displayName: String {get}
+    @objc var enabled: Bool {get set}
+}
+
 final class SonosRoomsController: NSObject {
     
-    static let timeout: TimeInterval = 2
+    static let groupObtainTimeout: TimeInterval = 6
+    static let requestTimeout: TimeInterval = 2
     
     // MARK: Public
     @objc static let singleton = SonosRoomsController()
     
     @objc var tabs = [SonosTabAdapter]()
+    @objc var rooms = [SonosRoom]()
     
     override init() {
         
@@ -25,17 +32,31 @@ final class SonosRoomsController: NSObject {
         self.startMonitoringGroups()
     }
     
-    // MARK: Private
-    private let disposedBag = DisposeBag()
+    // MARK: File Private
     
+    fileprivate func roomEnabled(_ room: Room) -> Bool {
+        self.queue.sync {
+            return true
+        }
+    }
+    
+    fileprivate func setRoom(_ room: Room, enabled: Bool) {
+        
+    }
+    
+    // MARK: Private
+    private var allGroupDisposable: Disposable?
+    private let queue = DispatchQueue(label: "SonosRoomsControllerQueue")
+
     private func startMonitoringGroups() {
         
-        SonosSettings.shared.requestTimeout = Self.timeout
+        SonosSettings.shared.renewGroupsTimer = Self.groupObtainTimeout
+        SonosSettings.shared.requestTimeout = Self.requestTimeout
         
-        SonosInteractor.getAllGroups()
+        self.allGroupDisposable?.dispose()
+        self.allGroupDisposable = SonosInteractor.getAllGroups()
             .distinctUntilChanged()
             .subscribe(self.onGroups)
-            .disposed(by: self.disposedBag)
 
     }
     
@@ -43,12 +64,42 @@ final class SonosRoomsController: NSObject {
         guard let self = self else {
             return
         }
+        DDLogDebug("New Sonos Group event: \(event)")
         switch event {
         case .next(let groups):
+            self.rooms = groups.flatMap { group in
+                return ([group.master] + group.slaves) as [SonosRoom]
+            }
+            
             self.tabs = groups.map { SonosTabAdapter($0) }
+        case .error(let err):
+            DDLogError("Error obtaing group: \(err)")
+            fallthrough
         default:
             self.tabs = []
-            self.startMonitoringGroups()
+            DispatchQueue.main.asyncAfter(deadline: .now() + Self.groupObtainTimeout) {
+                self.startMonitoringGroups()
+            }
         }
     }
+}
+
+// MARK: - SonosRoom extension for Room -
+
+extension Room: SonosRoom {
+    
+    var displayName: String {
+        "\(self.name) (Sonos)"
+    }
+    
+    var enabled: Bool {
+        get {
+            SonosRoomsController.singleton.roomEnabled(self)
+        }
+        set {
+            SonosRoomsController.singleton.setRoom(self, enabled: newValue)
+        }
+    }
+    
+    
 }
