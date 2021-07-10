@@ -158,13 +158,16 @@ final class SonosTabAdapter: TabAdapter {
         let localBag = DisposeBag()
         let sync = DispatchGroup()
         sync.enter()
+//        SonosInteractor.singleProgress(self.group)
+//            .debug()
+//            .
         SonosInteractor.getProgress(self.group)
             .withLatestFrom(SonosInteractor.getTrack(self.group))
             { (pr: GroupProgress, tr: Track? ) -> (GroupProgress, Track?) in
                 DDLogDebug("Combine - Progress observable: \(pr), Track info: \(String(describing: tr))")
                 return (pr, tr)
             }
-            .timeout(60, scheduler: ConcurrentDispatchQueueScheduler(qos: .userInteractive))
+            .timeout(SonosRoomsController.requestTimeout, scheduler: ConcurrentDispatchQueueScheduler(qos: .userInteractive))
             .first()
             .observeOn(self.queue)
             .subscribe { [weak self] event in

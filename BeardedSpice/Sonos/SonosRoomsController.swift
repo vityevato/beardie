@@ -10,6 +10,11 @@ import Cocoa
 import RxSwift
 import RxSonosLib
 
+extension UserDefaultsKeys {
+    static let SonosSupport = "SonosSupport" //Bool
+    static let DisabledSonosRooms = "DisabledSonosRooms" // [String]
+}
+
 @objc protocol SonosRoom {
     @objc var displayName: String {get}
     @objc var enabled: Bool {get set}
@@ -17,7 +22,7 @@ import RxSonosLib
 
 final class SonosRoomsController: NSObject {
     
-    static let groupObtainTimeout: TimeInterval = 6
+    static let groupObtainTimeout: TimeInterval = 10
     static let requestTimeout: TimeInterval = 2
     
     // MARK: Public
@@ -29,29 +34,45 @@ final class SonosRoomsController: NSObject {
     override init() {
         
         super.init()
-        self.startMonitoringGroups()
+        
+        SonosSettings.shared.renewGroupsTimer = Self.groupObtainTimeout
+        SonosSettings.shared.requestTimeout = Self.requestTimeout
+
+        if UserDefaults.standard.bool(forKey: UserDefaultsKeys.SonosSupport) {
+            self.disabledRoomIds = Set(UserDefaults.standard.stringArray(forKey:UserDefaultsKeys.DisabledSonosRooms) ?? [])
+            self.startMonitoringGroups()
+        }
     }
     
     // MARK: File Private
     
     fileprivate func roomEnabled(_ room: Room) -> Bool {
         self.queue.sync {
-            return true
+            return !self.disabledRoomIds.contains(room.uuid)
         }
     }
     
     fileprivate func setRoom(_ room: Room, enabled: Bool) {
-        
+        self.queue.sync {
+            var update = false
+            if enabled {
+                update = self.disabledRoomIds.remove(room.uuid) != nil
+            }
+            else {
+                (update, _) = self.disabledRoomIds.insert(room.uuid)
+            }
+            if update {
+                UserDefaults.standard.set(Array(self.disabledRoomIds), forKey: UserDefaultsKeys.DisabledSonosRooms)
+            }
+        }
     }
     
     // MARK: Private
     private var allGroupDisposable: Disposable?
     private let queue = DispatchQueue(label: "SonosRoomsControllerQueue")
+    private var disabledRoomIds = Set<String>()
 
     private func startMonitoringGroups() {
-        
-        SonosSettings.shared.renewGroupsTimer = Self.groupObtainTimeout
-        SonosSettings.shared.requestTimeout = Self.requestTimeout
         
         self.allGroupDisposable?.dispose()
         self.allGroupDisposable = SonosInteractor.getAllGroups()
