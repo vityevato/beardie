@@ -24,6 +24,8 @@ final class SonosRoomsController: NSObject {
     
     static let groupObtainTimeout: TimeInterval = 10
     static let requestTimeout: TimeInterval = 2
+    static let sonosMaxVolume = 100
+    static let sonosVolumeStep = 4
     
     // MARK: Public
     @objc static let singleton = SonosRoomsController()

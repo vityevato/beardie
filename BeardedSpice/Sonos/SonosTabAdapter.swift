@@ -10,7 +10,7 @@ import Cocoa
 import RxSwift
 import RxSonosLib
 
-final class SonosTabAdapter: TabAdapter {
+final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
 
     // MARK: Init
     
@@ -33,22 +33,20 @@ final class SonosTabAdapter: TabAdapter {
     }
     
     override func title() -> String! {
-        let localBag = DisposeBag()
         let sync = DispatchGroup()
         var title: String?
         sync.enter()
-        SonosInteractor.getTrack(self.group)
-            .timeout(SonosRoomsController.requestTimeout, scheduler: ConcurrentDispatchQueueScheduler(qos: .userInteractive))
-            .first()
-            .observeOn(self.queue)
+        let subsrc = SonosInteractor.singleTrack(self.group)
+            .debug()
             .subscribe { event in
                 if case .success(let track) = event {
-                    title = track??.title
+                    title = track?.title
                 }
                 sync.leave()
             }
-            .disposed(by: localBag)
+        
         sync.wait()
+        subsrc.dispose()
         
         if let title = title {
             return "\(title) (\(self.group.name) Sonos)"
@@ -77,11 +75,11 @@ final class SonosTabAdapter: TabAdapter {
             self.deactivateApp()
         }
         if !result {
-
+            
             _ = self.activateApp()
             _ = self.activateTab()
         }
-
+        
     }
     override func frontmost() -> Bool {
         super.frontmost() && wasActivated
@@ -130,15 +128,14 @@ final class SonosTabAdapter: TabAdapter {
         
         return result
     }
-
+    
     override func isPlaying() -> Bool {
         var result = false
         let sync = DispatchGroup()
         sync.enter()
-        let subscr = SonosInteractor.getTransportState(self.group)
-            .first()
+        let subscr = SonosInteractor.singleTransportState(self.group)
             .observeOn(self.queue)
-            .subscribe({  event in
+            .subscribe {  event in
                 switch event {
                 case .success(let val):
                     result = val == .playing
@@ -146,7 +143,8 @@ final class SonosTabAdapter: TabAdapter {
                     result = false
                 }
                 sync.leave()
-            })
+            }
+
         sync.wait()
         subscr.dispose()
         DDLogDebug("isPlaying result: \(result)")
@@ -158,18 +156,9 @@ final class SonosTabAdapter: TabAdapter {
         let localBag = DisposeBag()
         let sync = DispatchGroup()
         sync.enter()
-//        SonosInteractor.singleProgress(self.group)
-//            .debug()
-//            .
-        SonosInteractor.getProgress(self.group)
-            .withLatestFrom(SonosInteractor.getTrack(self.group))
-            { (pr: GroupProgress, tr: Track? ) -> (GroupProgress, Track?) in
-                DDLogDebug("Combine - Progress observable: \(pr), Track info: \(String(describing: tr))")
-                return (pr, tr)
-            }
-            .timeout(SonosRoomsController.requestTimeout, scheduler: ConcurrentDispatchQueueScheduler(qos: .userInteractive))
-            .first()
+        SonosInteractor.singleTrack(self.group)
             .observeOn(self.queue)
+            .debug()
             .subscribe { [weak self] event in
                 defer {
                     sync.leave()
@@ -177,24 +166,21 @@ final class SonosTabAdapter: TabAdapter {
                 guard let self = self else {return}
                 DDLogDebug("Progress Event: \(event)")
                 switch event {
-                case .success(let data):
-                    guard let (progress, track) = data else {
+                case .success(let track):
+                    guard let track = track else {
                         result = nil
                         return
                     }
-                    if progress.duration > 0 {
+                    if let progress = track.progress, progress.duration > 0 {
                         result.progress = "\(progress.timeString) of \(progress.durationString)"
-                    }
-                    guard let track = track else {
-                        return
                     }
                     result.track = track.title
                     result.artist = track.artist
                     result.album = track.album
                     sync.enter()
-                    SonosInteractor.getTrackImage(track)
-                        .first()
+                    SonosInteractor.singleImage(track)
                         .observeOn(self.queue)
+                        .debug()
                         .subscribe { [weak self] event in
                             defer {
                                 sync.leave()
@@ -202,7 +188,7 @@ final class SonosTabAdapter: TabAdapter {
                             guard let self = self else { return }
                             switch event {
                             case .success(let data):
-                                result?.image = data == nil ? nil : NSImage(data: data!!)
+                                result?.image = NSImage(data: data)
                             default:
                                 result?.image = nil
                             }
@@ -223,7 +209,24 @@ final class SonosTabAdapter: TabAdapter {
         return result
     }
     
-    // MARK: Private
+    // MARK: BSVolumeControlProtocol Implementation
+    
+    func volumeUp() -> BSVolumeControlResult {
+        return self.volumeAction( .up)
+    }
+    
+    func volumeDown() -> BSVolumeControlResult {
+        return volumeAction(.down)
+    }
+    func volumeMute() -> BSVolumeControlResult {
+        Observable<Group>(self.group)
+            .subscribe(ObserverType)
+        return BSVolumeControlResult.unavailable
+    }
+    
+
+    // MARK: Private Helper
+    
     private let queue = SerialDispatchQueueScheduler(internalSerialQueueName: "SonosTabAdapterQueue")
     private let group: Group
     private var wasActivated = false
@@ -269,5 +272,50 @@ final class SonosTabAdapter: TabAdapter {
         
         return result
     }
-
+    private func volumeAction(_ direction: BSVolumeControlResult) -> BSVolumeControlResult {
+        var action: (Int) -> Int = { min($0 +  SonosRoomsController.sonosVolumeStep, SonosRoomsController.sonosMaxVolume) }
+        var complated: (Int) -> BSVolumeControlResult = { $0 == SonosRoomsController.sonosMaxVolume ? .unavailable : .up}
+        switch direction {
+        case .down:
+            action = { max($0 -  SonosRoomsController.sonosVolumeStep, 0) }
+            complated = {$0 == 0 ? .mute : .down}
+        default:
+            return .notSupported
+        }
+        
+        let bag = DisposeBag()
+        var result = BSVolumeControlResult.unavailable
+        let sync = DispatchGroup()
+        sync.enter()
+        SonosInteractor.singleVolume(self.group)
+            .observeOn(self.queue)
+            .subscribe {  event in
+                defer {
+                    sync.leave()
+                }
+                switch event {
+                case .success(let val):
+                    guard val < SonosRoomsController.sonosMaxVolume else {
+                        return
+                    }
+                    sync.enter()
+                    let newVal = action(val)
+                    SonosInteractor.set(volume: newVal,
+                                        for: self.group)
+                        .subscribe { event in
+                            if case .completed = event {
+                                result = complated(newVal)
+                            }
+                            sync.leave()
+                        }
+                        .disposed(by: bag)
+                default:
+                    result = .unavailable
+                }
+            }
+            .disposed(by: bag)
+        sync.wait()
+        DDLogDebug("isPlaying result: \(result)")
+        return result
+    }
 }

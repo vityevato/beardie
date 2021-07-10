@@ -21,7 +21,6 @@
 #define APPID_TIDAL             @"com.tidal.desktop"
 
 @interface TidalTabAdapter()
-@property (class, readonly) FMDatabaseQueue *dbQueue;
 @end
 
 @implementation TidalTabAdapter{
@@ -29,8 +28,6 @@
     BOOL _needDisplayNotification;
 
 }
-
-static FMDatabaseQueue *_dbQueue;
 
 + (NSString *)displayName{
     static NSString *name;

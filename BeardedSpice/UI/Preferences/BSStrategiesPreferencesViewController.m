@@ -611,9 +611,9 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
     if ([obj.representationObject isKindOfClass:[BSMediaStrategy class]]) {
         // Strategy
         if (enabled) {
-            [[MediaStrategyRegistry singleton] addAvailableMediaStrategy:obj.representationObject];
+            [[MediaStrategyRegistry singleton] addAvailableMediaStrategy:(BSMediaStrategy *)obj.representationObject];
         } else {
-            [[MediaStrategyRegistry singleton] removeAvailableMediaStrategy:obj.representationObject];
+            [[MediaStrategyRegistry singleton] removeAvailableMediaStrategy:(BSMediaStrategy *)obj.representationObject];
         }
         // save user strategies
         [userStrategies setObject:@(enabled) forKey:obj.name];
@@ -623,9 +623,9 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
     } else {
         // Native
         if (enabled) {
-            [[NativeAppTabsRegistry singleton] enableNativeAppClass:obj.representationObject];
+            [[NativeAppTabsRegistry singleton] enableNativeAppClass:obj.representationObject.class];
         } else {
-            [[NativeAppTabsRegistry singleton] disableNativeAppClass:obj.representationObject];
+            [[NativeAppTabsRegistry singleton] disableNativeAppClass:obj.representationObject.class];
         }
         // save user strategies
         [userNativeApps setObject:@(enabled) forKey:obj.name];
@@ -736,7 +736,7 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
     MediaControllerObject *obj = mediaControllerObjects[index];
     if ([obj.representationObject isKindOfClass:[BSMediaStrategy class]]) {
         
-        return obj.representationObject;
+        return (BSMediaStrategy *)obj.representationObject;
     }
     
     return nil;
