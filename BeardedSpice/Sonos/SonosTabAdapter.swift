@@ -212,16 +212,45 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
     // MARK: BSVolumeControlProtocol Implementation
     
     func volumeUp() -> BSVolumeControlResult {
-        return self.volumeAction( .up)
+        return self.volumeAction(.up)
     }
     
     func volumeDown() -> BSVolumeControlResult {
-        return volumeAction(.down)
+        return self.volumeAction(.down)
     }
     func volumeMute() -> BSVolumeControlResult {
-        Observable<Group>(self.group)
-            .subscribe(ObserverType)
-        return BSVolumeControlResult.unavailable
+
+        let bag = DisposeBag()
+        var result = BSVolumeControlResult.unavailable
+        let sync = DispatchGroup()
+        sync.enter()
+        SonosInteractor.singleMute(self.group)
+            .subscribe { event in
+                defer {
+                    sync.leave()
+                }
+                switch event {
+                case .success(let val):
+                    sync.enter()
+                    Observable<Group>.just(self.group)
+                        .set(mute: !val)
+                        .subscribe { event in
+                            switch event {
+                            case .completed:
+                                result = val ? .unmute : .mute
+                            default:
+                                result = .unavailable
+                            }
+                            sync.leave()
+                        }
+                        .disposed(by: bag)
+                default:
+                    result = .unavailable
+                }
+            }
+            .disposed(by: bag)
+        
+        return result
     }
     
 
@@ -273,9 +302,12 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         return result
     }
     private func volumeAction(_ direction: BSVolumeControlResult) -> BSVolumeControlResult {
-        var action: (Int) -> Int = { min($0 +  SonosRoomsController.sonosVolumeStep, SonosRoomsController.sonosMaxVolume) }
-        var complated: (Int) -> BSVolumeControlResult = { $0 == SonosRoomsController.sonosMaxVolume ? .unavailable : .up}
+        var action: (Int) -> Int = { $0 }
+        var complated: (Int) -> BSVolumeControlResult = { _ in .unavailable }
         switch direction {
+        case .up:
+            action = { min($0 +  SonosRoomsController.sonosVolumeStep, SonosRoomsController.sonosMaxVolume) }
+            complated = { $0 == SonosRoomsController.sonosMaxVolume ? .unavailable : .up}
         case .down:
             action = { max($0 -  SonosRoomsController.sonosVolumeStep, 0) }
             complated = {$0 == 0 ? .mute : .down}
@@ -315,7 +347,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
             }
             .disposed(by: bag)
         sync.wait()
-        DDLogDebug("isPlaying result: \(result)")
+        DDLogDebug("Volume action result: \(result)")
         return result
     }
 }
