@@ -138,7 +138,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
             .subscribe {  event in
                 switch event {
                 case .success(let val):
-                    result = val == .playing
+                    result = val == .playing || val == .transitioning
                 default:
                     result = false
                 }
@@ -272,7 +272,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
             .first()
             .catchErrorJustReturn(nil)
             .map { (state) -> TransportState? in
-                return state ?? .stopped == .playing ? .paused : state?.reverseState()
+                return (state ?? .stopped) == .playing ? .paused : state?.reverseState()
             }
             .asObservable()
             .asSingle()
@@ -335,9 +335,11 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
                     }
                     sync.enter()
                     let newVal = action(val)
-                    SonosInteractor.change(volume: newVal,
-                                        for: self.group)
+                    Observable<Group>.just(self.group)
                         .observeOn(self.queue)
+                        .set(mute: false)
+                        .andThen(SonosInteractor.change(volume: newVal,
+                                                        for: self.group))
                         .subscribe { event in
                             if case .completed = event {
                                 result = complated(newVal)
