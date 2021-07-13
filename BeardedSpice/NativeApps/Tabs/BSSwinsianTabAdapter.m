@@ -56,7 +56,7 @@
             title = BSLocalizedString(@"no-track-title", @"No tack title for tabs menu and default notification ");
         }
 
-        return [NSString stringWithFormat:@"%@ (%@)", title, BSSwinsianTabAdapter.displayName];
+        return [NSString stringWithFormat:@"%@ | %@", BSSwinsianTabAdapter.displayName, title];
     }
 }
 

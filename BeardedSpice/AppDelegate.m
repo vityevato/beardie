@@ -668,11 +668,6 @@ BOOL accessibilityApiEnabled = NO;
             [tabs addObjectsFromArray:_nativeAppTabsController.tabs];
             [tabs addObjectsFromArray:_sonosRoomsController.tabs];
             
-            for( id<SonosRoom> item in _sonosRoomsController.rooms) {
-                DDLogError(@"TEST: %@, %@", [item displayName], item.enabled ? @"YES" : @"NO");
-                item.enabled = NO;
-            }
-
             __block BOOL enabled = NO;
             dispatch_sync(dispatch_get_main_queue(), ^{
                 enabled = [self validateMenuItem:self->statusMenu.itemArray.lastObject];

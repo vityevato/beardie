@@ -94,7 +94,7 @@
             title = BSLocalizedString(@"no-track-title", @"No tack title for tabs menu and default notification ");
         }
         
-        return [NSString stringWithFormat:@"%@ (%@)", title, AirfoilSatelliteTabAdapter.displayName];
+        return [NSString stringWithFormat:@"%@ | %@", AirfoilSatelliteTabAdapter.displayName, title];
     }
 }
 - (NSString *)URL{

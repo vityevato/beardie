@@ -17,6 +17,7 @@
 #import "EHVerticalCenteredTextField.h"
 #import "BSCustomStrategyManager.h"
 #import "AppDelegate.h"
+#import "Beardie-Swift.h"
 
 
 NSString *const BSStrategiesPreferencesNativeAppChangedNoticiation = @"BSStrategiesPreferencesNativeAppChangedNoticiation";
@@ -498,7 +499,10 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
     if ([obj.representationObject isKindOfClass:[BSMediaStrategy class]]) {
         enabled = userStrategies[obj.name];
     }
-    else{
+    else if ([obj.representationObject conformsToProtocol:@protocol(SonosRoom)]) {
+        enabled = @([(id<SonosRoom>)obj.representationObject enabled]);
+    }
+    else {
         enabled = userNativeApps[obj.name];
     }
     if (!enabled || [enabled boolValue]) {
@@ -620,6 +624,8 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
         [[NSUserDefaults standardUserDefaults]
          setObject:userStrategies
          forKey:BeardedSpiceActiveControllers];
+    } else if ([obj.representationObject conformsToProtocol:@protocol(SonosRoom)]) {
+        [(id<SonosRoom>)obj.representationObject setEnabled:enabled];
     } else {
         // Native
         if (enabled) {
@@ -645,7 +651,19 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
     
     NSMutableArray *mediaControllers = [NSMutableArray array];
     
-    NSArray *theArray = [NativeAppTabsRegistry defaultNativeAppClasses];
+    NSArray *theArray = SonosRoomsController.singleton.rooms;
+    if (theArray.count) {
+        MediaControllerObject *obj = [MediaControllerObject new];
+        obj.isGroup = YES;
+        obj.name = BSLocalizedString(@"Sonos", @"General preferences - controllers table");
+        [mediaControllers addObject:obj];
+        for (SonosTabAdapter *item in theArray) {
+            [mediaControllers addObject:[[MediaControllerObject alloc] initWithObject:item]];
+        }
+
+    }
+    
+    theArray = [NativeAppTabsRegistry defaultNativeAppClasses];
     if (theArray.count) {
         
         MediaControllerObject *obj = [MediaControllerObject new];

@@ -24,7 +24,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
     }
     
     // MARK: Public
-    @objc var displayName: String {"\(self.group.name) (Sonos)"}
+    @objc var displayName: String {"\(self.group.name) Sonos"}
     
     // MARK: Overrides
     
@@ -49,9 +49,9 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         subsrc.dispose()
         
         if let title = title {
-            return "\(title) (\(self.group.name) Sonos)"
+            return "\(self.displayName) | \(title)"
         }
-        return self.displayName
+        return "\(self.displayName)"
     }
     
     override func url() -> String! {
@@ -225,6 +225,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         let sync = DispatchGroup()
         sync.enter()
         SonosInteractor.singleMute(self.group)
+            .observeOn(self.queue)
             .subscribe { event in
                 defer {
                     sync.leave()
@@ -233,6 +234,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
                 case .success(let val):
                     sync.enter()
                     Observable<Group>.just(self.group)
+                        .observeOn(self.queue)
                         .set(mute: !val)
                         .subscribe { event in
                             switch event {
@@ -250,6 +252,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
             }
             .disposed(by: bag)
         
+        sync.wait()
         return result
     }
     
@@ -332,8 +335,9 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
                     }
                     sync.enter()
                     let newVal = action(val)
-                    SonosInteractor.set(volume: newVal,
+                    SonosInteractor.change(volume: newVal,
                                         for: self.group)
+                        .observeOn(self.queue)
                         .subscribe { event in
                             if case .completed = event {
                                 result = complated(newVal)

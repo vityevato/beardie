@@ -66,7 +66,7 @@ dispatch_queue_t notificationQueue(void);
             DDLogError(@"Exception occured: %@", exception);
         }
         if ([NSString isNullOrEmpty:result]) {
-            result = ((BSWebTabAdapter *)_activeTab).strategy.displayName;
+            result = BSLocalizedString(@"no-track-title", @"No tack title for tabs menu and default notification ");
         }
 
         return result;
@@ -315,7 +315,8 @@ dispatch_queue_t notificationQueue(void);
     BOOL noTrack = [NSString isNullOrEmpty:track.track];
     BOOL noArtist = [NSString isNullOrEmpty:track.artist];
     BOOL noAlbum = [NSString isNullOrEmpty:track.album];
-    if (!(noTrack && noArtist && noAlbum)) {
+    BOOL isPlaying = [self isPlaying];
+    if (isPlaying && !(noTrack && noArtist && noAlbum)) {
         NSUserNotification *noti = [track asNotification];
         NSUserNotificationCenter *notifCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
         [notifCenter removeDeliveredNotification:noti];
@@ -331,7 +332,7 @@ dispatch_queue_t notificationQueue(void);
 
     notification.identifier = kBSTrackNameIdentifier;
     notification.title = [self displayName];
-    notification.informativeText = BSLocalizedString(@"no-track-title", @"No tack title for tabs menu and default notification ");
+    notification.informativeText = [self title];
 
     NSUserNotificationCenter *notifCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
     [notifCenter removeDeliveredNotification:notification];
