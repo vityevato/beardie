@@ -58,15 +58,20 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         return self.group.master.ip.absoluteString
     }
     override func key() -> String! {
-        return self.group.master.uuid
+        return self.group.slaves.reduce(self.group.master.uuid) { $0 + $1.uuid }
     }
     override func activateTab() -> Bool {
-        self.wasActivated = super.activateTab()
+        self.wasActivated = true
         return self.wasActivated
     }
     override func deactivateTab() -> Bool {
-        self.wasActivated = super.deactivateTab()
-        return self.wasActivated
+        defer {
+            self.wasActivated = false
+        }
+        return self.wasActivated && super.deactivateTab()
+    }
+    override func isActivated() -> Bool {
+        return self.wasActivated && super.isActivated()
     }
     override func toggleTab() {
         
