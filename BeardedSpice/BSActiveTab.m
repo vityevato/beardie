@@ -303,6 +303,14 @@ dispatch_queue_t notificationQueue(void);
 
 - (void)_showNotificationUsingFallback:(BOOL)fallback {
 
+    // this for trackInfo when is not playing
+    if (fallback && ![self isPlaying]) {
+        [self showDefaultNotification];
+        return;;
+    }
+    
+    // other cases
+    
     BSTrack *track = nil;
     if ([self isNativeAdapter]) {
         if ([_activeTab respondsToSelector:@selector(trackInfo)]) {
@@ -315,8 +323,8 @@ dispatch_queue_t notificationQueue(void);
     BOOL noTrack = [NSString isNullOrEmpty:track.track];
     BOOL noArtist = [NSString isNullOrEmpty:track.artist];
     BOOL noAlbum = [NSString isNullOrEmpty:track.album];
-    BOOL isPlaying = [self isPlaying];
-    if (isPlaying && !(noTrack && noArtist && noAlbum)) {
+    
+    if (!(noTrack && noArtist && noAlbum)) {
         NSUserNotification *noti = [track asNotification];
         NSUserNotificationCenter *notifCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
         [notifCenter removeDeliveredNotification:noti];

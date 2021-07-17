@@ -112,6 +112,8 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         
         sync.wait()
         
+        self.needNoti = result && !self.isPlaying()
+
         return result
     }
     
@@ -130,7 +132,9 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
             .disposed(by: bag)
         
         sync.wait()
-        
+
+        self.needNoti = result && !self.isPlaying()
+
         return result
     }
     
@@ -154,6 +158,13 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         subscr.dispose()
         DDLogDebug("isPlaying result: \(result)")
         return result
+    }
+    
+    override func showNotifications() -> Bool {
+        defer {
+            self.needNoti = true
+        }
+        return self.application == nil || self.needNoti
     }
     
     override func trackInfo() -> BSTrack! {
@@ -267,6 +278,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
     private let queue = SerialDispatchQueueScheduler(internalSerialQueueName: "SonosTabAdapterQueue")
     private let group: Group
     private var wasActivated = false
+    private var needNoti = true
     
     private func switchState(onlyPause: Bool = false) -> Bool {
         var result = false
@@ -295,6 +307,9 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
                             .observeOn(self.queue)
                             .subscribe { event in
                                 if case .completed = event { result = true }
+                                
+                                self.needNoti = result && state == .paused
+
                                 sync.leave()
                             }
                             .disposed(by: bag)
@@ -306,7 +321,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
             .disposed(by: bag)
         
         sync.wait()
-        
+
         return result
     }
     private func volumeAction(_ direction: BSVolumeControlResult) -> BSVolumeControlResult {
