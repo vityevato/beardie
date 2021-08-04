@@ -86,7 +86,7 @@ From the `Controllers` preferences tab, uncheck any types of webpages that you d
 - [Swinsian](https://swinsian.com)
 
 ### Supported Sonos players (in beta)
-Supports Sonos players, which are detected in local network.
+Supports [Sonos](https://www.sonos.com/) players, which are detected in local network.
 
 ### Supported Browsers
 
