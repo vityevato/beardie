@@ -306,7 +306,7 @@ dispatch_queue_t notificationQueue(void);
     // this for trackInfo when is not playing
     if (fallback && ![self isPlaying]) {
         [self showDefaultNotification];
-        return;;
+        return;
     }
     
     // other cases

@@ -10,6 +10,11 @@ import Cocoa
 import RxSwift
 import RxSonosLib
 
+extension UserDefaultsKeys {
+    static let SonosSeekOnPodcast = "SonosSeekOnPodcast" //Bool
+    static let SonosSeekOnLongTrack = "SonosSeekOnLongTrack" //Bool
+}
+
 final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
 
     // MARK: Init
@@ -37,7 +42,6 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         var title: String?
         sync.enter()
         let subsrc = SonosInteractor.singleTrack(self.group)
-            .debug()
             .subscribe { event in
                 if case .success(let track) = event {
                     title = track?.title
@@ -101,9 +105,13 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         var result = false
         let sync = DispatchGroup()
         let bag = DisposeBag()
+        
+        if self.seek(Self.seekOffset, sync) {
+            return true
+        }
+        
         sync.enter()
         SonosInteractor.setNextTrack(self.group)
-            .observeOn(self.queue)
             .subscribe { event in
                 if case .completed = event { result = true }
                 sync.leave()
@@ -113,7 +121,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         sync.wait()
         
         self.needNoti = result && !self.isPlaying()
-
+        
         return result
     }
     
@@ -122,6 +130,11 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         var result = false
         let sync = DispatchGroup()
         let bag = DisposeBag()
+        
+        if self.seek(-(Self.seekOffset), sync) {
+            return true
+        }
+        
         sync.enter()
         SonosInteractor.setPreviousTrack(self.group)
             .observeOn(self.queue)
@@ -174,7 +187,6 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         sync.enter()
         SonosInteractor.singleTrack(self.group)
             .observeOn(self.queue)
-            .debug()
             .subscribe { [weak self] event in
                 defer {
                     sync.leave()
@@ -190,13 +202,32 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
                     if let progress = track.progress, progress.duration > 0 {
                         result.progress = "\(progress.timeString) of \(progress.durationString)"
                     }
-                    result.track = track.title
-                    result.artist = track.artist
-                    result.album = track.album
+                    switch track.contentType {
+                    
+                    case .audioBroadcast:
+                        result.track = track.information
+                        if result.track?.isEmpty ?? true {
+                            result.track = track.title
+                            result.artist = track.artist
+                        }
+                        else {
+                            result.artist = track.title
+                        }
+                        result.album = track.album
+
+                    case .podcast, .longMusicTrack:
+                        // here don't define album, this leads to we display `progress` for long track
+                        result.track = track.title
+                        result.artist = track.artist
+                        
+                    default:
+                        result.track = track.title
+                        result.artist = track.artist
+                        result.album = track.album
+                    }
                     sync.enter()
                     SonosInteractor.singleImage(track)
                         .observeOn(self.queue)
-                        .debug()
                         .subscribe { [weak self] event in
                             defer {
                                 sync.leave()
@@ -275,10 +306,20 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
 
     // MARK: Private Helper
     
+    private static let seekOffset: Int = 30 //seconrds
+    private static let offsetFromStartWhenWorkPrevious: Int = 2 //seconrds
+    private static let seekDebounceTime: RxTimeInterval = 0.5 // seconds
+
+    private enum Error: Swift.Error {
+        case seek
+    }
+    
     private let queue = SerialDispatchQueueScheduler(internalSerialQueueName: "SonosTabAdapterQueue")
     private let group: Group
     private var wasActivated = false
     private var needNoti = true
+    private var seekSubject: BehaviorSubject<(pos: UInt, duration: UInt)>?
+    private var seekBag: DisposeBag!
     
     private func switchState(onlyPause: Bool = false) -> Bool {
         var result = false
@@ -376,4 +417,74 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         DDLogDebug("Volume action result: \(result)")
         return result
     }
+    
+    private func secondsToTimeString(_ seconds: Int) -> String {
+        let sec = abs(seconds)
+        return String(format: "%@%02d:%02d:%02d", seconds < 0 ? "-" : "", sec / 3600, (sec % 3600) / 60, (sec % 3600) % 60)
+    }
+    
+    private func seek(_ seek: Int, _ sync: DispatchGroup) -> Bool {
+        
+        guard UserDefaults.standard.bool(forKey: UserDefaultsKeys.SonosSeekOnLongTrack)
+                || UserDefaults.standard.bool(forKey: UserDefaultsKeys.SonosSeekOnPodcast) else {
+            return false
+        }
+        
+        if let seekSubject = self.seekSubject, let val = try? seekSubject.value() {
+            var newPos = Int(val.pos) + seek
+            if newPos < 0 {
+                if val.pos > Self.offsetFromStartWhenWorkPrevious {
+                    seekSubject.onError(Error.seek)
+                    return false
+                }
+                newPos = 0
+            }
+            if newPos > val.duration {
+                newPos = Int(val.duration)
+            }
+
+            seekSubject.onNext((UInt(newPos), val.duration))
+            return true
+        }
+        
+        sync.enter()
+        var result = false
+        let bag = DisposeBag()
+        // getting track type
+        SonosInteractor.singleTrack(self.group)
+            .observeOn(self.queue)
+            .subscribe(onSuccess: { track in
+                guard let track = track,
+                      (track.contentType == .podcast && UserDefaults.standard.bool(forKey: UserDefaultsKeys.SonosSeekOnPodcast))
+                        || (track.contentType == .longMusicTrack && UserDefaults.standard.bool(forKey: UserDefaultsKeys.SonosSeekOnLongTrack)) else {
+                    // We don't accumulate commands
+                    result = false
+                    sync.leave()
+                    return
+                }
+                if let pos = track.progress?.time,
+                   let duration = track.progress?.duration {
+                    self.seekSubject = BehaviorSubject(value: (pos: pos, duration: duration))
+                    self.seekBag = DisposeBag()
+                    self.seekSubject?
+                        .debounce(Self.seekDebounceTime, scheduler: self.queue)
+                        .flatMap({ (pos, _)  -> Completable in
+                            self.seekSubject = nil
+                            return SonosInteractor.seekTrack(time: self.secondsToTimeString(Int(pos)), for: self.group)
+                        })
+                        .subscribe()
+                        .disposed(by: self.seekBag)
+                    result = self.seek(seek, sync) // emmits new value
+                }
+                sync.leave()
+            }, onError: { error in
+                DDLogError("Error occurs: \(error)")
+                sync.leave()
+            })
+            .disposed(by: bag)
+            
+        sync.wait()
+        return result
+    }
+
 }
