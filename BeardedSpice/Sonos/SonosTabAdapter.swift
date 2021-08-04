@@ -17,6 +17,11 @@ extension UserDefaultsKeys {
 
 final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
 
+    // MARK: Constants
+    static let seekOffset: Int = 30 //seconrds
+    static let offsetFromStartWhenWorkPrevious: Int = 2 //seconrds
+    static let seekDebounceTime: RxTimeInterval = 0.5 // seconds
+
     // MARK: Init
     
     init(_ group: Group) {
@@ -44,7 +49,12 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         let subsrc = SonosInteractor.singleTrack(self.group)
             .subscribe { event in
                 if case .success(let track) = event {
-                    title = track?.title
+                    if track?.contentType == .lineInHomeTheater {
+                        title = BSLocalizedString("sonos-adapter-track-title-tv", nil)
+                    }
+                    else {
+                        title = track?.title
+                    }
                 }
                 sync.leave()
             }
@@ -214,7 +224,10 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
                             result.artist = track.title
                         }
                         result.album = track.album
-
+                    case .lineIn:
+                        result.track = "\(self.displayName) | \(track.title ?? BSLocalizedString("sonos-adapter-track-title-line-in", nil))"
+                    case .lineInHomeTheater:
+                        result.track = "\(self.displayName) | \(BSLocalizedString("sonos-adapter-track-title-tv", nil))"
                     case .podcast, .longMusicTrack:
                         // here don't define album, this leads to we display `progress` for long track
                         result.track = track.title
@@ -306,10 +319,6 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
 
     // MARK: Private Helper
     
-    private static let seekOffset: Int = 30 //seconrds
-    private static let offsetFromStartWhenWorkPrevious: Int = 2 //seconrds
-    private static let seekDebounceTime: RxTimeInterval = 0.5 // seconds
-
     private enum Error: Swift.Error {
         case seek
     }
