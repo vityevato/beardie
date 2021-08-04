@@ -2,7 +2,7 @@
 
 Beardie is a utility that allows you to control various media players with your keyboard. It is a fork of the [BeardedSpice project](https://github.com/beardedspice/beardedspice). 
 
-It allows you to manage web based players (*SoundCloud*, *YouTube* ... [List of supported sites to date](#supported-sites)) and native application players (*Apple Music*, *Spotify* ...). 
+It allows you to manage web based players (*SoundCloud*, *YouTube* ... [List of supported sites to date](#supported-sites)), native application players (*Apple Music*, *Spotify* ...) and Sonos systems (in beta). 
 
 Beardie is more than just play/pause, it has some additional controls that add to the convenience. You can keep several player applications open, and several tabs of several browsers with web players, since Beardie "understands" what exactly you want to control at the moment. :) It also allows you to easily switch between running (open) players.
 
@@ -84,6 +84,9 @@ From the `Controllers` preferences tab, uncheck any types of webpages that you d
 - [Amazon Music](https://www.amazon.com/music/)
 - [Quod Libet](https://github.com/quodlibet/quodlibet)
 - [Swinsian](https://swinsian.com)
+
+### Supported Sonos players (in beta)
+Supports Sonos player, which are detected in local network.
 
 ### Supported Browsers
 
