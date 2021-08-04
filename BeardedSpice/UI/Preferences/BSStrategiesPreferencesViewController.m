@@ -53,6 +53,8 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(strategyChangedNotify:) name: BSVMStrategyChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(strategyChangedNotify:) name: BSCStrategyChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(strategyChangedNotify:) name: SonosRoomsController.SonosRoomsChanged object:nil];
+        
         [self loadMediaControllerObjects];
     }
     return self;

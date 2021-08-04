@@ -22,10 +22,12 @@ extension UserDefaultsKeys {
 
 final class SonosRoomsController: NSObject {
     
+    // MARK: Constants
+    
     static let groupObtainTimeout: TimeInterval = 10
     static let requestTimeout: TimeInterval = 2
-    static let sonosMaxVolume = 100
-    static let sonosVolumeStep = 2
+    
+    @objc static let SonosRoomsChanged = Notification.Name("SonosRoomsChanged")
     
     // MARK: Public
     @objc static let singleton = SonosRoomsController()
@@ -108,10 +110,12 @@ final class SonosRoomsController: NSObject {
             fallthrough
         default:
             self.tabs = []
+            self.rooms = []
             DispatchQueue.main.asyncAfter(deadline: .now() + Self.groupObtainTimeout) {
                 self.startMonitoringGroups()
             }
         }
+        NotificationCenter.default.post(name: Self.SonosRoomsChanged, object: nil)
     }
 }
 

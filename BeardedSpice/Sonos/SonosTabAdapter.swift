@@ -21,6 +21,8 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
     static let seekOffset: Int = 30 //seconrds
     static let offsetFromStartWhenWorkPrevious: Int = 2 //seconrds
     static let seekDebounceTime: RxTimeInterval = 0.5 // seconds
+    static let sonosMaxVolume = 100
+    static let sonosVolumeStep = 2
 
     // MARK: Init
     
@@ -383,10 +385,10 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         var complated: (Int) -> BSVolumeControlResult = { _ in .unavailable }
         switch direction {
         case .up:
-            action = { min($0 +  SonosRoomsController.sonosVolumeStep, SonosRoomsController.sonosMaxVolume) }
-            complated = { $0 == SonosRoomsController.sonosMaxVolume ? .unavailable : .up}
+            action = { min($0 +  Self.sonosVolumeStep, Self.sonosMaxVolume) }
+            complated = { $0 == Self.sonosMaxVolume ? .unavailable : .up}
         case .down:
-            action = { max($0 -  SonosRoomsController.sonosVolumeStep, 0) }
+            action = { max($0 -  Self.sonosVolumeStep, 0) }
             complated = {$0 == 0 ? .mute : .down}
         default:
             return .notSupported
@@ -404,7 +406,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
                 }
                 switch event {
                 case .success(let val):
-                    guard val < SonosRoomsController.sonosMaxVolume else {
+                    guard val < Self.sonosMaxVolume else {
                         return
                     }
                     sync.enter()
