@@ -237,6 +237,10 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
                         result.track = track.title
                         result.artist = track.artist
                         result.album = track.album
+                        // for default tracks remove progress value if its no need for showing
+                        if UserDefaults.standard.bool(forKey: BeardedSpiceShowProgress) == false {
+                            result.progress = nil
+                        }
                     }
                     sync.enter()
                     SonosInteractor.singleImage(track)
@@ -442,7 +446,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         if let seekSubject = self.seekSubject, let val = try? seekSubject.value() {
             var newPos = Int(val.pos) + seek
             if newPos < 0 {
-                if val.pos > Self.offsetFromStartWhenWorkPrevious {
+                if val.pos <= Self.offsetFromStartWhenWorkPrevious {
                     seekSubject.onError(Error.seek)
                     return false
                 }

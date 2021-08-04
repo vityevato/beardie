@@ -11,3 +11,4 @@
 #import "BSSharedResources.h"
 #import <Sparkle/Sparkle.h>
 #import "BSVolumeControlProtocol.h"
+#import "GeneralPreferencesViewController.h"
