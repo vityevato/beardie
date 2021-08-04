@@ -8,7 +8,7 @@
 
 #import "BSVolumeWindowController.h"
 
-#define BASE_FONT_NAME              @"HelveticaNeue-Medium"
+#define BASE_FONT_NAME              @"HelveticaNeue-Light"
 #define BASE_FONT_SIZE              36.0f
 
 @implementation BSVolumeWindowController {
@@ -25,8 +25,9 @@
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        
-        singletonBSVolumeWindowController = [[BSVolumeWindowController alloc] initWithWindowNibName:@"BSVolumeWindowController"];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            singletonBSVolumeWindowController = [[BSVolumeWindowController alloc] initWithWindowNibName:@"BSVolumeWindowController"];
+        });
     });
     
     return singletonBSVolumeWindowController;
@@ -44,7 +45,8 @@
     NSVisualEffectView *visualEffectView = self.window.contentView;
     visualEffectView.maskImage = [self maskImageWithCornerRadius:20.0f];
     visualEffectView.state = NSVisualEffectStateActive;
-    visualEffectView.material = NSVisualEffectMaterialMediumLight;
+    visualEffectView.material = NSVisualEffectMaterialSidebar;
+    visualEffectView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
 }
 
 - (void)showWithType:(BSVWType)type title:(NSString *)aTitle {

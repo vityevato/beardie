@@ -19,8 +19,8 @@ XC_SPL = /
 
 BS_NAME = Beardie
 BS_COPYRIGHT = Copyright © 2021 Beardie. All rights reserved.
-BS_VERSION = 3.0.11
-BS_BUILD = 72
+BS_VERSION = 3.0.15
+BS_BUILD = 74
 BS_CHANNEL =
 BS_UPDATE_APPCAST = https:$(XC_SPL)/stillness-2.github.io/beardie/distrib-support/appcast.xml
 BS_HOMEPAGE = https:$(XC_SPL)/github.com/Stillness-2/beardie

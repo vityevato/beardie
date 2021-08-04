@@ -78,7 +78,7 @@ class UIController: NSObject {
 }
 
 @objcMembers
-class StatusBarMenu: NSObject {
+final class StatusBarMenu: NSObject {
     
     /// Hide staus item User Defaults key
     static let BSHideStatusItem = "BSHideStatusItem"

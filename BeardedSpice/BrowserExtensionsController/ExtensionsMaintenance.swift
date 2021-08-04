@@ -18,7 +18,7 @@ protocol NativeMessaging {
 
 // MARK: - ChromeNativeMessaging
 @objc
-class ChromeNativeMessaging : NSObject, NativeMessaging {
+final class ChromeNativeMessaging : NSObject, NativeMessaging {
     
     static private let chromePath = NSString(string: "~/Library/Application Support/Google/Chrome/NativeMessagingHosts/\(BS_B_NATIVE_MESSAGING_CONNECTOR_BUNDLE_ID).json").expandingTildeInPath
     static private let chromiumPath = NSString(string: "~/Library/Application Support/Chromium/NativeMessagingHosts/\(BS_B_NATIVE_MESSAGING_CONNECTOR_BUNDLE_ID).json").expandingTildeInPath
@@ -72,7 +72,7 @@ class ChromeNativeMessaging : NSObject, NativeMessaging {
 
 // MARK: - ChromeExtensionMaintenance
 
-class ChromeExtensionMaintenance : NSObject {
+final class ChromeExtensionMaintenance : NSObject {
     
     static private let chromePath = NSString(string: "~/Library/Application Support/Google/Chrome/External Extensions/\(BS_CHROME_EXTENSION_ID).json").expandingTildeInPath
     

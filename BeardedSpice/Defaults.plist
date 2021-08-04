@@ -27,7 +27,7 @@
 	<key>BeardedSpiceShowProgress</key>
 	<true/>
 	<key>BeardedSpiceCustomVolumeControl</key>
-	<false/>
+	<true/>
 	<key>BeardedSpiceFirstRun</key>
 	<true/>
 	<key>BeardieBrowserExtensionsFirstRun</key>
@@ -35,6 +35,12 @@
 	<key>BSWebSocketServerEnabled</key>
 	<false/>
 	<key>BeardedSpiceUpdateAtLaunch</key>
+	<true/>
+	<key>SonosSupport</key>
+	<true/>
+	<key>SonosSeekOnPodcast</key>
+	<true/>
+	<key>SonosSeekOnLongTrack</key>
 	<true/>
 </dict>
 </plist>

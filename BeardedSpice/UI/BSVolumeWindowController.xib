@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,8 +21,8 @@
             <windowCollectionBehavior key="collectionBehavior" moveToActiveSpace="YES" stationary="YES" ignoresCycle="YES" fullScreenDisallowsTiling="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="913" y="140" width="200" height="200"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1177"/>
-            <view key="contentView" wantsLayer="YES" alphaValue="0.59999999999999998" id="se5-gp-TjO" customClass="NSVisualEffectView">
+            <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1175"/>
+            <view key="contentView" alphaValue="0.94999999999999996" id="se5-gp-TjO" customClass="NSVisualEffectView">
                 <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -35,14 +35,14 @@
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="top" image="volumeMute" id="iyi-Ed-MED"/>
                     </imageView>
                     <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="YRN-51-LpM">
-                        <rect key="frame" x="43" y="30" width="115" height="36"/>
+                        <rect key="frame" x="47" y="30" width="107" height="35"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="156" id="nWh-Tt-ulh"/>
                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="37" id="p9c-tD-u0P"/>
                         </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Beardie" placeholderString="" id="eBs-ui-Hif">
-                            <font key="font" size="30" name="HelveticaNeue-Medium"/>
-                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <font key="font" size="30" name="HelveticaNeue-Light"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>

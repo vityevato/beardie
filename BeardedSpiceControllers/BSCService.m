@@ -125,7 +125,7 @@ static BSCService *bscSingleton;
             if (shortcuts) {
 
                 [shortcuts enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-                    MASShortcut *shortcut = [NSKeyedUnarchiver unarchiveObjectWithData:obj];
+                    MASShortcut *shortcut = [NSKeyedUnarchiver unarchivedObjectOfClass:[MASShortcut class] fromData:obj error:nil];
                     if (shortcut) {
                         [self->_shortcuts setObject:shortcut forKey:key];
                     }

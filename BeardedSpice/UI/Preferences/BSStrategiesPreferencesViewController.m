@@ -17,6 +17,7 @@
 #import "EHVerticalCenteredTextField.h"
 #import "BSCustomStrategyManager.h"
 #import "AppDelegate.h"
+#import "Beardie-Swift.h"
 
 
 NSString *const BSStrategiesPreferencesNativeAppChangedNoticiation = @"BSStrategiesPreferencesNativeAppChangedNoticiation";
@@ -52,6 +53,8 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(strategyChangedNotify:) name: BSVMStrategyChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(strategyChangedNotify:) name: BSCStrategyChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(strategyChangedNotify:) name: SonosRoomsController.SonosRoomsChanged object:nil];
+        
         [self loadMediaControllerObjects];
     }
     return self;
@@ -498,7 +501,10 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
     if ([obj.representationObject isKindOfClass:[BSMediaStrategy class]]) {
         enabled = userStrategies[obj.name];
     }
-    else{
+    else if ([obj.representationObject conformsToProtocol:@protocol(SonosRoom)]) {
+        enabled = @([(id<SonosRoom>)obj.representationObject enabled]);
+    }
+    else {
         enabled = userNativeApps[obj.name];
     }
     if (!enabled || [enabled boolValue]) {
@@ -611,21 +617,23 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
     if ([obj.representationObject isKindOfClass:[BSMediaStrategy class]]) {
         // Strategy
         if (enabled) {
-            [[MediaStrategyRegistry singleton] addAvailableMediaStrategy:obj.representationObject];
+            [[MediaStrategyRegistry singleton] addAvailableMediaStrategy:(BSMediaStrategy *)obj.representationObject];
         } else {
-            [[MediaStrategyRegistry singleton] removeAvailableMediaStrategy:obj.representationObject];
+            [[MediaStrategyRegistry singleton] removeAvailableMediaStrategy:(BSMediaStrategy *)obj.representationObject];
         }
         // save user strategies
         [userStrategies setObject:@(enabled) forKey:obj.name];
         [[NSUserDefaults standardUserDefaults]
          setObject:userStrategies
          forKey:BeardedSpiceActiveControllers];
+    } else if ([obj.representationObject conformsToProtocol:@protocol(SonosRoom)]) {
+        [(id<SonosRoom>)obj.representationObject setEnabled:enabled];
     } else {
         // Native
         if (enabled) {
-            [[NativeAppTabsRegistry singleton] enableNativeAppClass:obj.representationObject];
+            [[NativeAppTabsRegistry singleton] enableNativeAppClass:obj.representationObject.class];
         } else {
-            [[NativeAppTabsRegistry singleton] disableNativeAppClass:obj.representationObject];
+            [[NativeAppTabsRegistry singleton] disableNativeAppClass:obj.representationObject.class];
         }
         // save user strategies
         [userNativeApps setObject:@(enabled) forKey:obj.name];
@@ -645,7 +653,19 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
     
     NSMutableArray *mediaControllers = [NSMutableArray array];
     
-    NSArray *theArray = [NativeAppTabsRegistry defaultNativeAppClasses];
+    NSArray *theArray = SonosRoomsController.singleton.rooms;
+    if (theArray.count) {
+        MediaControllerObject *obj = [MediaControllerObject new];
+        obj.isGroup = YES;
+        obj.name = BSLocalizedString(@"Sonos", @"General preferences - controllers table");
+        [mediaControllers addObject:obj];
+        for (SonosTabAdapter *item in theArray) {
+            [mediaControllers addObject:[[MediaControllerObject alloc] initWithObject:item]];
+        }
+
+    }
+    
+    theArray = [NativeAppTabsRegistry defaultNativeAppClasses];
     if (theArray.count) {
         
         MediaControllerObject *obj = [MediaControllerObject new];
@@ -736,7 +756,7 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
     MediaControllerObject *obj = mediaControllerObjects[index];
     if ([obj.representationObject isKindOfClass:[BSMediaStrategy class]]) {
         
-        return obj.representationObject;
+        return (BSMediaStrategy *)obj.representationObject;
     }
     
     return nil;

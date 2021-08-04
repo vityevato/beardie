@@ -107,7 +107,7 @@ static NSString * FormatNSTimeInterval(NSTimeInterval interval) {
             title = BSLocalizedString(@"no-track-title", NSSTRING_EMPTY);
         }
         
-        return [NSString stringWithFormat:@"%@ (%@)", title, APPNAME_QUOD_LIBET];
+        return [NSString stringWithFormat:@"%@ | %@", QuodLibetTabAdapter.displayName, title];
     }
 }
 

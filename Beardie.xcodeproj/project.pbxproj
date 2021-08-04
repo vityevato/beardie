@@ -124,6 +124,8 @@
 		65B39582265576B300DBD144 /* BeardedSpiceHostAppProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */; };
 		65B39583265576B300DBD144 /* BeardedSpiceHostAppProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */; };
 		65C511721AED802B00EBA6A5 /* BSNativeAppTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C511711AED802B00EBA6A5 /* BSNativeAppTabAdapter.m */; };
+		65CDBB19268FA6D900E15BF9 /* SonosTabAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CDBB17268FA6D800E15BF9 /* SonosTabAdapter.swift */; };
+		65CDBB1A268FA6D900E15BF9 /* SonosRoomsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CDBB18268FA6D800E15BF9 /* SonosRoomsController.swift */; };
 		65D09F0D266D60B400C8B46C /* BSSwinsianTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65D09F0C266D60B400C8B46C /* BSSwinsianTabAdapter.m */; };
 		65D57FCB1D02CBFE0016F270 /* MediaStrategies in Resources */ = {isa = PBXBuildFile; fileRef = 65D57FCA1D02CBFE0016F270 /* MediaStrategies */; };
 		65D57FCC1D02CC250016F270 /* MediaStrategies in Resources */ = {isa = PBXBuildFile; fileRef = 65D57FCA1D02CBFE0016F270 /* MediaStrategies */; };
@@ -555,6 +557,8 @@
 		65C511711AED802B00EBA6A5 /* BSNativeAppTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSNativeAppTabAdapter.m; sourceTree = "<group>"; };
 		65C8DB9A2619B47D000E19B9 /* Tidal-Pause-Names.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tidal-Pause-Names.h"; sourceTree = "<group>"; };
 		65C8DB9B2619B47D000E19B9 /* extruct-pause-names.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "extruct-pause-names.sh"; sourceTree = "<group>"; };
+		65CDBB17268FA6D800E15BF9 /* SonosTabAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SonosTabAdapter.swift; sourceTree = "<group>"; };
+		65CDBB18268FA6D800E15BF9 /* SonosRoomsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SonosRoomsController.swift; sourceTree = "<group>"; };
 		65D09F0A266D601300C8B46C /* Swinsian.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Swinsian.h; sourceTree = "<group>"; };
 		65D09F0B266D60B400C8B46C /* BSSwinsianTabAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BSSwinsianTabAdapter.h; sourceTree = "<group>"; };
 		65D09F0C266D60B400C8B46C /* BSSwinsianTabAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BSSwinsianTabAdapter.m; sourceTree = "<group>"; };
@@ -805,6 +809,15 @@
 				653B09D125D98146005C5807 /* main.swift */,
 			);
 			path = restarter;
+			sourceTree = "<group>";
+		};
+		654D71A7268F60A1005774D5 /* Sonos */ = {
+			isa = PBXGroup;
+			children = (
+				65CDBB18268FA6D800E15BF9 /* SonosRoomsController.swift */,
+				65CDBB17268FA6D800E15BF9 /* SonosTabAdapter.swift */,
+			);
+			path = Sonos;
 			sourceTree = "<group>";
 		};
 		6557B48D1F6ADBC800295997 /* BrowserExtensionsController */ = {
@@ -1203,6 +1216,7 @@
 				65FBCE3B1EC0F8F3004EFFC7 /* UI */,
 				657C77372379D96A00A55EFE /* WebApps */,
 				657C77352379D90800A55EFE /* NativeApps */,
+				654D71A7268F60A1005774D5 /* Sonos */,
 				6557B48D1F6ADBC800295997 /* BrowserExtensionsController */,
 				653F6FB11ECA441E00ACA294 /* BSVolumeControlProtocol.h */,
 				657EAEA71AAAEB9300D00456 /* runningSBApplication.h */,
@@ -1986,6 +2000,7 @@
 				9679333C1855173100A49AC7 /* main.m in Sources */,
 				65D09F0D266D60B400C8B46C /* BSSwinsianTabAdapter.m in Sources */,
 				65D795C226440F6C00F4C713 /* SharedResources.swift in Sources */,
+				65CDBB19268FA6D900E15BF9 /* SonosTabAdapter.swift in Sources */,
 				654D044825EBC83200270533 /* UIController.swift in Sources */,
 				656A00351C8AD41A00BD29F5 /* NSString+Utils.m in Sources */,
 				657C77382379E31D00A55EFE /* BSNativeAppTabsController.m in Sources */,
@@ -1996,6 +2011,7 @@
 				656A00371C8AD41A00BD29F5 /* NSURL+Utils.m in Sources */,
 				6588CF461B3584A700A3CBAD /* VOXTabAdapter.m in Sources */,
 				6507A3021F48824000775D14 /* BSWebTabAdapter.m in Sources */,
+				65CDBB1A268FA6D900E15BF9 /* SonosRoomsController.swift in Sources */,
 				656A00311C8AD41A00BD29F5 /* EHSystemUtils.m in Sources */,
 				65384DBB2187BC5C0029D9E9 /* BSSharedResources.m in Sources */,
 				6568C4E72353B64100558DC6 /* BSWebTabSafariAdapter.m in Sources */,
@@ -2485,7 +2501,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2521,7 +2536,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2907,7 +2921,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

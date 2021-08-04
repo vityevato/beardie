@@ -13,7 +13,7 @@ extension UserDefaultsKeys {
     static let AppCastUrl = "AppCastUrl"
 }
 
-class AppUpdater: NSObject, SUUpdaterDelegate {
+final class AppUpdater: NSObject, SUUpdaterDelegate {
 
     override init() {
         if !self.infoChannel.isEmpty {

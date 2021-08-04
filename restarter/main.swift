@@ -9,7 +9,7 @@
 import Foundation
 import AppKit
 
-class TerminationListener: NSObject {
+final class TerminationListener: NSObject {
     let executablePath: String
     var parentProcessId: pid_t
 

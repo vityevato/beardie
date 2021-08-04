@@ -10,7 +10,7 @@ import Cocoa
 import SafariServices
 import CocoaLumberjack
 
-class GetExtensions: NSWindowController {
+final class GetExtensions: NSWindowController {
 
     // MARK: Private properties
     private static let CHROME_WEB_STORE_URL_FORMAT = "https://chrome.google.com/webstore/detail/%@/"
