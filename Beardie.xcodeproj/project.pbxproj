@@ -486,6 +486,8 @@
 		656AFFFB1C8AD3B400BD29F5 /* BSHeadphoneStatusListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSHeadphoneStatusListener.h; sourceTree = "<group>"; };
 		656AFFFC1C8AD3B400BD29F5 /* BSHeadphoneStatusListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSHeadphoneStatusListener.m; sourceTree = "<group>"; };
 		656AFFFF1C8AD3C800BD29F5 /* DDHidAppleMikey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidAppleMikey.h; sourceTree = "<group>"; };
+		6576179226BB1D2500731CEA /* extruct-pause-names.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "extruct-pause-names.sh"; sourceTree = "<group>"; };
+		6576179326BB283100731CEA /* Podcasts-Pause-Names.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Podcasts-Pause-Names.h"; sourceTree = "<group>"; };
 		657635A51E88199900A4FCAD /* AirfoilSatellite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AirfoilSatellite.h; sourceTree = "<group>"; };
 		657635A61E8819E300A4FCAD /* AirfoilSatelliteTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AirfoilSatelliteTabAdapter.h; sourceTree = "<group>"; };
 		657635A71E8819E300A4FCAD /* AirfoilSatelliteTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AirfoilSatelliteTabAdapter.m; sourceTree = "<group>"; };
@@ -954,6 +956,15 @@
 			path = DDHidLib;
 			sourceTree = "<group>";
 		};
+		6576179126BB1CFA00731CEA /* Podcasts */ = {
+			isa = PBXGroup;
+			children = (
+				6576179326BB283100731CEA /* Podcasts-Pause-Names.h */,
+				6576179226BB1D2500731CEA /* extruct-pause-names.sh */,
+			);
+			path = Podcasts;
+			sourceTree = "<group>";
+		};
 		657C77352379D90800A55EFE /* NativeApps */ = {
 			isa = PBXGroup;
 			children = (
@@ -971,6 +982,7 @@
 		657C77362379D91600A55EFE /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				6576179126BB1CFA00731CEA /* Podcasts */,
 				65C8DB992619B081000E19B9 /* Tidal */,
 				65A27DB325FA9AEB007C0CB7 /* Deezer */,
 				65D09F0A266D601300C8B46C /* Swinsian.h */,
