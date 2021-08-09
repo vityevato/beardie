@@ -38,6 +38,10 @@
     return [self assignKey];
 }
 
+- (BOOL)autoSelected {
+    return YES;
+}
+
 - (BOOL)activateApp{
 
     @autoreleasepool {

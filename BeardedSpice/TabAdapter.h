@@ -18,6 +18,8 @@
 -(NSString *) URL;
 -(NSString *) key;
 
+- (BOOL)autoSelected;
+
 - (BOOL)activateApp;
 - (BOOL)deactivateApp;
 

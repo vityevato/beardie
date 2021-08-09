@@ -685,7 +685,7 @@ BOOL accessibilityApiEnabled = NO;
                         [newItems addObject:menuItem];
                         [menuItem setRepresentedObject:tab];
                         
-                        if ([tab isPlaying])
+                        if (tab.autoSelected && [tab isPlaying])
                             [playingTabs addObject:tab];
                     }
                 } @catch (NSException *exception) {

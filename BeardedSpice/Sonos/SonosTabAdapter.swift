@@ -18,6 +18,7 @@ extension UserDefaultsKeys {
 final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
 
     // MARK: Constants
+    static let bundleId = "com.sonos.macController2"
     static let seekOffset: Int = 30 //seconrds
     static let offsetFromStartWhenWorkPrevious: Int = 2 //seconrds
     static let seekDebounceTime: RxTimeInterval = 0.5 // seconds
@@ -41,7 +42,17 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
     // MARK: Overrides
     
     override var application: runningSBApplication! {
-        runningSBApplication.sharedApplication(forBundleIdentifier: "com.sonos.macController2")
+        return runningSBApplication.sharedApplication(forBundleIdentifier: Self.bundleId)
+    }
+    
+    override func activateApp() -> Bool {
+        if self.application == nil {
+            guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: Self.bundleId),
+                  let _ = try? NSWorkspace.shared.launchApplication(at: url, options: [.withoutActivation], configuration: [:]) else {
+                return false
+            }
+        }
+        return super.activateApp()
     }
     
     override func title() -> String! {
@@ -75,6 +86,30 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
     }
     override func key() -> String! {
         return self.group.slaves.reduce(self.group.master.uuid) { $0 + $1.uuid }
+    }
+    
+    override func autoSelected() -> Bool {
+        let sync = DispatchGroup()
+        var result = true
+        sync.enter()
+        let subsrc = SonosInteractor.singleTrack(self.group)
+            .subscribe { event in
+                if case .success(let track) = event,
+                   let track = track {
+                    switch track.contentType {
+                    case .lineInHomeTheater:
+                        result = false
+                    default:
+                        result = true
+                    }
+                }
+                sync.leave()
+            }
+        
+        sync.wait()
+        subsrc.dispose()
+        
+        return result
     }
     override func activateTab() -> Bool {
         self.wasActivated = true
@@ -485,6 +520,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
                         .debounce(Self.seekDebounceTime, scheduler: self.queue)
                         .flatMap({ (pos, _)  -> Completable in
                             self.seekSubject = nil
+                            self.needNoti = true
                             return SonosInteractor.seekTrack(time: self.secondsToTimeString(Int(pos)), for: self.group)
                         })
                         .subscribe()
