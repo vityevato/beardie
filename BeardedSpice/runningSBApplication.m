@@ -20,6 +20,7 @@
 }
 
 static NSMutableDictionary *_sharedAppHandler;
+static NSRunningApplication *_frontmostApp;
 
 + (instancetype)sharedApplicationForBundleIdentifier:(NSString *)bundleIdentifier {
     
@@ -93,7 +94,7 @@ static NSMutableDictionary *_sharedAppHandler;
 
 - (BOOL)activate{
     [EHSystemUtils callOnMainQueue:^{
-        
+        _frontmostApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
         self->_wasActivated = [[self runningApplication] activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)];
     }];
     return _wasActivated;
@@ -184,6 +185,8 @@ static NSMutableDictionary *_sharedAppHandler;
         if ([keyPath isEqualToString:@"hidden"]) {
             NSNumber *val = change[NSKeyValueChangeNewKey];
             if (val && [val boolValue]) {
+                [_frontmostApp activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)];
+                _frontmostApp = nil;
                 [self->_lockForHide broadcast];
             }
         }
@@ -217,9 +220,18 @@ static NSMutableDictionary *_sharedAppHandler;
     
     BOOL result = NO;
     if (menuItem) {
-        
+        AXUIElementRef activeWindow = [self frontmostAppMainWindowUIElement];
+        BOOL doit = [self isFullscreenUIElementWindow:activeWindow];
+        if (doit) {
+            [self setFullscreenUIElementWindow:activeWindow value:NO];
+        }
         result = (AXUIElementPerformAction(menuItem, (CFStringRef)NSAccessibilityPressAction) == kAXErrorSuccess);
+        if (doit) {
+            [self setFullscreenUIElementWindow:activeWindow value:YES];
+        }
         CFRelease(menuItem);
+        if (activeWindow)
+            CFRelease(activeWindow);
     }
     DDLogDebug(@"(pressMenuBarItemForIndexPath) Result: %@", (result ? @"YES" : @"NO"));
 
@@ -333,6 +345,52 @@ static NSMutableDictionary *_sharedAppHandler;
     
     return item;
 }
+- (AXUIElementRef)frontmostAppMainWindowUIElement{
+    
+    AXUIElementRef item = nil;
+    AXUIElementRef ref = AXUIElementCreateApplication(NSWorkspace.sharedWorkspace.frontmostApplication.processIdentifier);
+    
+    if (ref) {
+        
+        AXUIElementRef window = nil;
+        if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityMainWindowAttribute, (CFTypeRef *)&window) == kAXErrorSuccess
+            && window) {
+            
+            item = window;
+            DDLogDebug(@"Active app main window obtained");
+        }
+        else {
+            DDLogDebug(@"Active app main window didn't obtain");
+        }
+        CFRelease(ref);
+    }
+    
+    return item;
+}
+
+- (BOOL)isFullscreenUIElementWindow:(AXUIElementRef)window {
+    
+    BOOL result = NO;
+    if (window) {
+        
+        CFTypeRef val;
+        NSNumber *number;
+        number = (AXUIElementCopyAttributeValue(window, CFSTR("AXFullScreen"), (CFTypeRef *)&val) == kAXErrorSuccess ?
+                (NSNumber *)CFBridgingRelease(val): nil);
+        result = number.boolValue;
+    }
+    DDLogDebug(@"isFullscreenUIElementWindow result: %@", result ? @"YES" : @"NO");
+    return result;
+}
+
+- (BOOL)setFullscreenUIElementWindow:(AXUIElementRef)window value:(BOOL)value {
+    
+    if (window) {
+        return AXUIElementSetAttributeValue(window, CFSTR("AXFullScreen"), (CFNumberRef)@(value)) == kAXErrorSuccess;
+    }
+    return NO;
+}
+
 
 - (BOOL)isEqual:(id)object{
 
