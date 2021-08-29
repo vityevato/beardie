@@ -48,7 +48,7 @@
 
         if ([self.application frontmost] == NO) {
 
-            BOOL result = [self.application activate];
+            BOOL result = [self.application activateWithHoldFrontmost:YES];
             DDLogDebug(@"[self.application activate] = %d", result);
             return result;
         }

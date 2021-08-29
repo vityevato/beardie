@@ -15,7 +15,7 @@
 
 @implementation runningSBApplication {
     pid_t _processIdentifier;
-    NSRunningApplication *_runningApplicationForHide;
+    NSRunningApplication *_runningApplication;
     NSCondition *_lockForHide;
 }
 
@@ -93,9 +93,11 @@ static AXUIElementRef _frontmostAppFocusedWindow = nil;
     return [[self runningApplication] processIdentifier];
 }
 
-- (BOOL)activate{
+- (BOOL)activateWithHoldFrontmost:(BOOL)hold {
     [EHSystemUtils callOnMainQueue:^{
-        [self getCurrentFrontmost];
+        if (hold || _frontmostApp == nil) {
+            [self getCurrentFrontmost];
+        }
         self->_wasActivated = [[self runningApplication] activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)];
     }];
     return _wasActivated;

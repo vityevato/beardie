@@ -53,7 +53,6 @@ static inline BOOL alwaysShowNotification() {
 - (void)showNotificationNowUsingFallback:(BOOL)useFallback;
 - (void)showDefaultNotification;
 
-- (void)activateTab;
 - (void)activatePlayingTab;
 
 #pragma mark -
