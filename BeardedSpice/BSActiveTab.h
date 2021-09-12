@@ -35,7 +35,8 @@ static inline BOOL alwaysShowNotification() {
 @property (nonatomic, weak) MediaStrategyRegistry *registry;
 
 - (BOOL)updateActiveTab:(TabAdapter *)tab;
-- (void)pauseActiveTab;
+/// Performs action on active tab when user become inactive
+- (void)performUserLeave;
 
 #pragma mark -
 

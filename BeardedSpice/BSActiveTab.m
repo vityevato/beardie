@@ -135,11 +135,14 @@ dispatch_queue_t notificationQueue(void);
     return NO;
 }
 
-- (void)pauseActiveTab {
-    @try {
-        [_activeTab pause];
-    } @catch (NSException *exception) {
-        DDLogError(@"Exception occured: %@", exception);
+- (void)performUserLeave {
+    // If active tab is not Sonos tab we set it to pause state
+    if ([_activeTab isKindOfClass:[SonosTabAdapter class]] == NO) {
+        @try {
+            [_activeTab pause];
+        } @catch (NSException *exception) {
+            DDLogError(@"Exception occured: %@", exception);
+        }
     }
 }
 

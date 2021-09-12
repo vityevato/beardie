@@ -502,7 +502,7 @@ BOOL accessibilityApiEnabled = NO;
     __weak typeof(self) wself = self;
     dispatch_async(_workingQueue, ^{
         __strong typeof(wself) sself = self;
-        [sself.activeApp pauseActiveTab];
+        [sself.activeApp performUserLeave];
     });
 }
 
@@ -999,7 +999,7 @@ BOOL accessibilityApiEnabled = NO;
 {
     __weak typeof(self) wself = self;
     dispatch_async(_workingQueue, ^{
-        [wself.activeApp pauseActiveTab];
+        [wself.activeApp performUserLeave];
     });
 }
 
@@ -1007,7 +1007,7 @@ BOOL accessibilityApiEnabled = NO;
 {
     __weak typeof(self) wself = self;
     dispatch_async(_workingQueue, ^{
-        [wself.activeApp pauseActiveTab];
+        [wself.activeApp performUserLeave];
     });
 }
 
