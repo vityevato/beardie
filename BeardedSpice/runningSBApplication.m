@@ -15,12 +15,13 @@
 
 @implementation runningSBApplication {
     pid_t _processIdentifier;
-    NSRunningApplication *_runningApplicationForHide;
+    NSRunningApplication *_runningApplication;
     NSCondition *_lockForHide;
 }
 
 static NSMutableDictionary *_sharedAppHandler;
-static NSRunningApplication *_frontmostApp;
+static NSRunningApplication *_frontmostApp = nil;
+static AXUIElementRef _frontmostAppFocusedWindow = nil;
 
 + (instancetype)sharedApplicationForBundleIdentifier:(NSString *)bundleIdentifier {
     
@@ -92,9 +93,11 @@ static NSRunningApplication *_frontmostApp;
     return [[self runningApplication] processIdentifier];
 }
 
-- (BOOL)activate{
+- (BOOL)activateWithHoldFrontmost:(BOOL)hold {
     [EHSystemUtils callOnMainQueue:^{
-        _frontmostApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
+        if (hold || _frontmostApp == nil) {
+            [self getCurrentFrontmost];
+        }
         self->_wasActivated = [[self runningApplication] activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)];
     }];
     return _wasActivated;
@@ -185,8 +188,7 @@ static NSRunningApplication *_frontmostApp;
         if ([keyPath isEqualToString:@"hidden"]) {
             NSNumber *val = change[NSKeyValueChangeNewKey];
             if (val && [val boolValue]) {
-                [_frontmostApp activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)];
-                _frontmostApp = nil;
+                [self repairFrontmost];
                 [self->_lockForHide broadcast];
             }
         }
@@ -220,18 +222,8 @@ static NSRunningApplication *_frontmostApp;
     
     BOOL result = NO;
     if (menuItem) {
-        AXUIElementRef activeWindow = [self frontmostAppMainWindowUIElement];
-        BOOL doit = [self isFullscreenUIElementWindow:activeWindow];
-        if (doit) {
-            [self setFullscreenUIElementWindow:activeWindow value:NO];
-        }
         result = (AXUIElementPerformAction(menuItem, (CFStringRef)NSAccessibilityPressAction) == kAXErrorSuccess);
-        if (doit) {
-            [self setFullscreenUIElementWindow:activeWindow value:YES];
-        }
         CFRelease(menuItem);
-        if (activeWindow)
-            CFRelease(activeWindow);
     }
     DDLogDebug(@"(pressMenuBarItemForIndexPath) Result: %@", (result ? @"YES" : @"NO"));
 
@@ -345,18 +337,32 @@ static NSRunningApplication *_frontmostApp;
     
     return item;
 }
-- (AXUIElementRef)frontmostAppMainWindowUIElement{
+- (void)getCurrentFrontmost{
     
-    AXUIElementRef item = nil;
-    AXUIElementRef ref = AXUIElementCreateApplication(NSWorkspace.sharedWorkspace.frontmostApplication.processIdentifier);
+    if (_frontmostAppFocusedWindow) {
+        CFRelease(_frontmostAppFocusedWindow);
+        _frontmostAppFocusedWindow = nil;
+    }
+    
+    _frontmostApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
+    if (_frontmostApp == nil) {
+        return;
+    }
+    
+    AXUIElementRef ref = AXUIElementCreateApplication(_frontmostApp.processIdentifier);
     
     if (ref) {
         
         AXUIElementRef window = nil;
-        if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityMainWindowAttribute, (CFTypeRef *)&window) == kAXErrorSuccess
-            && window) {
+        if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityFocusedWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess
+            || window == nil) {
+            if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityMainWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess ) {\
+                window = nil;
+            }
+        }
+        if (window) {
             
-            item = window;
+            _frontmostAppFocusedWindow = window;
             DDLogDebug(@"Active app main window obtained");
         }
         else {
@@ -364,8 +370,18 @@ static NSRunningApplication *_frontmostApp;
         }
         CFRelease(ref);
     }
-    
-    return item;
+}
+
+- (void)repairFrontmost {
+    if (_frontmostApp) {
+        if ([_frontmostApp activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)]
+            && _frontmostAppFocusedWindow) {
+            AXUIElementPerformAction(_frontmostAppFocusedWindow, CFSTR("AXRaise"));
+            _frontmostAppFocusedWindow = nil;
+        }
+        _frontmostApp = nil;
+    }
+
 }
 
 - (BOOL)isFullscreenUIElementWindow:(AXUIElementRef)window {
@@ -390,7 +406,6 @@ static NSRunningApplication *_frontmostApp;
     }
     return NO;
 }
-
 
 - (BOOL)isEqual:(id)object{
 

@@ -22,7 +22,7 @@
 
 - (instancetype)initWithApplication:(SBApplication *)application bundleIdentifier:(NSString *)bundleIdentifier;
 
-- (BOOL)activate;
+- (BOOL)activateWithHoldFrontmost:(BOOL)hold;
 - (BOOL)hide;
 - (void)makeKeyFrontmostWindow;
 
