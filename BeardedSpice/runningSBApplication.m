@@ -104,21 +104,24 @@ static AXUIElementRef _frontmostAppFocusedWindow = nil;
 }
 
 - (BOOL)hide{
-    [self->_lockForHide lock];
-    [EHSystemUtils callOnMainQueue:^{
-        self->_runningApplicationForHide = [self runningApplication];
-        [self->_runningApplicationForHide addObserver:self
-                                        forKeyPath:@"hidden"
-                                           options:NSKeyValueObservingOptionNew context:NULL];
-        [self->_runningApplicationForHide hide];
-    }];
-    [self->_lockForHide waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:COMMAND_TIMEOUT]];
-    self->_wasActivated = ! self->_runningApplicationForHide.hidden;
-    [self->_runningApplicationForHide removeObserver:self forKeyPath:@"hidden"];
-    self->_runningApplicationForHide = nil;
-    [self->_lockForHide unlock];
+    [self repairFrontmost];
+    _wasActivated = NO;
+    return YES;
+//    [self->_lockForHide lock];
+//    [EHSystemUtils callOnMainQueue:^{
+//        self->_runningApplicationForHide = [self runningApplication];
+//        [self->_runningApplicationForHide addObserver:self
+//                                        forKeyPath:@"hidden"
+//                                           options:NSKeyValueObservingOptionNew context:NULL];
+//        [self->_runningApplicationForHide hide];
+//    }];
+//    [self->_lockForHide waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:COMMAND_TIMEOUT]];
+//    self->_wasActivated = ! self->_runningApplicationForHide.hidden;
+//    [self->_runningApplicationForHide removeObserver:self forKeyPath:@"hidden"];
+//    self->_runningApplicationForHide = nil;
+//    [self->_lockForHide unlock];
     
-    return ! _wasActivated;
+//    return ! _wasActivated;
 }
 
 - (void)makeKeyFrontmostWindow{
@@ -179,22 +182,22 @@ static AXUIElementRef _frontmostAppFocusedWindow = nil;
 /////////////////////////////////////////////////////////////////////////
 #pragma mark Observing properties
 
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
-    if ([object isEqual:self->_runningApplicationForHide]) {
-        [self->_lockForHide lock];
-        if ([keyPath isEqualToString:@"hidden"]) {
-            NSNumber *val = change[NSKeyValueChangeNewKey];
-            if (val && [val boolValue]) {
-                [self repairFrontmost];
-                [self->_lockForHide broadcast];
-            }
-        }
-        [self->_lockForHide unlock];
-    }
-}
+//- (void)observeValueForKeyPath:(NSString *)keyPath
+//                      ofObject:(id)object
+//                        change:(NSDictionary *)change
+//                       context:(void *)context {
+//    if ([object isEqual:self->_runningApplicationForHide]) {
+//        [self->_lockForHide lock];
+//        if ([keyPath isEqualToString:@"hidden"]) {
+//            NSNumber *val = change[NSKeyValueChangeNewKey];
+//            if (val && [val boolValue]) {
+//                [self repairFrontmost];
+//                [self->_lockForHide broadcast];
+//            }
+//        }
+//        [self->_lockForHide unlock];
+//    }
+//}
 
 /////////////////////////////////////////////////////////////////////////
 #pragma mark Supporting actions in application menubar

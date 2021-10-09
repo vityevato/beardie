@@ -58,13 +58,21 @@ static NSSet *_safariBundleIds;
         NSString *windowId = response[@"windowIdForMakeFrontmost"];
         
         if (windowId) {
-            AXUIElementRef window = [self AXWindowByIdentifier:windowId];
-            if (window) {
-                DDLogDebug(@"Window obtained: %p", window);
-                AXUIElementPerformAction(window, CFSTR("AXRaise"));
-                CFRelease(window);
-                return YES;
+            NSArray *variants = @[
+                windowId,
+                [NSString stringWithFormat:@"SafariWindow?UsingUnifiedBar=false&UUID=%@", windowId]
+            ];
+            for (NSString *item in variants) {
+                
+                AXUIElementRef window = [self AXWindowByIdentifier:item];
+                if (window) {
+                    DDLogDebug(@"Window obtained: %p", window);
+                    AXUIElementPerformAction(window, CFSTR("AXRaise"));
+                    CFRelease(window);
+                    return YES;
+                }
             }
+            
             return NO;
         }
     }
@@ -104,6 +112,7 @@ static NSSet *_safariBundleIds;
                                     err = AXUIElementCopyAttributeValue(window, CFSTR("AXIdentifier"), (CFTypeRef *)&identifier);
                                     if (err == kAXErrorSuccess && identifier) {
                                         
+                                        DDLogDebug(@"AXIdentifier for Safari window: %@", (__bridge NSString *)identifier);
                                         if (CFStringCompare(identifier, (__bridge CFStringRef)windowId, 0) == kCFCompareEqualTo) {
                                             result = window;
                                             CFRetain(result);
