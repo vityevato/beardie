@@ -10,18 +10,20 @@
 #import "EHSystemUtils.h"
 #import "NSString+Utils.h"
 
-#define COMMAND_TIMEOUT         3 // 0.3 second
+#define COMMAND_TIMEOUT         3 // 3 second
 #define RAISING_WINDOW_DELAY    0.1 //0.1 second
 
 @implementation runningSBApplication {
     pid_t _processIdentifier;
-    NSRunningApplication *_runningApplication;
-    NSCondition *_lockForHide;
+    NSRunningApplication *_runningApplicationForActivate;
+    NSCondition *_lockForActivate;
+    
 }
 
 static NSMutableDictionary *_sharedAppHandler;
 static NSRunningApplication *_frontmostApp = nil;
 static AXUIElementRef _frontmostAppFocusedWindow = nil;
+static BOOL _frontmostAppFocusedWindowFullScreen = NO;
 
 + (instancetype)sharedApplicationForBundleIdentifier:(NSString *)bundleIdentifier {
     
@@ -60,6 +62,39 @@ static AXUIElementRef _frontmostAppFocusedWindow = nil;
     }
 }
 
++ (BOOL)isFullscreenCurrentFrontmost {
+    
+    NSRunningApplication *frontmostApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
+    if (frontmostApp == nil) {
+        return NO;
+    }
+    
+    BOOL result = NO;
+    AXUIElementRef ref = AXUIElementCreateApplication(frontmostApp.processIdentifier);
+    
+    if (ref) {
+        
+        AXUIElementRef window = nil;
+        if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityFocusedWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess
+            || window == nil) {
+            if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityMainWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess ) {
+                window = nil;
+            }
+        }
+        if (window) {
+            
+            result = [self isFullscreenUIElementWindow:window];
+            CFRelease(window);
+        }
+        else {
+            DDLogDebug(@"Active app main window didn't obtain");
+        }
+        CFRelease(ref);
+    }
+    
+    return  result;
+}
+
 - (instancetype)initWithApplication:(SBApplication *)application bundleIdentifier:(NSString *)bundleIdentifier{
     
     self = [super init];
@@ -68,7 +103,7 @@ static AXUIElementRef _frontmostAppFocusedWindow = nil;
         _sbApplication = application;
         _bundleIdentifier = bundleIdentifier;
         _processIdentifier = 0;
-        _lockForHide = [NSCondition new];
+        _lockForActivate = [NSCondition new];
         
         _sbApplication.timeout = COMMAND_TIMEOUT;
     }
@@ -93,13 +128,26 @@ static AXUIElementRef _frontmostAppFocusedWindow = nil;
     return [[self runningApplication] processIdentifier];
 }
 
+
 - (BOOL)activateWithHoldFrontmost:(BOOL)hold {
+    
+    [self->_lockForActivate lock];
     [EHSystemUtils callOnMainQueue:^{
         if (hold || _frontmostApp == nil) {
-            [self getCurrentFrontmost];
+            [self holdCurrentFrontmost];
         }
-        self->_wasActivated = [[self runningApplication] activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)];
+        self->_runningApplicationForActivate = [self runningApplication];
+        [self->_runningApplicationForActivate addObserver:self
+                                        forKeyPath:@"active"
+                                           options:NSKeyValueObservingOptionNew context:NULL];
+        self->_wasActivated = [self->_runningApplicationForActivate
+                               activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)];
     }];
+    [self->_lockForActivate waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:COMMAND_TIMEOUT]];
+    self->_wasActivated = self->_runningApplicationForActivate.active;
+    [self->_runningApplicationForActivate removeObserver:self forKeyPath:@"active"];
+    self->_runningApplicationForActivate = nil;
+    [self->_lockForActivate unlock];
     return _wasActivated;
 }
 
@@ -107,21 +155,6 @@ static AXUIElementRef _frontmostAppFocusedWindow = nil;
     [self repairFrontmost];
     _wasActivated = NO;
     return YES;
-//    [self->_lockForHide lock];
-//    [EHSystemUtils callOnMainQueue:^{
-//        self->_runningApplicationForHide = [self runningApplication];
-//        [self->_runningApplicationForHide addObserver:self
-//                                        forKeyPath:@"hidden"
-//                                           options:NSKeyValueObservingOptionNew context:NULL];
-//        [self->_runningApplicationForHide hide];
-//    }];
-//    [self->_lockForHide waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:COMMAND_TIMEOUT]];
-//    self->_wasActivated = ! self->_runningApplicationForHide.hidden;
-//    [self->_runningApplicationForHide removeObserver:self forKeyPath:@"hidden"];
-//    self->_runningApplicationForHide = nil;
-//    [self->_lockForHide unlock];
-    
-//    return ! _wasActivated;
 }
 
 - (void)makeKeyFrontmostWindow{
@@ -182,22 +215,22 @@ static AXUIElementRef _frontmostAppFocusedWindow = nil;
 /////////////////////////////////////////////////////////////////////////
 #pragma mark Observing properties
 
-//- (void)observeValueForKeyPath:(NSString *)keyPath
-//                      ofObject:(id)object
-//                        change:(NSDictionary *)change
-//                       context:(void *)context {
-//    if ([object isEqual:self->_runningApplicationForHide]) {
-//        [self->_lockForHide lock];
-//        if ([keyPath isEqualToString:@"hidden"]) {
-//            NSNumber *val = change[NSKeyValueChangeNewKey];
-//            if (val && [val boolValue]) {
-//                [self repairFrontmost];
-//                [self->_lockForHide broadcast];
-//            }
-//        }
-//        [self->_lockForHide unlock];
-//    }
-//}
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context {
+    if ([object isEqual:self->_runningApplicationForActivate]) {
+        [self->_lockForActivate lock];
+        if ([keyPath isEqualToString:@"active"]) {
+            NSNumber *val = change[NSKeyValueChangeNewKey];
+            if (val && [val boolValue]) {
+                DDLogDebug(@"Was activated: %@", self->_runningApplicationForActivate);
+                [self->_lockForActivate broadcast];
+            }
+        }
+        [self->_lockForActivate unlock];
+    }
+}
 
 /////////////////////////////////////////////////////////////////////////
 #pragma mark Supporting actions in application menubar
@@ -340,7 +373,7 @@ static AXUIElementRef _frontmostAppFocusedWindow = nil;
     
     return item;
 }
-- (void)getCurrentFrontmost{
+- (void)holdCurrentFrontmost{
     
     if (_frontmostAppFocusedWindow) {
         CFRelease(_frontmostAppFocusedWindow);
@@ -359,13 +392,14 @@ static AXUIElementRef _frontmostAppFocusedWindow = nil;
         AXUIElementRef window = nil;
         if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityFocusedWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess
             || window == nil) {
-            if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityMainWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess ) {\
+            if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityMainWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess ) {
                 window = nil;
             }
         }
         if (window) {
             
             _frontmostAppFocusedWindow = window;
+            _frontmostAppFocusedWindowFullScreen = [runningSBApplication isFullscreenUIElementWindow:_frontmostAppFocusedWindow];
             DDLogDebug(@"Active app main window obtained");
         }
         else {
@@ -380,14 +414,16 @@ static AXUIElementRef _frontmostAppFocusedWindow = nil;
         if ([_frontmostApp activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)]
             && _frontmostAppFocusedWindow) {
             AXUIElementPerformAction(_frontmostAppFocusedWindow, CFSTR("AXRaise"));
+            CFRelease(_frontmostAppFocusedWindow);
             _frontmostAppFocusedWindow = nil;
+            _frontmostAppFocusedWindowFullScreen = NO;
         }
         _frontmostApp = nil;
     }
 
 }
 
-- (BOOL)isFullscreenUIElementWindow:(AXUIElementRef)window {
++ (BOOL)isFullscreenUIElementWindow:(AXUIElementRef)window {
     
     BOOL result = NO;
     if (window) {

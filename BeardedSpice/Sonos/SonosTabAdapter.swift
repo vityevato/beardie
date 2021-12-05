@@ -45,14 +45,14 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         return runningSBApplication.sharedApplication(forBundleIdentifier: Self.bundleId)
     }
     
-    override func activateApp() -> Bool {
+    override func activateApp(withHoldFrontmost hold: Bool) -> Bool {
         if self.application == nil {
             guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: Self.bundleId),
                   let _ = try? NSWorkspace.shared.launchApplication(at: url, options: [.withoutActivation], configuration: [:]) else {
                 return false
             }
         }
-        return super.activateApp()
+        return super.activateApp(withHoldFrontmost: hold)
     }
     
     override func title() -> String! {
@@ -132,7 +132,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         }
         if !result {
             
-            _ = self.activateApp()
+            _ = self.activateApp(withHoldFrontmost: true)
             _ = self.activateTab()
         }
         

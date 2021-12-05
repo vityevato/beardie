@@ -54,7 +54,7 @@
         return nil;
     }
     
-    self = [super init];
+    self = [self init];
     if (self) {
         _delegateQueue = dispatch_queue_create("com.beardie.tab.websocket", DISPATCH_QUEUE_SERIAL);
         _tabSocket = tabSocket;
@@ -75,7 +75,7 @@
     id response;
     [_actionLock lock];
     dispatch_async(BSStrategyWebSocketServer.singleton.tabsServer.delegateQueue, ^{
-        
+        DDLogDebug(@"Sending message: %@", message);
         [self.tabSocket send:message];
     });
     if ([_actionLock waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:RESPONSE_TIMEPUT]] == NO) {
@@ -87,6 +87,7 @@
         response = _lastResponse;
         _lastResponse = nil;
     }
+    DDLogDebug(@"Message succesfully sent with response: %@", response);
     [_actionLock unlock];
     return response;
 }
@@ -120,8 +121,8 @@
     
     return _key;
 }
-- (BOOL)activateApp {
-    return [super activateApp];
+- (BOOL)activateAppWithHoldFrontmost:(BOOL)hold {
+    return [super activateAppWithHoldFrontmost: hold];
 }
 
 - (BOOL)deactivateApp {
@@ -167,7 +168,7 @@
     if (! result) {
         DDLogDebug(@"Need activate");
 
-        [self activateApp];
+        [self activateAppWithHoldFrontmost:YES];
         [self activateTab];
     }
 }

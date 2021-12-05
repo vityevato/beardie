@@ -42,17 +42,20 @@
     return YES;
 }
 
-- (BOOL)activateApp{
+- (BOOL)activateAppWithHoldFrontmost:(BOOL)hold {
 
     @autoreleasepool {
 
         if ([self.application frontmost] == NO) {
 
-            BOOL result = [self.application activateWithHoldFrontmost:YES];
+            BOOL result = [self.application activateWithHoldFrontmost:hold];
             DDLogDebug(@"[self.application activate] = %d", result);
             return result;
         }
-        self.application.wasActivated = NO;
+        
+        if (hold) {
+            self.application.wasActivated = NO;
+        }
     }
     return NO;
 }
@@ -92,7 +95,7 @@
 
 - (void)toggleTab{
     if (! [self deactivateApp]) {
-        [self activateApp];
+        [self activateAppWithHoldFrontmost:YES];
     }
 }
 

@@ -1066,11 +1066,6 @@ BOOL accessibilityApiEnabled = NO;
    withKeyPath:[@"values." stringByAppendingString:BeardedSpiceActivatePlayingTabShortcut]
        options:options];
 
-    [self bind:BeardedSpiceActivatePlayingTabShortcut
-      toObject:[NSUserDefaultsController sharedUserDefaultsController]
-   withKeyPath:[@"values." stringByAppendingString:BeardedSpiceActivatePlayingTabShortcut]
-       options:options];
-
     [self bind:BeardedSpicePlayerNextShortcut
       toObject:[NSUserDefaultsController sharedUserDefaultsController]
    withKeyPath:[@"values." stringByAppendingString:BeardedSpicePlayerNextShortcut]

@@ -20,7 +20,7 @@
 
 - (BOOL)autoSelected;
 
-- (BOOL)activateApp;
+- (BOOL)activateAppWithHoldFrontmost:(BOOL)hold;
 - (BOOL)deactivateApp;
 
 - (BOOL)activateTab;

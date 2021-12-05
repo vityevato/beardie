@@ -14,6 +14,8 @@
 //+ (instancetype)sharedApplicationForProcessIdentifier:(pid_t)processIdentifier;
 + (instancetype)sharedApplicationForBundleIdentifier:(NSString *)bundleIdentifier;
 
+@property (class, readonly) BOOL isFullscreenCurrentFrontmost;
+
 @property SBApplication *sbApplication;
 @property NSString  *bundleIdentifier;
 @property (readonly) pid_t processIdentifier;

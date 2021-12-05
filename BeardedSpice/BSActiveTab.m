@@ -116,15 +116,14 @@ dispatch_queue_t notificationQueue(void);
                 if ([self.activeTab frontmost]) {
                     needsActivated = YES;
                 }
-                if ([self.activeTab deactivateTab]) {
-                    [self.activeTab deactivateApp];
-                }
+                [self.activeTab deactivateTab];
             }
             
             self.activeTab = tab;
             if (needsActivated) {
                 DDLogDebug(@"Needs Activated %@", _activeTab);
-                [self activateTab];
+                [_activeTab activateAppWithHoldFrontmost:NO];
+                [_activeTab activateTab];
             }
             DDLogDebug(@"Active tab set to %@", _activeTab);
         }
@@ -143,15 +142,6 @@ dispatch_queue_t notificationQueue(void);
         } @catch (NSException *exception) {
             DDLogError(@"Exception occured: %@", exception);
         }
-    }
-}
-
-- (void)activateTab {
-    @try {
-        [_activeTab activateApp];
-        [_activeTab activateTab];
-    } @catch (NSException *exception) {
-        DDLogError(@"Exception occured: %@", exception);
     }
 }
 
