@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Tyler Rhodes / Jose Falcon. All rights reserved.
 //
 
+@import UserNotifications;
+
 #import "runningSBApplication.h"
 #import "EHSystemUtils.h"
 #import "NSString+Utils.h"
@@ -62,10 +64,10 @@ static BOOL _frontmostAppFocusedWindowFullScreen = NO;
     }
 }
 
-+ (BOOL)isFullscreenCurrentFrontmost {
+- (BOOL)isFullscreenOtherCurrentFrontmost {
     
     NSRunningApplication *frontmostApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
-    if (frontmostApp == nil) {
+    if (frontmostApp == nil || [frontmostApp.bundleIdentifier isEqualToString:self.bundleIdentifier]) {
         return NO;
     }
     
@@ -83,7 +85,7 @@ static BOOL _frontmostAppFocusedWindowFullScreen = NO;
         }
         if (window) {
             
-            result = [self isFullscreenUIElementWindow:window];
+            result = [runningSBApplication isFullscreenUIElementWindow:window];
             CFRelease(window);
         }
         else {
@@ -253,6 +255,11 @@ static BOOL _frontmostAppFocusedWindowFullScreen = NO;
 }
 
 - (BOOL)pressMenuBarItemForIndexPath:(NSIndexPath *)indexPath {
+    
+    if ([self isFullscreenOtherCurrentFrontmost]) {
+        [self showFullscreenRestrictsNotification];
+        return NO;
+    }
     
     AXUIElementRef menuItem = [self copyMenuBarItemForIndexPath:indexPath];
     
@@ -444,6 +451,21 @@ static BOOL _frontmostAppFocusedWindowFullScreen = NO;
         return AXUIElementSetAttributeValue(window, CFSTR("AXFullScreen"), (CFNumberRef)@(value)) == kAXErrorSuccess;
     }
     return NO;
+}
+
+- (void)showFullscreenRestrictsNotification {
+    UNMutableNotificationContent *content = [UNMutableNotificationContent new];
+    content.title = [NSString stringWithFormat:BSLocalizedString(@"warning-notification-ax-fullscreen-bug-title", @""),
+                  [[self runningApplication] localizedName]];
+    content.subtitle = BSLocalizedString(@"warning-notification-ax-fullscreen-bug-subtitle", @"");
+    content.subtitle = BSLocalizedString(@"warning-notification-ax-fullscreen-bug-body", @"");
+    content.sound = [UNNotificationSound defaultSound];
+    content.threadIdentifier = @"critical-alert";
+    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger
+                triggerWithTimeInterval:0.05 repeats:NO];
+    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:@"critical-alert-ax-fullscreen"
+                content:content trigger:trigger];
+    [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
 }
 
 - (BOOL)isEqual:(id)object{

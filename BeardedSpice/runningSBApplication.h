@@ -14,7 +14,8 @@
 //+ (instancetype)sharedApplicationForProcessIdentifier:(pid_t)processIdentifier;
 + (instancetype)sharedApplicationForBundleIdentifier:(NSString *)bundleIdentifier;
 
-@property (class, readonly) BOOL isFullscreenCurrentFrontmost;
+/// If another app is frontmost and fullscreen then returns YES.
+@property (readonly) BOOL isFullscreenOtherCurrentFrontmost;
 
 @property SBApplication *sbApplication;
 @property NSString  *bundleIdentifier;
