@@ -31,7 +31,7 @@ extern NSString *const InUpdatingStrategiesState;
 
 extern BOOL accessibilityApiEnabled;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate, NSUserNotificationCenterDelegate, NSMenuDelegate, NSMenuItemValidation, BeardedSpiceHostAppProtocol> {
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSMenuDelegate, NSMenuItemValidation, BeardedSpiceHostAppProtocol> {
     IBOutlet NSMenu *statusMenu;
 }
 

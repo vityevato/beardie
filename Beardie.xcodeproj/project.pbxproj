@@ -38,6 +38,7 @@
 		6508892323CB8D8400914FA1 /* GetExtensions.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6508892123CB8D8400914FA1 /* GetExtensions.xib */; };
 		6508892523CB9B4000914FA1 /* safari.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6508892423CB9B4000914FA1 /* safari.icns */; };
 		6508892723CB9D1F00914FA1 /* chrome.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6508892623CB9D1F00914FA1 /* chrome.icns */; };
+		651146E32766876100353BFC /* UserNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651146E22766876100353BFC /* UserNotification.swift */; };
 		651967C21AB3A0B200B48D3A /* iTunesTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 651967C11AB3A0B200B48D3A /* iTunesTabAdapter.m */; };
 		651F4E3C1F5365C800D7F94F /* BSPredicateToJSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 651F4E3B1F5365C800D7F94F /* BSPredicateToJSTests.m */; };
 		6537DAA81AF396DA002F2391 /* NativeAppTabsRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6537DAA71AF396DA002F2391 /* NativeAppTabsRegistry.m */; };
@@ -124,6 +125,7 @@
 		65B32B8E1AD99D1600F696B9 /* TabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B32B8D1AD99D1600F696B9 /* TabAdapter.m */; };
 		65B39582265576B300DBD144 /* BeardedSpiceHostAppProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */; };
 		65B39583265576B300DBD144 /* BeardedSpiceHostAppProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */; };
+		65B583692761390E00A62143 /* UserNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B583682761390E00A62143 /* UserNotifications.swift */; };
 		65C511721AED802B00EBA6A5 /* BSNativeAppTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65C511711AED802B00EBA6A5 /* BSNativeAppTabAdapter.m */; };
 		65CDBB19268FA6D900E15BF9 /* SonosTabAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CDBB17268FA6D800E15BF9 /* SonosTabAdapter.swift */; };
 		65CDBB1A268FA6D900E15BF9 /* SonosRoomsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CDBB18268FA6D800E15BF9 /* SonosRoomsController.swift */; };
@@ -394,6 +396,7 @@
 		6508892123CB8D8400914FA1 /* GetExtensions.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GetExtensions.xib; sourceTree = "<group>"; };
 		6508892423CB9B4000914FA1 /* safari.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = safari.icns; sourceTree = "<group>"; };
 		6508892623CB9D1F00914FA1 /* chrome.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = chrome.icns; sourceTree = "<group>"; };
+		651146E22766876100353BFC /* UserNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotification.swift; sourceTree = "<group>"; };
 		651967BF1AB3858800B48D3A /* iTunes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTunes.h; sourceTree = "<group>"; };
 		651967C01AB3A0B200B48D3A /* iTunesTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = iTunesTabAdapter.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		651967C11AB3A0B200B48D3A /* iTunesTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTunesTabAdapter.m; sourceTree = "<group>"; };
@@ -544,6 +547,7 @@
 		65B32B8C1AD99D1600F696B9 /* TabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabAdapter.h; sourceTree = "<group>"; };
 		65B32B8D1AD99D1600F696B9 /* TabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabAdapter.m; sourceTree = "<group>"; };
 		65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeardedSpiceHostAppProtocol.m; sourceTree = "<group>"; };
+		65B583682761390E00A62143 /* UserNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotifications.swift; sourceTree = "<group>"; };
 		65C511691AED66A700EBA6A5 /* SpotifyTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifyTabAdapter.m; sourceTree = "<group>"; };
 		65C5116B1AED66B700EBA6A5 /* SpotifyTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifyTabAdapter.h; sourceTree = "<group>"; };
 		65C5116C1AED688800EBA6A5 /* Spotify.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Spotify.h; sourceTree = "<group>"; };
@@ -1101,6 +1105,8 @@
 			isa = PBXGroup;
 			children = (
 				65D795C02644000500F4C713 /* AppUpdater.swift */,
+				65B583682761390E00A62143 /* UserNotifications.swift */,
+				651146E22766876100353BFC /* UserNotification.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1969,6 +1975,7 @@
 				D09EFF221C8CD49E00B24DA9 /* VLCTabAdapter.m in Sources */,
 				657635A81E8819E300A4FCAD /* AirfoilSatelliteTabAdapter.m in Sources */,
 				65063FEB233DE94E0015F558 /* DeezerTabAdapter.m in Sources */,
+				65B583692761390E00A62143 /* UserNotifications.swift in Sources */,
 				658D64411FA697A2004D1546 /* PSWebSocketDeflater.m in Sources */,
 				65C511721AED802B00EBA6A5 /* BSNativeAppTabAdapter.m in Sources */,
 				65E5670E1B76A07700AD2D46 /* BSMediaStrategyEnableButton.m in Sources */,
@@ -1981,6 +1988,7 @@
 				9679333C1855173100A49AC7 /* main.m in Sources */,
 				65D09F0D266D60B400C8B46C /* BSSwinsianTabAdapter.m in Sources */,
 				65D795C226440F6C00F4C713 /* SharedResources.swift in Sources */,
+				651146E32766876100353BFC /* UserNotification.swift in Sources */,
 				65CDBB19268FA6D900E15BF9 /* SonosTabAdapter.swift in Sources */,
 				654D044825EBC83200270533 /* UIController.swift in Sources */,
 				656A00351C8AD41A00BD29F5 /* NSString+Utils.m in Sources */,
@@ -2404,7 +2412,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "restarter/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -2433,7 +2440,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "restarter/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -2510,7 +2516,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardieLaunchAtLogin/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -2540,7 +2545,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardieLaunchAtLogin/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -2644,10 +2648,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Beta;
 		};
@@ -2670,7 +2675,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_BUNDLE_ID)";
 				PRODUCT_NAME = Beardie;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpice/Beardie-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Beta;
@@ -2695,7 +2699,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "foo.bar.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BeardieTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceTests/BeardieTests-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Beardie.app/Contents/MacOS/Beardie";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -2843,7 +2846,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "beardie-nm-connector/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Beta;
 		};
@@ -2895,7 +2897,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "restarter/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Beta;
 		};
@@ -2925,7 +2926,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardieLaunchAtLogin/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Beta;
 		};
@@ -2955,7 +2955,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "beardie-nm-connector/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -2980,7 +2979,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "beardie-nm-connector/Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -3034,10 +3032,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -3089,10 +3088,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -3116,7 +3116,6 @@
 				PRODUCT_NAME = Beardie;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpice/Beardie-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3140,7 +3139,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_BUNDLE_ID)";
 				PRODUCT_NAME = Beardie;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpice/Beardie-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -3166,7 +3164,6 @@
 				PRODUCT_NAME = BeardieTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceTests/BeardieTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Beardie.app/Contents/MacOS/Beardie";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = xctest;
@@ -3193,7 +3190,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "foo.bar.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BeardieTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceTests/BeardieTests-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Beardie.app/Contents/MacOS/Beardie";
 				WRAPPER_EXTENSION = xctest;
 			};

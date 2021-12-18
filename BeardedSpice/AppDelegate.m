@@ -7,8 +7,8 @@
 //
 
 #include <IOKit/hidsystem/ev_keymap.h>
-
 #import "AppDelegate.h"
+@import UserNotifications;
 
 #import "BSNativeAppTabAdapter.h"
 
@@ -104,8 +104,6 @@ BOOL accessibilityApiEnabled = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prefChanged:) name: BSStrategiesPreferencesNativeAppChangedNoticiation object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prefChanged:) name: GeneralPreferencesAutoPauseChangedNoticiation object:nil];
 
-    [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
-
     // Application notifications
     [self setupSystemEventsCallback];
 
@@ -144,6 +142,13 @@ BOOL accessibilityApiEnabled = NO;
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
     
     DDLogInfo(@"Info: %@", notification.userInfo);
+    
+    [UserNotifications.singleton setUpWithHandler:^(enum UserNotificationsCategory category) {
+        if (category == UserNotificationsCategoryTrackInfo) {
+            [self activatePlayingTab];
+        }
+    }];
+    
     _nativeAppTabsController = BSNativeAppTabsController.singleton;
     
     _browserExtensionsController = BSBrowserExtensionsController.singleton;
@@ -302,17 +307,6 @@ BOOL accessibilityApiEnabled = NO;
 - (void)menuDidClose:(NSMenu *)menu {
     DDLogDebug(@"menuDidClose");
     [UIController.statusBarMenu didClose];
-}
-
-- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center shouldPresentNotification:(NSUserNotification *)notification {
-    return YES;
-    // TODO: this is not working on macOS 11, notification, which sent frontmost app does not show
-}
-
-- (void)userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification{
-    if ([kBSTrackNameIdentifier isEqualToString:notification.identifier]) {
-        [self activatePlayingTab];
-    }
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -862,14 +856,11 @@ BOOL accessibilityApiEnabled = NO;
 
 //                    [wself.activeApp activateTab];
 
-                    NSUserNotification *notification = [NSUserNotification new];
-                    notification.identifier = @"BSSwitchPlayerNotification";
-                    notification.title = [wself.activeApp displayName];
-                    notification.informativeText = [wself.activeApp title];
-
-                    NSUserNotificationCenter *notifCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
-                    [notifCenter removeDeliveredNotification:notification];
-                    [notifCenter deliverNotification:notification];
+                    [UserNotifications.singleton notifyWithCategory: UserNotificationsCategoryPlayerRotation
+                                                              title: [wself.activeApp displayName]
+                                                           subtitle: nil
+                                                               body: [wself.activeApp title]
+                                                           imageUrl: nil];
 
                     return;
                 }
@@ -919,10 +910,11 @@ BOOL accessibilityApiEnabled = NO;
 
 - (void)sendUpdateNotificationWithString:(NSString *)message
 {
-    NSUserNotification *notification = [NSUserNotification new];
-    notification.title = BSLocalizedString(@"Compatibility Updates", @"Notification Titles");
-    notification.subtitle = message;
-    [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+    [UserNotifications.singleton notifyWithCategory:UserNotificationsCategoryInfo
+                                              title:BSLocalizedString(@"Compatibility Updates", @"Notification Titles")
+                                           subtitle:message
+                                               body:nil
+                                           imageUrl:nil];
 }
 
 - (BSVWType)convertVolumeResult:(BSVolumeControlResult)volumeResult {

@@ -11,6 +11,7 @@
 #import "runningSBApplication.h"
 #import "EHSystemUtils.h"
 #import "NSString+Utils.h"
+#import "Beardie-Swift.h"
 
 #define COMMAND_TIMEOUT         3 // 3 second
 #define RAISING_WINDOW_DELAY    0.1 //0.1 second
@@ -454,18 +455,13 @@ static BOOL _frontmostAppFocusedWindowFullScreen = NO;
 }
 
 - (void)showFullscreenRestrictsNotification {
-    UNMutableNotificationContent *content = [UNMutableNotificationContent new];
-    content.title = [NSString stringWithFormat:BSLocalizedString(@"warning-notification-ax-fullscreen-bug-title", @""),
-                  [[self runningApplication] localizedName]];
-    content.subtitle = BSLocalizedString(@"warning-notification-ax-fullscreen-bug-subtitle", @"");
-    content.subtitle = BSLocalizedString(@"warning-notification-ax-fullscreen-bug-body", @"");
-    content.sound = [UNNotificationSound defaultSound];
-    content.threadIdentifier = @"critical-alert";
-    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger
-                triggerWithTimeInterval:0.05 repeats:NO];
-    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:@"critical-alert-ax-fullscreen"
-                content:content trigger:trigger];
-    [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:nil];
+    [UserNotifications.singleton notifyWithCategory:UserNotificationsCategoryAxFullscreenIssue
+                                              title: [NSString stringWithFormat:BSLocalizedString(@"warning-notification-ax-fullscreen-bug-title", @""),
+                                                      [[self runningApplication] localizedName]]
+                                           subtitle: BSLocalizedString(@"warning-notification-ax-fullscreen-bug-subtitle", @"")
+                                               body: BSLocalizedString(@"warning-notification-ax-fullscreen-bug-body", @"")
+                                           imageUrl:nil];
+    
 }
 
 - (BOOL)isEqual:(id)object{

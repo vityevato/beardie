@@ -19,3 +19,9 @@ extension BSSharedResources {
         dynamicLogLevel = debug ? verboseLogLevel : defLogLevel
     }
 }
+
+extension Error {
+    func log() {
+        DDLogError("Error occurred: \(self)")
+    }
+}

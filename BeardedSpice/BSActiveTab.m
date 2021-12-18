@@ -318,10 +318,8 @@ dispatch_queue_t notificationQueue(void);
     BOOL noAlbum = [NSString isNullOrEmpty:track.album];
     
     if (!(noTrack && noArtist && noAlbum)) {
-        NSUserNotification *noti = [track asNotification];
-        NSUserNotificationCenter *notifCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
-        [notifCenter removeDeliveredNotification:noti];
-        [notifCenter deliverNotification:noti];
+        UserNotification *noti = [track asNotification];
+        [UserNotifications.singleton notify:noti];
         DDLogDebug(@"Show Notification: %@", track);
     } else if (fallback) {
         [self showDefaultNotification];
@@ -329,29 +327,22 @@ dispatch_queue_t notificationQueue(void);
 }
 
 - (void)showDefaultNotification {
-    NSUserNotification *notification = [NSUserNotification new];
-
-    notification.identifier = kBSTrackNameIdentifier;
-    notification.title = [self displayName];
-    notification.informativeText = [self title];
-
-    NSUserNotificationCenter *notifCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
-    [notifCenter removeDeliveredNotification:notification];
-    [notifCenter deliverNotification:notification];
-
+    
+    [UserNotifications.singleton notifyWithCategory:UserNotificationsCategoryTrackInfo
+                                              title:[self displayName]
+                                           subtitle:nil
+                                               body:[self title]
+                                           imageUrl:nil];
+    
     DDLogWarn(@"Showing Default Notification");
 }
 
 - (void)showFavoriteNotSupportedNotification {
-    NSUserNotification *notification = [NSUserNotification new];
-
-    notification.identifier = kBSTrackNameIdentifier;
-    notification.title = [self displayName];
-    notification.informativeText = BSLocalizedString(@"favorite-not-supported", @"");
-
-    NSUserNotificationCenter *notifCenter = [NSUserNotificationCenter defaultUserNotificationCenter];
-    [notifCenter removeDeliveredNotification:notification];
-    [notifCenter deliverNotification:notification];
+    [UserNotifications.singleton notifyWithCategory:UserNotificationsCategoryInfo
+                                              title:[self displayName]
+                                           subtitle:nil
+                                               body:BSLocalizedString(@"favorite-not-supported", @"")
+                                           imageUrl:nil];
 
     DDLogWarn(@"Showing FavoriteNotSupported Notification");
 }

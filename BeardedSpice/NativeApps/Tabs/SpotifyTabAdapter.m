@@ -153,7 +153,7 @@ static NSImage *_lastTrackImage;
         else {
             track.artist = iTrack.artist;
         }
-        [track setImageWithUrlString:iTrack.artworkUrl];
+        track.image = iTrack.artworkUrl;
         
         return track;
     }
