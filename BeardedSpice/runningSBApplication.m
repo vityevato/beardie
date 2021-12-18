@@ -6,20 +6,27 @@
 //  Copyright (c) 2015 Tyler Rhodes / Jose Falcon. All rights reserved.
 //
 
+@import UserNotifications;
+
 #import "runningSBApplication.h"
 #import "EHSystemUtils.h"
 #import "NSString+Utils.h"
+#import "Beardie-Swift.h"
 
-#define COMMAND_TIMEOUT         3 // 0.3 second
+#define COMMAND_TIMEOUT         3 // 3 second
 #define RAISING_WINDOW_DELAY    0.1 //0.1 second
 
 @implementation runningSBApplication {
     pid_t _processIdentifier;
-    NSRunningApplication *_runningApplicationForHide;
-    NSCondition *_lockForHide;
+    NSRunningApplication *_runningApplicationForActivate;
+    NSCondition *_lockForActivate;
+    
 }
 
 static NSMutableDictionary *_sharedAppHandler;
+static NSRunningApplication *_frontmostApp = nil;
+static AXUIElementRef _frontmostAppFocusedWindow = nil;
+static BOOL _frontmostAppFocusedWindowFullScreen = NO;
 
 + (instancetype)sharedApplicationForBundleIdentifier:(NSString *)bundleIdentifier {
     
@@ -58,6 +65,39 @@ static NSMutableDictionary *_sharedAppHandler;
     }
 }
 
+- (BOOL)isFullscreenOtherCurrentFrontmost {
+    
+    NSRunningApplication *frontmostApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
+    if (frontmostApp == nil || [frontmostApp.bundleIdentifier isEqualToString:self.bundleIdentifier]) {
+        return NO;
+    }
+    
+    BOOL result = NO;
+    AXUIElementRef ref = AXUIElementCreateApplication(frontmostApp.processIdentifier);
+    
+    if (ref) {
+        
+        AXUIElementRef window = nil;
+        if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityFocusedWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess
+            || window == nil) {
+            if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityMainWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess ) {
+                window = nil;
+            }
+        }
+        if (window) {
+            
+            result = [runningSBApplication isFullscreenUIElementWindow:window];
+            CFRelease(window);
+        }
+        else {
+            DDLogDebug(@"Active app main window didn't obtain");
+        }
+        CFRelease(ref);
+    }
+    
+    return  result;
+}
+
 - (instancetype)initWithApplication:(SBApplication *)application bundleIdentifier:(NSString *)bundleIdentifier{
     
     self = [super init];
@@ -66,7 +106,7 @@ static NSMutableDictionary *_sharedAppHandler;
         _sbApplication = application;
         _bundleIdentifier = bundleIdentifier;
         _processIdentifier = 0;
-        _lockForHide = [NSCondition new];
+        _lockForActivate = [NSCondition new];
         
         _sbApplication.timeout = COMMAND_TIMEOUT;
     }
@@ -91,30 +131,33 @@ static NSMutableDictionary *_sharedAppHandler;
     return [[self runningApplication] processIdentifier];
 }
 
-- (BOOL)activate{
+
+- (BOOL)activateWithHoldFrontmost:(BOOL)hold {
+    
+    [self->_lockForActivate lock];
     [EHSystemUtils callOnMainQueue:^{
-        
-        self->_wasActivated = [[self runningApplication] activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)];
+        if (hold || _frontmostApp == nil) {
+            [self holdCurrentFrontmost];
+        }
+        self->_runningApplicationForActivate = [self runningApplication];
+        [self->_runningApplicationForActivate addObserver:self
+                                        forKeyPath:@"active"
+                                           options:NSKeyValueObservingOptionNew context:NULL];
+        self->_wasActivated = [self->_runningApplicationForActivate
+                               activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)];
     }];
+    [self->_lockForActivate waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:COMMAND_TIMEOUT]];
+    self->_wasActivated = self->_runningApplicationForActivate.active;
+    [self->_runningApplicationForActivate removeObserver:self forKeyPath:@"active"];
+    self->_runningApplicationForActivate = nil;
+    [self->_lockForActivate unlock];
     return _wasActivated;
 }
 
 - (BOOL)hide{
-    [self->_lockForHide lock];
-    [EHSystemUtils callOnMainQueue:^{
-        self->_runningApplicationForHide = [self runningApplication];
-        [self->_runningApplicationForHide addObserver:self
-                                        forKeyPath:@"hidden"
-                                           options:NSKeyValueObservingOptionNew context:NULL];
-        [self->_runningApplicationForHide hide];
-    }];
-    [self->_lockForHide waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:COMMAND_TIMEOUT]];
-    self->_wasActivated = ! self->_runningApplicationForHide.hidden;
-    [self->_runningApplicationForHide removeObserver:self forKeyPath:@"hidden"];
-    self->_runningApplicationForHide = nil;
-    [self->_lockForHide unlock];
-    
-    return ! _wasActivated;
+    [self repairFrontmost];
+    _wasActivated = NO;
+    return YES;
 }
 
 - (void)makeKeyFrontmostWindow{
@@ -179,15 +222,16 @@ static NSMutableDictionary *_sharedAppHandler;
                       ofObject:(id)object
                         change:(NSDictionary *)change
                        context:(void *)context {
-    if ([object isEqual:self->_runningApplicationForHide]) {
-        [self->_lockForHide lock];
-        if ([keyPath isEqualToString:@"hidden"]) {
+    if ([object isEqual:self->_runningApplicationForActivate]) {
+        [self->_lockForActivate lock];
+        if ([keyPath isEqualToString:@"active"]) {
             NSNumber *val = change[NSKeyValueChangeNewKey];
             if (val && [val boolValue]) {
-                [self->_lockForHide broadcast];
+                DDLogDebug(@"Was activated: %@", self->_runningApplicationForActivate);
+                [self->_lockForActivate broadcast];
             }
         }
-        [self->_lockForHide unlock];
+        [self->_lockForActivate unlock];
     }
 }
 
@@ -213,11 +257,15 @@ static NSMutableDictionary *_sharedAppHandler;
 
 - (BOOL)pressMenuBarItemForIndexPath:(NSIndexPath *)indexPath {
     
+    if ([self isFullscreenOtherCurrentFrontmost]) {
+        [self showFullscreenRestrictsNotification];
+        return NO;
+    }
+    
     AXUIElementRef menuItem = [self copyMenuBarItemForIndexPath:indexPath];
     
     BOOL result = NO;
     if (menuItem) {
-        
         result = (AXUIElementPerformAction(menuItem, (CFStringRef)NSAccessibilityPressAction) == kAXErrorSuccess);
         CFRelease(menuItem);
     }
@@ -332,6 +380,88 @@ static NSMutableDictionary *_sharedAppHandler;
     }
     
     return item;
+}
+- (void)holdCurrentFrontmost{
+    
+    if (_frontmostAppFocusedWindow) {
+        CFRelease(_frontmostAppFocusedWindow);
+        _frontmostAppFocusedWindow = nil;
+    }
+    
+    _frontmostApp = [[NSWorkspace sharedWorkspace] frontmostApplication];
+    if (_frontmostApp == nil) {
+        return;
+    }
+    
+    AXUIElementRef ref = AXUIElementCreateApplication(_frontmostApp.processIdentifier);
+    
+    if (ref) {
+        
+        AXUIElementRef window = nil;
+        if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityFocusedWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess
+            || window == nil) {
+            if (AXUIElementCopyAttributeValue(ref, (CFStringRef)NSAccessibilityMainWindowAttribute, (CFTypeRef *)&window) != kAXErrorSuccess ) {
+                window = nil;
+            }
+        }
+        if (window) {
+            
+            _frontmostAppFocusedWindow = window;
+            _frontmostAppFocusedWindowFullScreen = [runningSBApplication isFullscreenUIElementWindow:_frontmostAppFocusedWindow];
+            DDLogDebug(@"Active app main window obtained");
+        }
+        else {
+            DDLogDebug(@"Active app main window didn't obtain");
+        }
+        CFRelease(ref);
+    }
+}
+
+- (void)repairFrontmost {
+    if (_frontmostApp) {
+        if ([_frontmostApp activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)]
+            && _frontmostAppFocusedWindow) {
+            AXUIElementPerformAction(_frontmostAppFocusedWindow, CFSTR("AXRaise"));
+            CFRelease(_frontmostAppFocusedWindow);
+            _frontmostAppFocusedWindow = nil;
+            _frontmostAppFocusedWindowFullScreen = NO;
+        }
+        _frontmostApp = nil;
+    }
+
+}
+
++ (BOOL)isFullscreenUIElementWindow:(AXUIElementRef)window {
+    
+    BOOL result = NO;
+    if (window) {
+        
+        CFTypeRef val;
+        NSNumber *number;
+        number = (AXUIElementCopyAttributeValue(window, CFSTR("AXFullScreen"), (CFTypeRef *)&val) == kAXErrorSuccess ?
+                (NSNumber *)CFBridgingRelease(val): nil);
+        result = number.boolValue;
+    }
+    DDLogDebug(@"isFullscreenUIElementWindow result: %@", result ? @"YES" : @"NO");
+    return result;
+}
+
+- (BOOL)setFullscreenUIElementWindow:(AXUIElementRef)window value:(BOOL)value {
+    
+    if (window) {
+        return AXUIElementSetAttributeValue(window, CFSTR("AXFullScreen"), (CFNumberRef)@(value)) == kAXErrorSuccess;
+    }
+    return NO;
+}
+
+- (void)showFullscreenRestrictsNotification {
+    [UserNotifications.singleton notifyWithCategory:UserNotificationsCategoryAxFullscreenIssue
+                                              title: [NSString stringWithFormat:BSLocalizedString(@"warning-notification-ax-fullscreen-bug-title", @""),
+                                                      [[self runningApplication] localizedName]]
+                                           subtitle: BSLocalizedString(@"warning-notification-ax-fullscreen-bug-subtitle", @"")
+                                               body: BSLocalizedString(@"warning-notification-ax-fullscreen-bug-body", @"")
+                                           imageUrl:nil];
+    
 }
 
 - (BOOL)isEqual:(id)object{

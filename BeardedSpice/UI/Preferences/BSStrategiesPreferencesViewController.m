@@ -325,10 +325,10 @@ NSString *const StrategiesPreferencesViewController = @"StrategiesPreferencesVie
                 [[BSCustomStrategyManager singleton] updateCustomStrategiesFromUnsupportedRepoWithCompletion:^(NSArray<NSString *> *updatedNames, NSError *error) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         self.customUpdateButton.title = BSLocalizedString(@"preferences-strategies-unsupported-update-button-title", @"");
-                        NSUserNotification *notification = [NSUserNotification new];
-                        notification.title = BSLocalizedString(@"Compatibility Updates", @"");
-                        notification.subtitle = [NSString stringWithFormat:BSLocalizedString(@"update-custom-strategy", @""), updatedNames.count];
-                        [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
+                        [UserNotifications.singleton notifyWithCategory:UserNotificationsCategoryInfo
+                                                                  title: BSLocalizedString(@"Compatibility Updates", @"") subtitle:[NSString stringWithFormat:BSLocalizedString(@"update-custom-strategy", @""), updatedNames.count]
+                                                                   body:nil
+                                                               imageUrl:nil];
                         [APPDELEGATE setInUpdatingStrategiesState:NO];
                     });
                 }];

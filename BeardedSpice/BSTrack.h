@@ -11,7 +11,8 @@ extern NSString *const kBSTrackNameTrack;
 extern NSString *const kBSTrackNameAlbum;
 extern NSString *const kBSTrackNameArtist;
 extern NSString *const kBSTrackNameFavorited;
-extern NSString *const kBSTrackNameIdentifier;
+
+@class UserNotification;
 
 @interface BSTrack : NSObject
 
@@ -20,7 +21,8 @@ extern NSString *const kBSTrackNameIdentifier;
 @property (nonatomic, strong) NSString *artist;
 @property (nonatomic, strong) NSString *progress;
 
-@property (nonatomic, strong) NSImage *image;
+/// Actually, this property may be NSURL (URL to image) or NSImage type
+@property (nonatomic, strong) id image;
 
 @property (nonatomic, strong) NSNumber *favorited;
 
@@ -33,8 +35,6 @@ extern NSString *const kBSTrackNameIdentifier;
  */
 - (instancetype)initWithInfo:(NSDictionary *)info;
 
-- (void)setImageWithUrlString:(NSString *)urlString;
-
-- (NSUserNotification *)asNotification;
+- (UserNotification *)asNotification;
 
 @end

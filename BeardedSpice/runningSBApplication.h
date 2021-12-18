@@ -14,6 +14,9 @@
 //+ (instancetype)sharedApplicationForProcessIdentifier:(pid_t)processIdentifier;
 + (instancetype)sharedApplicationForBundleIdentifier:(NSString *)bundleIdentifier;
 
+/// If another app is frontmost and fullscreen then returns YES.
+@property (readonly) BOOL isFullscreenOtherCurrentFrontmost;
+
 @property SBApplication *sbApplication;
 @property NSString  *bundleIdentifier;
 @property (readonly) pid_t processIdentifier;
@@ -22,7 +25,7 @@
 
 - (instancetype)initWithApplication:(SBApplication *)application bundleIdentifier:(NSString *)bundleIdentifier;
 
-- (BOOL)activate;
+- (BOOL)activateWithHoldFrontmost:(BOOL)hold;
 - (BOOL)hide;
 - (void)makeKeyFrontmostWindow;
 
