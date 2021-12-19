@@ -19,8 +19,8 @@ XC_SPL = /
 
 BS_NAME = Beardie
 BS_COPYRIGHT = Copyright © 2021 Beardie. All rights reserved.
-BS_VERSION = 3.0.18
-BS_BUILD = 77
+BS_VERSION = 3.0.19
+BS_BUILD = 79
 BS_CHANNEL =
 BS_UPDATE_APPCAST = https:$(XC_SPL)/stillness-2.github.io/beardie/distrib-support/appcast.xml
 BS_HOMEPAGE = https:$(XC_SPL)/github.com/Stillness-2/beardie
@@ -46,7 +46,7 @@ BS_B_NATIVE_MESSAGING_CONNECTOR_BUNDLE_ID     = com.calm_apps.mac.beardie.nm.con
 BS_SAFARI_EXTENSION_BUNDLE_ID               = $(BS_BUNDLE_ID).safari.extension
 BS_CHROME_EXTENSION_ID                      = kcbddjdbhggfejihipchloknandfnkgb
 
-BS_CHROME_EXTENSION_ID_DEV                  = mlcefphhofkpnocoljknhhjdkjoccbjc
+BS_CHROME_EXTENSION_ID_DEV                  = hegbdmngjhblfcembcnlcpcmlhahpldl
 
 //File extension for javascript `strategy` file.
 BS_STRATEGY_EXTENSION                       = bsstrategy

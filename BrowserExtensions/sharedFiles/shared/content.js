@@ -220,6 +220,7 @@ var mainScript = function() {
                                 strategyName = response.strategyName;
                                 if (strategyName) {
                                     state.set(state.accepted);
+                                    installAdditionalEventListeners();
                                     BSUtils.sendMessageToGlobal("port");
                                 } else {
                                     state.set(state.init);
@@ -232,6 +233,7 @@ var mainScript = function() {
                 BSLog("(Beardie) Accepters run: on CSP");
                 if (strategyName) {
                     state.set(state.accepted);
+                    installAdditionalEventListeners();
                     BSUtils.sendMessageToGlobal("port");
                 } else {
                     state.set(state.init);
@@ -440,28 +442,30 @@ var mainScript = function() {
         reconnect();
     }
 
-    window.addEventListener("popstate", function(event) {
-        BSLog("(Beardie) onPopstate.");
-        setTimeout(function() {
-            if (bsParameters.URL != window.location.href) {
-                return onUrlChangedBy(event);
+    var installAdditionalEventListeners = function() {
+        window.addEventListener("popstate", function(event) {
+            BSLog("(Beardie) onPopstate.");
+            setTimeout(function() {
+                if (bsParameters.URL != window.location.href) {
+                    return onUrlChangedBy(event);
+                }
+            }, 1);
+        }, true);
+    
+        window.addEventListener("click", function(event) {
+            BSLog("(Beardie) onClick");
+            if (noCSP) {
+                BSEventClient.sendRequest({ "name": "command", "args": "onClick" }, function(response) {});
+            } else {
+                BSUtils.strategyCommand(strategy, "onClick");
             }
-        }, 1);
-    }, true);
-
-    window.addEventListener("click", function(event) {
-        BSLog("(Beardie) onClick");
-        if (noCSP) {
-            BSEventClient.sendRequest({ "name": "command", "args": "onClick" }, function(response) {});
-        } else {
-            BSUtils.strategyCommand(strategy, "onClick");
-        }
-        setTimeout(function () {
-            if (bsParameters.URL != window.location.href) {
-                return onUrlChangedBy(event);
-            }
-        }, 1);
-    }, true);
+            setTimeout(function () {
+                if (bsParameters.URL != window.location.href) {
+                    return onUrlChangedBy(event);
+                }
+            }, 1);
+        }, true);
+    };
 
     BSInfo("Beardie Script Injected.");
 
