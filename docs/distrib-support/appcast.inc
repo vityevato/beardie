@@ -25,6 +25,7 @@
                             {% else %}
                                 {% assign version = release.tag_name | remove_first:'v' %}
                             {% endif %}
+                            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
                             <enclosure
                                 url="{{ asset.browser_download_url }}"
                                 sparkle:version="{{ version }}"

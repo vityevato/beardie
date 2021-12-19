@@ -12,7 +12,7 @@ Beardie is more than just play/pause, it has some additional controls that add t
 
 ## Install
 
-**Mac OS X 10.14 or greater required.**
+**Mac OS X 10.15 or greater required.**
 
 You can download the [latest release here](https://github.com/Stillness-2/beardie/releases/latest), or find a full list of all our [previously released binaries here](https://github.com/Stillness-2/beardie/releases).
 
