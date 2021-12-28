@@ -241,6 +241,13 @@
 			remoteGlobalIDString = 65E6E0512370AC7A009C9448;
 			remoteInfo = "beardie-nm-connector";
 		};
+		65F99A6A277B9BBE00D13ABF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 967933241855173100A49AC7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 65AA828F239D7E2F000442A2;
+			remoteInfo = "prepare-build";
+		};
 		967933511855173100A49AC7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 967933241855173100A49AC7 /* Project object */;
@@ -1314,6 +1321,7 @@
 			buildToolPath = /bin/bash;
 			buildWorkingDirectory = "$(SRCROOT)";
 			dependencies = (
+				65F99A6B277B9BBE00D13ABF /* PBXTargetDependency */,
 			);
 			name = "Prepare Extensions";
 			passBuildSettingsInEnvironment = 1;
@@ -2106,6 +2114,11 @@
 			isa = PBXTargetDependency;
 			target = 65E6E0512370AC7A009C9448 /* beardie-nm-connector */;
 			targetProxy = 65E6E05C23722470009C9448 /* PBXContainerItemProxy */;
+		};
+		65F99A6B277B9BBE00D13ABF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 65AA828F239D7E2F000442A2 /* prepare-build */;
+			targetProxy = 65F99A6A277B9BBE00D13ABF /* PBXContainerItemProxy */;
 		};
 		967933521855173100A49AC7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
