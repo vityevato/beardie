@@ -28,7 +28,7 @@
     BSUtils = {
 
         setLogLevel: function(debug) {
-            BSInfo('(Beardie Utils) set logLevel debug: ' + debug);
+            BSLog('(Beardie Utils) set logLevel debug: ' + debug);
             if (debug) {
                 BSLog = _BSLog;
                 return;
@@ -220,7 +220,7 @@
                 (document.head || document.documentElement).appendChild(injected);
                 BSLog('(Beardie) injectExtScript: ' + src);
             } catch (error) {
-                BSInfo('(Beardie) injectExtScript: ' + src + 'error:' + error);
+                BSLog('(Beardie) injectExtScript: ' + src + 'error:' + error);
             }
         },
     
@@ -284,7 +284,7 @@
                     }
                 }
             } catch (ex) {
-                BSInfo('(Beardie) command exception:' + ex);
+                BSLog('(Beardie) command exception:' + ex);
                 return { 'result': false };
             }
     

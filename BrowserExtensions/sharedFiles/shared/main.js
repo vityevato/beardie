@@ -40,7 +40,7 @@ var logError = function(ex) {
 };
 
 function reconnectToNative(event) {
-    BSInfo("(Beardie Control) Attempt to reconnecting.");
+    BSLog("(Beardie Control) Attempt to reconnecting.");
 
     _clean();
     connectToNative();
