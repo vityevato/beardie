@@ -29,6 +29,8 @@ extern NSString *const BSGetExtensionsPageName;
 @property (nonatomic, readonly) BSStrategyWebSocketServer *webSocketServer;
 
 - (void)start;
+- (void)pause;
+- (BOOL)resume;
 - (void)firstRunPerformWithCompletion:(dispatch_block_t)completion;
 - (void)openGetExtensions;
 

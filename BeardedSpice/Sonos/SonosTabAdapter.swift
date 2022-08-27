@@ -88,7 +88,7 @@ final class SonosTabAdapter: TabAdapter, BSVolumeControlProtocol {
         return self.group.slaves.reduce(self.group.master.uuid) { $0 + $1.uuid }
     }
     
-    override func autoSelected() -> Bool {
+    override func autoSelectable() -> Bool {
         let sync = DispatchGroup()
         var result = true
         sync.enter()
