@@ -136,7 +136,9 @@ final class SonosRoomsController: NSObject {
                 self.startMonitoringGroups()
             }
         }
-        NotificationCenter.default.post(name: Self.SonosRoomsChanged, object: nil)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Self.SonosRoomsChanged, object: nil)
+        }
     }
 }
 
