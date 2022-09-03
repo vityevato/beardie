@@ -342,7 +342,7 @@ static NSArray *tabClasses;
     NSError *error = NULL;
     SecIdentityRef identity = MYGetOrCreateAnonymousIdentity(BS_NAME, 3600 * 24 * 350, &error);
     if (error || identity == nil) {
-        DDLogError(@"Error occured when creating self signtl certificate: %@", error);
+        DDLogError(@"Error occured when creating self signed certificate: %@", error);
         return NO;
     }
     _certs = @[(__bridge_transfer id)identity];

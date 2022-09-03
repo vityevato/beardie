@@ -1,24 +1,24 @@
 PODS:
-  - AEXML (4.6.0)
-  - CocoaLumberjack (3.6.1):
-    - CocoaLumberjack/Core (= 3.6.1)
-  - CocoaLumberjack/Core (3.6.1)
-  - CocoaLumberjack/Swift (3.6.1):
+  - AEXML (4.6.1)
+  - CocoaLumberjack (3.7.4):
+    - CocoaLumberjack/Core (= 3.7.4)
+  - CocoaLumberjack/Core (3.7.4)
+  - CocoaLumberjack/Swift (3.7.4):
     - CocoaLumberjack/Core
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
   - Kiwi (3.0.0)
-  - MASPreferences (1.3)
+  - MASPreferences (1.4.1)
   - MASShortcut (2.4.0)
-  - RxSonosLib (0.14.2):
+  - RxSonosLib (0.14.3):
     - AEXML (~> 4.4)
     - RxSSDP (~> 5.0)
     - RxSwift (~> 4.5)
-  - RxSSDP (5.0.2):
+  - RxSSDP (5.0.3):
     - RxSwift (~> 4.5)
   - RxSwift (4.5.0)
-  - Sparkle (1.26.0)
+  - Sparkle (2.2.2)
   - VCRURLConnection (0.2.5)
 
 DEPENDENCIES:
@@ -29,6 +29,7 @@ DEPENDENCIES:
   - MASPreferences (~> 1.3)
   - MASShortcut (~> 2.4.0)
   - RxSonosLib (from `https://github.com/Stillness-2/RxSonosLib`)
+  - RxSSDP (from `https://github.com/Stillness-2/RxSSDP`)
   - Sparkle
   - VCRURLConnection (~> 0.2.5)
 
@@ -40,7 +41,6 @@ SPEC REPOS:
     - Kiwi
     - MASPreferences
     - MASShortcut
-    - RxSSDP
     - RxSwift
     - Sparkle
     - VCRURLConnection
@@ -48,25 +48,30 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   RxSonosLib:
     :git: https://github.com/Stillness-2/RxSonosLib
+  RxSSDP:
+    :git: https://github.com/Stillness-2/RxSSDP
 
 CHECKOUT OPTIONS:
   RxSonosLib:
-    :commit: b5032411fb86075e586b01c1596d04fd06411ec6
+    :commit: 266fa2ea06f6ce6c0e33dc149848f9b2909ee133
     :git: https://github.com/Stillness-2/RxSonosLib
+  RxSSDP:
+    :commit: c72eae7f0b0be684e79d589268ed4fbd6ceef490
+    :git: https://github.com/Stillness-2/RxSSDP
 
 SPEC CHECKSUMS:
-  AEXML: 2fbb73d8724797ed2cde888731e176fa4d44dd83
-  CocoaLumberjack: b17ae15142558d08bbacf69775fa10c4abbebcc9
+  AEXML: 1e255ecc6597212f97a7454a69ebd3ede64ac1cf
+  CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   Kiwi: fbeafef0f00e4d8f7dcb3420a4930afe70af77f7
-  MASPreferences: c08b8622dd17b47da87669e741efd7c92e970e8c
+  MASPreferences: 1ba2deb14086792857af44d22846fc4aae477fd9
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
-  RxSonosLib: 4ebbd873db91642534eb5a61b4cc74ddd01c7d62
-  RxSSDP: 662ce91a7ca8b340faf40f04590d608ac62b40df
+  RxSonosLib: 4db32e35913f0f5f5d2ab5b4effb47ea98521dd0
+  RxSSDP: 44a82c1529884e897a777b57ea82761a8fa7ec12
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
-  Sparkle: d56d028f4b0c123577825f5d1004f6140d77f90e
+  Sparkle: cb8c851f6247a9acbe9e236539404c5be529f74d
   VCRURLConnection: 63be6f26a2f8222677294fc43a1d855e817cfd4e
 
-PODFILE CHECKSUM: 803f276c241fdde948c0450062c35129ef99dac8
+PODFILE CHECKSUM: 950ffc3903789cfb0f3155da720916e0238de9f1
 
 COCOAPODS: 1.11.3
