@@ -48,6 +48,26 @@ final class SonosRoomsController: NSObject {
         }
     }
     
+    @objc func pause() {
+        self.queue.sync {
+            if self.paused == false {
+                self.allGroupDisposable?.dispose()
+                self.tabs = []
+                self.rooms = []
+                self.paused = true
+            }
+        }
+    }
+    
+    @objc func resume() {
+        self.queue.sync {
+            if self.paused {
+                self.startMonitoringGroups()
+                self.paused = false
+            }
+        }
+    }
+    
     // MARK: File Private
     
     fileprivate func roomEnabled(_ room: Room) -> Bool {
@@ -74,9 +94,10 @@ final class SonosRoomsController: NSObject {
     // MARK: Private
     private var allGroupDisposable: Disposable?
     private let queue = DispatchQueue(label: "SonosRoomsControllerQueue")
+    private var paused = false
     private var disabledRoomIds = Set<String>() {
         didSet {
-            DispatchQueue.main.async {
+            self.queue.async {
                 self.startMonitoringGroups()
             }
         }
@@ -111,11 +132,13 @@ final class SonosRoomsController: NSObject {
         default:
             self.tabs = []
             self.rooms = []
-            DispatchQueue.main.asyncAfter(deadline: .now() + Self.groupObtainTimeout) {
+            self.queue.asyncAfter(deadline: .now() + Self.groupObtainTimeout) {
                 self.startMonitoringGroups()
             }
         }
-        NotificationCenter.default.post(name: Self.SonosRoomsChanged, object: nil)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Self.SonosRoomsChanged, object: nil)
+        }
     }
 }
 

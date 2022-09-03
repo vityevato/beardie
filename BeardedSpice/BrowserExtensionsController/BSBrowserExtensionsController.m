@@ -21,6 +21,7 @@
     dispatch_queue_t _workQueue;
     NSOperationQueue *_oQueue;
     BOOL _started;
+    BOOL _paused;
     BOOL _displayWarningDialog;
 }
 
@@ -102,6 +103,29 @@ static BSBrowserExtensionsController *singletonBSBrowserExtensionsController;
             self->_started = YES;
         }
     });
+}
+
+- (void)pause {
+    dispatch_sync(_workQueue, ^{
+        if (self->_paused == NO) {
+            [self->_webSocketServer stopWithComletion:nil];
+            self->_paused = YES;
+        }
+    });
+}
+- (BOOL)resume {
+    __block BOOL result = NO;
+    dispatch_sync(_workQueue, ^{
+        if (self->_paused) {
+            result = [self->_webSocketServer start];
+            if (result == NO) {
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:BSWebSocketServerEnabled];
+                return;
+            }
+        }
+    });
+    _paused = !result;
+    return result;
 }
 
 - (void)openGetExtensions {

@@ -38,7 +38,7 @@
     return [self assignKey];
 }
 
-- (BOOL)autoSelected {
+- (BOOL)autoSelectable {
     return YES;
 }
 

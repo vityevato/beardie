@@ -13,7 +13,7 @@ extension UserDefaultsKeys {
     static let AppCastUrl = "AppCastUrl"
 }
 
-final class AppUpdater: NSObject, SUUpdaterDelegate {
+final class AppUpdater: NSObject {
 
     override init() {
         if !self.infoChannel.isEmpty {
@@ -25,16 +25,10 @@ final class AppUpdater: NSObject, SUUpdaterDelegate {
         }
         UserDefaults.standard.set(self.appCastUrl, forKey: UserDefaultsKeys.AppCastUrl)
         
-        self.updater = SUUpdater.shared()
-        
         super.init()
         
-        self.updater.delegate = self
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(receivedFinishedUpdateDriver),
-                                               name: Self.SUUpdateDriverFinishedNotification,
-                                               object: nil)
-        
+        self.updater = SPUStandardUpdaterController(startingUpdater: true, updaterDelegate: self, userDriverDelegate: self)
+
     }
     
     deinit {
@@ -48,21 +42,51 @@ final class AppUpdater: NSObject, SUUpdaterDelegate {
         }
     }
     
-    // MARK: SUUpdaterDelegate implementation
-    func feedURLString(for updater: SUUpdater) -> String? {
-        return self.appCastUrl
-    }
-    
     // MARK: Private
-    private static let SUUpdateDriverFinishedNotification = Notification.Name("SUUpdateDriverFinished")
-
     private let infoChannel: String = { Bundle.main.object(forInfoDictionaryKey: "BSChannel") as? String ?? ""}()
     private let infoAppCastUrl: String = { Bundle.main.object(forInfoDictionaryKey: "SUFeedURL") as? String ?? "" }()
     
     private let appCastUrl: String
-    private let updater: SUUpdater
+    private var updater: SPUStandardUpdaterController!
     
     @objc func receivedFinishedUpdateDriver(_ nt: Notification) {
         UIController.removeWindow(self.updater)
+    }
+}
+
+// MARK: SPUStandardUserDriverDelegate Implementation
+
+extension AppUpdater: SPUStandardUserDriverDelegate {
+    
+//    func standardUserDriverWillShowModalAlert() {
+//        DDLogError("standardUserDriverWillShowModalAlert")
+//    }
+//    
+//    func standardUserDriverAllowsMinimizableStatusWindow() -> Bool {
+//        return false
+//    }
+//    
+//    func standardUserDriverWillHandleShowingUpdate(_ handleShowingUpdate: Bool, forUpdate update: SUAppcastItem, state: SPUUserUpdateState) {
+//        DDLogError("standardUserDriverWillHandleShowingUpdate")
+//
+//    }
+//    
+//    func standardUserDriverDidReceiveUserAttention(forUpdate update: SUAppcastItem) {
+//        DDLogError("standardUserDriverDidReceiveUserAttention")
+//
+//    }
+    
+    func standardUserDriverWillFinishUpdateSession() {
+        UIController.removeWindow(self.updater)
+    }
+
+}
+
+// MARK: SPUUpdaterDelegate Implementation
+
+extension AppUpdater: SPUUpdaterDelegate {
+    
+    func feedURLString(for updater: SPUUpdater) -> String? {
+        return self.appCastUrl
     }
 }

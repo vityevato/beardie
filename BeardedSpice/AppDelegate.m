@@ -563,8 +563,8 @@ BOOL accessibilityApiEnabled = NO;
             [UIController removeWindow:NSApp];
         }];
     }];
-}
 
+}
 - (void)updateActiveTabFromMenuItem:(id) sender
 {
     __weak typeof(self) wself = self;
@@ -679,7 +679,14 @@ BOOL accessibilityApiEnabled = NO;
                         [newItems addObject:menuItem];
                         [menuItem setRepresentedObject:tab];
                         
-                        if (tab.autoSelected && [tab isPlaying])
+                        // We define that local mac tabs have a priority under sonos tabs,
+                        // so we prevent to add sonos tab into list of the playing tabs if
+                        // exists any playing local tab
+                        if ([tab isKindOfClass:[SonosTabAdapter class]] && playingTabs.count) {
+                            continue;
+                        }
+                        
+                        if (tab.autoSelectable && [tab isPlaying])
                             [playingTabs addObject:tab];
                     }
                 } @catch (NSException *exception) {
@@ -794,11 +801,23 @@ BOOL accessibilityApiEnabled = NO;
      addObserver: self
      selector: @selector(receiveSleepNote:)
      name: NSWorkspaceWillSleepNotification object: NULL];
+    
+    [[[NSWorkspace sharedWorkspace] notificationCenter]
+     addObserver: self
+     selector: @selector(receiveWakeNote:)
+     name: NSWorkspaceDidWakeNotification object: NULL];
+
 
     [[[NSWorkspace sharedWorkspace] notificationCenter]
      addObserver:self
      selector:@selector(switchUserHandler:)
      name:NSWorkspaceSessionDidResignActiveNotification
+     object:nil];
+    
+    [[[NSWorkspace sharedWorkspace] notificationCenter]
+     addObserver:self
+     selector:@selector(activeUserHandler:)
+     name:NSWorkspaceSessionDidBecomeActiveNotification
      object:nil];
 }
 
@@ -983,6 +1002,19 @@ BOOL accessibilityApiEnabled = NO;
     });
 }
 
+- (void)setNetworkTabsServicesEnabled:(BOOL)enabled {
+    if (enabled) {
+        [_browserExtensionsController resume];
+        [_sonosRoomsController resume];
+        DDLogInfo(@"Network tabs services resumed");
+    }
+    else {
+        [_browserExtensionsController pause];
+        [_sonosRoomsController pause];
+        DDLogInfo(@"Network tabs services PAUSED");
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////
 #pragma mark Notifications methods
 /////////////////////////////////////////////////////////////////////////
@@ -990,16 +1022,33 @@ BOOL accessibilityApiEnabled = NO;
 - (void)receiveSleepNote:(NSNotification *)note
 {
     __weak typeof(self) wself = self;
-    dispatch_async(_workingQueue, ^{
+    dispatch_sync(_workingQueue, ^{
         [wself.activeApp performUserLeave];
+        [self setNetworkTabsServicesEnabled:NO];
+    });
+}
+
+- (void)receiveWakeNote:(NSNotification *)note
+{
+    __weak typeof(self) wself = self;
+    dispatch_sync(_workingQueue, ^{
+        [wself setNetworkTabsServicesEnabled:YES];
     });
 }
 
 - (void) switchUserHandler:(NSNotification*) notification
 {
     __weak typeof(self) wself = self;
-    dispatch_async(_workingQueue, ^{
+    dispatch_sync(_workingQueue, ^{
         [wself.activeApp performUserLeave];
+        [wself setNetworkTabsServicesEnabled:NO];
+    });
+}
+- (void) activeUserHandler:(NSNotification*) notification
+{
+    __weak typeof(self) wself = self;
+    dispatch_sync(_workingQueue, ^{
+        [wself setNetworkTabsServicesEnabled:YES];
     });
 }
 

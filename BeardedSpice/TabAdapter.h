@@ -18,7 +18,7 @@
 -(NSString *) URL;
 -(NSString *) key;
 
-- (BOOL)autoSelected;
+- (BOOL)autoSelectable;
 
 - (BOOL)activateAppWithHoldFrontmost:(BOOL)hold;
 - (BOOL)deactivateApp;
