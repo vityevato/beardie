@@ -4,7 +4,7 @@
 - **Deezer** (https://www.deezer.com/)
 - **Digitally Imported** (https://www.di.fm)
 - **Flat Audio** (https://flat.audio/)
-- **Mixcloud** (https://www.mixcloud.com)
+- **Mixcloud**
 - **Pocket Casts** (https://play.pocketcasts.com/)
 - **SoundCloud** (https://soundcloud.com/)
 - **Spotify** (https://spotify.com/)
