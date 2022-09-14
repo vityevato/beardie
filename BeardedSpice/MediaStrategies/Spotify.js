@@ -38,7 +38,7 @@ BSStrategy = {
     return {
       'image': document.querySelector('div.Root__now-playing-bar img[data-testid="cover-art-image"]').src,
       'track': document.querySelector('div.Root__now-playing-bar a[data-testid="context-item-link"]').textContent,
-      'artist': document.querySelector('div.Root__now-playing-bar div[data-testid="context-item-info-subtitles"]').textContent
+      'artist': document.querySelector('div.Root__now-playing-bar div[data-testid="context-item-info-subtitles"]').textContent,
       'favorited': !!(document.querySelector('div.control-button.control-button-heart > button.a65d8d62fe56eed3e660b937a9be8a93-scss'))
     };
   }
