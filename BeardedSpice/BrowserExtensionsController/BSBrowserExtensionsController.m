@@ -107,20 +107,26 @@ static BSBrowserExtensionsController *singletonBSBrowserExtensionsController;
 
 - (void)pause {
     dispatch_sync(_workQueue, ^{
-        if (self->_paused == NO) {
-            [self->_webSocketServer stopWithComletion:nil];
-            self->_paused = YES;
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:BSWebSocketServerEnabled]) {
+            if (self->_paused == NO) {
+                [self->_webSocketServer stopWithComletion:nil];
+                DDLogInfo(@"BSBrowserExtensionsController paused");
+                self->_paused = YES;
+            }
         }
     });
 }
 - (BOOL)resume {
     __block BOOL result = NO;
     dispatch_sync(_workQueue, ^{
-        if (self->_paused) {
-            result = [self->_webSocketServer start];
-            if (result == NO) {
-                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:BSWebSocketServerEnabled];
-                return;
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:BSWebSocketServerEnabled]) {
+            if (self->_paused) {
+                result = [self->_webSocketServer start];
+                if (result == NO) {
+                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:BSWebSocketServerEnabled];
+                    return;
+                }
+                DDLogInfo(@"BSBrowserExtensionsController resumed");
             }
         }
     });
