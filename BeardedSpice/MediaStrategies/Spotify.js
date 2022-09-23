@@ -16,11 +16,10 @@ BSStrategy = {
     args: ["URL"]
   },
   isPlaying: function() {
-    return !!(document.querySelector('div.player-controls__buttons button[data-testid="control-button-playpause"]'));
+    return !!(document.querySelector('div.player-controls__buttons button[aria-label="Pause"]'));
   },
   toggle: function () {
-    (document.querySelector('div.player-controls__buttons button[data-testid="control-button-playpause"]') 
-    || document.querySelector('div.player-controls__buttons button[data-testid="control-button-playpause"]')).click();
+    document.querySelector('div.player-controls__buttons button[data-testid="control-button-playpause"]').click();
   },
   next: function () {
     document.querySelector('div.player-controls__buttons button[data-testid="control-button-skip-forward"]').click();
