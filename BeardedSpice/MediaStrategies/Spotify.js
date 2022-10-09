@@ -4,6 +4,7 @@
 //
 //  Created by Jose Falcon on 12/19/13.
 //  Modified by Bonapara on 14/09/2022
+//  Modified by Roman Sokolov on 10/10/2022
 //  Copyright (c) 2022 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 BSStrategy = {
