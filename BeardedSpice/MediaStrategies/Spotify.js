@@ -3,11 +3,12 @@
 //  BeardedSpice
 //
 //  Created by Jose Falcon on 12/19/13.
-//  Modified by Roman Spkolov on 05/13/2021
-//  Copyright (c) 2021 GPL v3 http://www.gnu.org/licenses/gpl.html
+//  Modified by Bonapara on 14/09/2022
+//  Modified by Roman Sokolov on 10/10/2022
+//  Copyright (c) 2022 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 BSStrategy = {
-  version:3,
+  version:4,
   displayName:"Spotify",
   homepage: 'https://spotify.com/',
   accepts: {
@@ -16,11 +17,10 @@ BSStrategy = {
     args: ["URL"]
   },
   isPlaying: function() {
-    return !!(document.querySelector('div.player-controls__buttons button[data-testid="control-button-pause"]'));
+    return !!(document.querySelector('div.player-controls__buttons button[data-testid="control-button-playpause"] svg>path[d*="zm"]'));
   },
   toggle: function () {
-    (document.querySelector('div.player-controls__buttons button[data-testid="control-button-play"]') 
-    || document.querySelector('div.player-controls__buttons button[data-testid="control-button-pause"]')).click();
+    document.querySelector('div.player-controls__buttons button[data-testid="control-button-playpause"]').click();
   },
   next: function () {
     document.querySelector('div.player-controls__buttons button[data-testid="control-button-skip-forward"]').click();
@@ -29,16 +29,18 @@ BSStrategy = {
     document.querySelector('div.control-button.control-button-heart > button').click()    
   },
   previous: function () {
-    document.querySelector('div.player-controls__buttons > button:nth-child(2)').click();
+    document.querySelector('div.player-controls__left > button:nth-child(2)').click();
   },
   pause: function () {
-    document.querySelector('div.player-controls__buttons button[data-testid="control-button-pause"]').click();
+      if (BSStrategy.isPlaying()) {
+          document.querySelector('div.player-controls__buttons button[data-testid="control-button-playpause"]').click();
+      }
   },
   trackInfo: function () {
     return {
       'image': document.querySelector('div.Root__now-playing-bar img[data-testid="cover-art-image"]').src,
-      'track': document.querySelector('div.Root__now-playing-bar a[data-testid="nowplaying-track-link"]').textContent,
-      'artist': document.querySelector('div.Root__now-playing-bar div[data-testid="track-info-artists"]').textContent,
+      'track': document.querySelector('div.Root__now-playing-bar a[data-testid="context-item-link"]').textContent,
+      'artist': document.querySelector('div.Root__now-playing-bar div[data-testid="context-item-info-subtitles"]').textContent,
       'favorited': !!(document.querySelector('div.control-button.control-button-heart > button.a65d8d62fe56eed3e660b937a9be8a93-scss'))
     };
   }
