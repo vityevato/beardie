@@ -1011,7 +1011,7 @@ BOOL accessibilityApiEnabled = NO;
     else {
         [_browserExtensionsController pause];
         [_sonosRoomsController pause];
-        DDLogInfo(@"Network tabs services PAUSED");
+        DDLogInfo(@"Network tabs services paused");
     }
 }
 
