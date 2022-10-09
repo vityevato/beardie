@@ -16,7 +16,7 @@ BSStrategy = {
     args: ["URL"]
   },
   isPlaying: function() {
-    return !!(document.querySelector('div.player-controls__buttons button[aria-label="Pause"]'));
+    return !!(document.querySelector('div.player-controls__buttons button[data-testid="control-button-playpause"] svg>path[d*="zm"]'));
   },
   toggle: function () {
     document.querySelector('div.player-controls__buttons button[data-testid="control-button-playpause"]').click();
@@ -31,7 +31,9 @@ BSStrategy = {
     document.querySelector('div.player-controls__left > button:nth-child(2)').click();
   },
   pause: function () {
-    document.querySelector('div.player-controls__buttons button[data-testid="control-button-pause"]').click();
+      if (BSStrategy.isPlaying()) {
+          document.querySelector('div.player-controls__buttons button[data-testid="control-button-playpause"]').click();
+      }
   },
   trackInfo: function () {
     return {
