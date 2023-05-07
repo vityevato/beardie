@@ -21,15 +21,23 @@ struct Main {
         // Read handler for stdin
         FileHandle.standardInput.readabilityHandler = { (fl: FileHandle) in
             let lenData = fl.readData(ofLength: 4)
+            DDLogDebug("Message lenData: \(lenData.count)bytes")
+            if lenData.isEmpty {
+                DispatchQueue.main.async {
+                    FileHandle.standardInput.readabilityHandler = nil
+                }
+            }
             if lenData.count == MemoryLayout<UInt32>.size {
                 let len = Int(lenData.withUnsafeBytes { $0.load(as: UInt32.self) })
+                DDLogDebug("Message len: \(len)bytes")
                 let requestData = fl.readData(ofLength: len)
+                DDLogDebug("Data readed \(requestData.count)bytes length.")
                 if requestData.count == len {
                     DDLogDebug("Message received \(len)bytes length.")
                     do {
-                        if let message = try JSONSerialization.jsonObject(with: requestData) as? ExchangeDictionary {
+                        if let request = try JSONSerialization.jsonObject(with: requestData) as? ExchangeDictionary {
                             // Call request processing
-                            MessageProcessing.process(message) { (response) in
+                            MessageProcessing.process(request) { (response) in
                                 DispatchQueue.main.async {
                                     DDLogDebug("Response sending (count: \(response.count))")
                                     _ = send(response)
@@ -37,7 +45,7 @@ struct Main {
                             }
                         }
                     } catch {
-                       DDLogError("Can't convert browser message to dictionary: \(error)")
+                        DDLogError("Can't convert browser message to dictionary: \(error)")
                     }
                     
                 }
@@ -49,6 +57,7 @@ struct Main {
         while FileHandle.standardInput.readabilityHandler != nil {
             RunLoop.current.run(until: Date(timeIntervalSinceNow: RUNLOOP_TIMEOUT))
         }
+        DDLogInfo("Stop listen")
     }
     
     /// Sends `dictionary` to stdout as JSON data in UTF-8 encoding (NM protocol)
@@ -58,8 +67,16 @@ struct Main {
             if JSONSerialization.isValidJSONObject(object) {
                 let data = try JSONSerialization.data(withJSONObject: object)
                 var len = UInt32(data.count)
-                FileHandle.standardOutput.write(Data(bytes: &len, count: MemoryLayout<UInt32>.size))
-                FileHandle.standardOutput.write(data)
+                let exception = tryBlock {
+                    FileHandle.standardOutput.write(Data(bytes: &len, count: MemoryLayout<UInt32>.size))
+                    DDLogDebug("Write length of data: \(len)")
+                    FileHandle.standardOutput.write(data)
+                    DDLogDebug("Write data with length: \(len)")
+                }
+                guard exception == nil else {
+                    DDLogError("Can't write to stdout: \(String(describing: exception))")
+                    return false
+                }
             }
         } catch {
             DDLogError("Can't convert object to JSON data: \(object)")

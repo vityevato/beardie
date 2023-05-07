@@ -7,4 +7,5 @@
 //
 
 #import "ConfigConstants.h"
+#import "NSException+Utils.h"
 #import "BSSharedResources.h"
