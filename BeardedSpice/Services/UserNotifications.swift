@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import CocoaLumberjack
 import UserNotifications
 import UniformTypeIdentifiers
 
@@ -191,13 +192,12 @@ extension UserNotifications {
                             }
                             else {
                                 // download image
+                                var result: ImageCache?
                                 let group = DispatchGroup()
                                 group.enter()
                                 let task = URLSession.shared.downloadTask(with: imageUrl) {
                                     (fileUrl, response, error) in
-                                    var result: ImageCache?
                                     defer {
-                                        self.imageCache = result
                                         group.leave()
                                     }
                                     if let error = error {
@@ -228,6 +228,9 @@ extension UserNotifications {
                                 if group.wait(timeout: .now() + 3.0) == .timedOut {
                                     task.cancel()
                                     self.imageCache = nil
+                                }
+                                else {
+                                    self.imageCache = result
                                 }
                             }
                         }

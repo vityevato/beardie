@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import CocoaLumberjack
 import RxSwift
 import RxSonosLib
 
