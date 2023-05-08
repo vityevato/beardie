@@ -2,7 +2,7 @@
 
 At the moment I do not build releases with fixes, as there is no possibility to notarize the application (my personal subscription to Apple Developer Program expired). :) But you can take sources from master branch and build the application by yourself.
 
-At this stage, I not have necessary to renew subscriptions to Apple Dev, and this $100 is significant amount for me.
+At this stage, I do not need to renew my Apple Dev subscription, and this $100 is a significant amount for me.
 
 I can try to collect $100 through donates, if someone needs new release of the application. :)
 
