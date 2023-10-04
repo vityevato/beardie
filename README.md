@@ -2,8 +2,6 @@
 
 At the moment I do not build releases with fixes, as there is no possibility to notarize the application (my personal subscription to Apple Developer Program expired). :) But you can take sources from master branch and build the application by yourself.
 
-At this stage, I do not need to renew my Apple Dev subscription, and this $100 is a significant amount for me.
-
 # Intro
 
 Beardie is a utility that allows you to control various media players with your keyboard. It is a fork of the [BeardedSpice project](https://github.com/beardedspice/beardedspice). 
