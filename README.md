@@ -4,10 +4,6 @@ At the moment I do not build releases with fixes, as there is no possibility to 
 
 At this stage, I do not need to renew my Apple Dev subscription, and this $100 is a significant amount for me.
 
-I can try to collect $100 through donates, if someone needs new release of the application. :)
-
-Donation link: https://destream.net/live/vityevato/donate
-
 # Intro
 
 Beardie is a utility that allows you to control various media players with your keyboard. It is a fork of the [BeardedSpice project](https://github.com/beardedspice/beardedspice). 
