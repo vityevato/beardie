@@ -38,3 +38,14 @@ abstract_target "Commons" do
       pod 'MASShortcut', '~> 2.4.0'
   end
 end
+
+post_install do |installer_representation|
+  installer_representation.pods_project.build_configurations.each do |config|
+    config.build_settings.delete('ONLY_ACTIVE_ARCH')
+  end
+  installer_representation.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings.delete('MACOSX_DEPLOYMENT_TARGET')
+    end
+  end
+end

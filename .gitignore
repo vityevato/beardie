@@ -1,5 +1,6 @@
 #project
 .devconfig.xcconfig
+.bundle
 
 # OS X
 .DS_Store

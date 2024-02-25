@@ -136,6 +136,7 @@
 		65D631342A07ED2D009D31E3 /* NSException+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 656A002A1C8AD41A00BD29F5 /* NSException+Utils.m */; };
 		65D795C12644000500F4C713 /* AppUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D795C02644000500F4C713 /* AppUpdater.swift */; };
 		65D795C226440F6C00F4C713 /* SharedResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E58D3B24968BA900DB66DB /* SharedResources.swift */; };
+		65D91CEC2AED252800E87133 /* browser.js in Resources */ = {isa = PBXBuildFile; fileRef = 65D91CEB2AED252800E87133 /* browser.js */; };
 		65E5670E1B76A07700AD2D46 /* BSMediaStrategyEnableButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E5670D1B76A07700AD2D46 /* BSMediaStrategyEnableButton.m */; };
 		65E567111B76AE3A00AD2D46 /* BSPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E567101B76AE3A00AD2D46 /* BSPreferencesWindowController.m */; };
 		65E567141B775C9300AD2D46 /* BSShortcutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E567131B775C9300AD2D46 /* BSShortcutView.m */; };
@@ -152,6 +153,16 @@
 		65F294A6237C3F34008C1D71 /* BSTVTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65F294A5237C3F34008C1D71 /* BSTVTabAdapter.m */; };
 		65F4AC06249535EF000EB61F /* BSSharedResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 65384DBA2187BC5C0029D9E9 /* BSSharedResources.m */; };
 		65F4AC0924953654000EB61F /* BSSwiftTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F4AC0824953654000EB61F /* BSSwiftTest.swift */; };
+		65FAB5AB2AE808C200CC20DF /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FAB5AA2AE808C200CC20DF /* SafariWebExtensionHandler.swift */; };
+		65FAB5AE2AE808C200CC20DF /* _locales in Resources */ = {isa = PBXBuildFile; fileRef = 65FAB5AD2AE808C200CC20DF /* _locales */; };
+		65FAB5B02AE808C200CC20DF /* images in Resources */ = {isa = PBXBuildFile; fileRef = 65FAB5AF2AE808C200CC20DF /* images */; };
+		65FAB5B22AE808C200CC20DF /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 65FAB5B12AE808C200CC20DF /* manifest.json */; };
+		65FAB5B42AE808C200CC20DF /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = 65FAB5B32AE808C200CC20DF /* background.js */; };
+		65FAB5B62AE808C200CC20DF /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = 65FAB5B52AE808C200CC20DF /* content.js */; };
+		65FAB5B82AE808C300CC20DF /* popup.html in Resources */ = {isa = PBXBuildFile; fileRef = 65FAB5B72AE808C200CC20DF /* popup.html */; };
+		65FAB5BA2AE808C300CC20DF /* popup.css in Resources */ = {isa = PBXBuildFile; fileRef = 65FAB5B92AE808C300CC20DF /* popup.css */; };
+		65FAB5BC2AE808C300CC20DF /* popup.js in Resources */ = {isa = PBXBuildFile; fileRef = 65FAB5BB2AE808C300CC20DF /* popup.js */; };
+		65FAB5C12AE808C300CC20DF /* Test API.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 65FAB5A82AE808BF00CC20DF /* Test API.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		65FBCE3F1EC0F98A004EFFC7 /* BSVolumeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65FBCE3D1EC0F98A004EFFC7 /* BSVolumeWindowController.m */; };
 		65FBCE401EC0F98A004EFFC7 /* BSVolumeWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65FBCE3E1EC0F98A004EFFC7 /* BSVolumeWindowController.xib */; };
 		65FF756C1B36CEDF00D81CA5 /* BSLaunchAtLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 65FF756B1B36CEDF00D81CA5 /* BSLaunchAtLogin.m */; };
@@ -249,6 +260,13 @@
 			remoteGlobalIDString = 65AA828F239D7E2F000442A2;
 			remoteInfo = "prepare-build";
 		};
+		65FAB5BF2AE808C300CC20DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 967933241855173100A49AC7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 65FAB5A72AE808BE00CC20DF;
+			remoteInfo = "Test API";
+		};
 		967933511855173100A49AC7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 967933241855173100A49AC7 /* Project object */;
@@ -265,6 +283,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				65FAB5C12AE808C300CC20DF /* Test API.appex in Embed App Extensions */,
 				65384DB221874F810029D9E9 /* BS-Extension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -572,6 +591,7 @@
 		65D57FCF1D02E64F0016F270 /* Config-Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Debug.xcconfig"; sourceTree = "<group>"; };
 		65D795BD2643F87B00F4C713 /* Config-Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Config-Beta.xcconfig"; sourceTree = "<group>"; };
 		65D795C02644000500F4C713 /* AppUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdater.swift; sourceTree = "<group>"; };
+		65D91CEB2AED252800E87133 /* browser.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = browser.js; sourceTree = "<group>"; };
 		65E567071B76104300AD2D46 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		65E5670C1B76A07700AD2D46 /* BSMediaStrategyEnableButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSMediaStrategyEnableButton.h; sourceTree = "<group>"; };
 		65E5670D1B76A07700AD2D46 /* BSMediaStrategyEnableButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSMediaStrategyEnableButton.m; sourceTree = "<group>"; };
@@ -597,6 +617,18 @@
 		65F294A5237C3F34008C1D71 /* BSTVTabAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BSTVTabAdapter.m; sourceTree = "<group>"; };
 		65F4AC0724953654000EB61F /* BeardieTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BeardieTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		65F4AC0824953654000EB61F /* BSSwiftTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BSSwiftTest.swift; sourceTree = "<group>"; };
+		65FAB5A82AE808BF00CC20DF /* Test API.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Test API.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		65FAB5AA2AE808C200CC20DF /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		65FAB5AD2AE808C200CC20DF /* _locales */ = {isa = PBXFileReference; lastKnownFileType = folder; path = _locales; sourceTree = "<group>"; };
+		65FAB5AF2AE808C200CC20DF /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
+		65FAB5B12AE808C200CC20DF /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = manifest.json; sourceTree = "<group>"; };
+		65FAB5B32AE808C200CC20DF /* background.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = background.js; sourceTree = "<group>"; };
+		65FAB5B52AE808C200CC20DF /* content.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = content.js; sourceTree = "<group>"; };
+		65FAB5B72AE808C200CC20DF /* popup.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = popup.html; sourceTree = "<group>"; };
+		65FAB5B92AE808C300CC20DF /* popup.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = popup.css; sourceTree = "<group>"; };
+		65FAB5BB2AE808C300CC20DF /* popup.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = popup.js; sourceTree = "<group>"; };
+		65FAB5BD2AE808C300CC20DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65FAB5BE2AE808C300CC20DF /* Test_API.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Test_API.entitlements; sourceTree = "<group>"; };
 		65FBCE3C1EC0F98A004EFFC7 /* BSVolumeWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSVolumeWindowController.h; sourceTree = "<group>"; };
 		65FBCE3D1EC0F98A004EFFC7 /* BSVolumeWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSVolumeWindowController.m; sourceTree = "<group>"; };
 		65FBCE3E1EC0F98A004EFFC7 /* BSVolumeWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BSVolumeWindowController.xib; sourceTree = "<group>"; };
@@ -675,6 +707,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				217A5408102A00D2C0304B47 /* libPods-beardie-nm-connector.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		65FAB5A52AE808BE00CC20DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1129,6 +1168,33 @@
 			path = "beardie-nm-connector";
 			sourceTree = "<group>";
 		};
+		65FAB5A92AE808C200CC20DF /* Test API */ = {
+			isa = PBXGroup;
+			children = (
+				65FAB5AA2AE808C200CC20DF /* SafariWebExtensionHandler.swift */,
+				65FAB5BD2AE808C300CC20DF /* Info.plist */,
+				65FAB5BE2AE808C300CC20DF /* Test_API.entitlements */,
+				65FAB5AC2AE808C200CC20DF /* Resources */,
+			);
+			path = "Test API";
+			sourceTree = "<group>";
+		};
+		65FAB5AC2AE808C200CC20DF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				65FAB5AD2AE808C200CC20DF /* _locales */,
+				65FAB5AF2AE808C200CC20DF /* images */,
+				65FAB5B12AE808C200CC20DF /* manifest.json */,
+				65FAB5B32AE808C200CC20DF /* background.js */,
+				65FAB5B52AE808C200CC20DF /* content.js */,
+				65FAB5B72AE808C200CC20DF /* popup.html */,
+				65FAB5B92AE808C300CC20DF /* popup.css */,
+				65D91CEB2AED252800E87133 /* browser.js */,
+				65FAB5BB2AE808C300CC20DF /* popup.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		65FBCE3B1EC0F8F3004EFFC7 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1159,6 +1225,7 @@
 				65E6E0532370AC7A009C9448 /* beardie-nm-connector */,
 				653B09D025D98146005C5807 /* restarter */,
 				65AA48FA25F585A400D19C60 /* BeardieLaunchAtLogin */,
+				65FAB5A92AE808C200CC20DF /* Test API */,
 				9679332E1855173100A49AC7 /* Frameworks */,
 				9679332D1855173100A49AC7 /* Products */,
 				C5F7A2FBB1AC4C50850BCEEB /* Pods */,
@@ -1179,6 +1246,7 @@
 				65E6E0522370AC7A009C9448 /* beardie-nm-connector */,
 				653B09CF25D98146005C5807 /* beardie_restarter */,
 				65AA48F925F585A400D19C60 /* BeardieLaunchAtLogin.app */,
+				65FAB5A82AE808BF00CC20DF /* Test API.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1452,6 +1520,23 @@
 			productReference = 65E6E0522370AC7A009C9448 /* beardie-nm-connector */;
 			productType = "com.apple.product-type.tool";
 		};
+		65FAB5A72AE808BE00CC20DF /* Test API */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65FAB5C52AE808C600CC20DF /* Build configuration list for PBXNativeTarget "Test API" */;
+			buildPhases = (
+				65FAB5A42AE808BE00CC20DF /* Sources */,
+				65FAB5A52AE808BE00CC20DF /* Frameworks */,
+				65FAB5A62AE808BE00CC20DF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Test API";
+			productName = "Test API";
+			productReference = 65FAB5A82AE808BF00CC20DF /* Test API.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		9679332B1855173100A49AC7 /* Beardie */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9679335D1855173100A49AC7 /* Build configuration list for PBXNativeTarget "Beardie" */;
@@ -1479,6 +1564,7 @@
 				65322924200415EB004CE66E /* PBXTargetDependency */,
 				656AFFF41C8ACDCF00BD29F5 /* PBXTargetDependency */,
 				65384DB121874F810029D9E9 /* PBXTargetDependency */,
+				65FAB5C02AE808C300CC20DF /* PBXTargetDependency */,
 			);
 			name = Beardie;
 			productName = BeardedSpice;
@@ -1514,7 +1600,7 @@
 			attributes = {
 				CLASSPREFIX = BS;
 				DefaultBuildSystemTypeForWorkspace = Original;
-				LastSwiftUpdateCheck = 1240;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1310;
 				ORGANIZATIONNAME = "Roman Sokolov";
 				TargetAttributes = {
@@ -1571,6 +1657,11 @@
 						DevelopmentTeam = 5F2QV47DGC;
 						ProvisioningStyle = Manual;
 					};
+					65FAB5A72AE808BE00CC20DF = {
+						CreatedOnToolsVersion = 15.0;
+						DevelopmentTeam = 5F2QV47DGC;
+						ProvisioningStyle = Manual;
+					};
 					9679332B1855173100A49AC7 = {
 						DevelopmentTeam = 5F2QV47DGC;
 						LastSwiftMigration = 1110;
@@ -1619,6 +1710,7 @@
 				65AA828F239D7E2F000442A2 /* prepare-build */,
 				653B09CE25D98146005C5807 /* restarter */,
 				65AA48F825F585A400D19C60 /* BeardieLaunchAtLogin */,
+				65FAB5A72AE808BE00CC20DF /* Test API */,
 			);
 		};
 /* End PBXProject section */
@@ -1645,6 +1737,22 @@
 			files = (
 				65AA494025F61C0C00D19C60 /* Images.xcassets in Resources */,
 				65AA490625F585A500D19C60 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		65FAB5A62AE808BE00CC20DF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65FAB5B42AE808C200CC20DF /* background.js in Resources */,
+				65FAB5BA2AE808C300CC20DF /* popup.css in Resources */,
+				65FAB5B82AE808C300CC20DF /* popup.html in Resources */,
+				65FAB5B02AE808C200CC20DF /* images in Resources */,
+				65FAB5B22AE808C200CC20DF /* manifest.json in Resources */,
+				65FAB5AE2AE808C200CC20DF /* _locales in Resources */,
+				65FAB5B62AE808C200CC20DF /* content.js in Resources */,
+				65D91CEC2AED252800E87133 /* browser.js in Resources */,
+				65FAB5BC2AE808C300CC20DF /* popup.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1967,6 +2075,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		65FAB5A42AE808BE00CC20DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65FAB5AB2AE808C200CC20DF /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		967933281855173100A49AC7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2121,6 +2237,11 @@
 			isa = PBXTargetDependency;
 			target = 65AA828F239D7E2F000442A2 /* prepare-build */;
 			targetProxy = 65F99A6A277B9BBE00D13ABF /* PBXContainerItemProxy */;
+		};
+		65FAB5C02AE808C300CC20DF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 65FAB5A72AE808BE00CC20DF /* Test API */;
+			targetProxy = 65FAB5BF2AE808C300CC20DF /* PBXContainerItemProxy */;
 		};
 		967933521855173100A49AC7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2997,6 +3118,129 @@
 			};
 			name = Release;
 		};
+		65FAB5C22AE808C600CC20DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Test API/Test_API.entitlements";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Test API/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Test API";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 GPL v3 http://www.gnu.org/licenses/gpl.html";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.calm-apps.mac.beardie.Test-API";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		65FAB5C32AE808C600CC20DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Test API/Test_API.entitlements";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Test API/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Test API";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 GPL v3 http://www.gnu.org/licenses/gpl.html";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.calm-apps.mac.beardie.Test-API";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		65FAB5C42AE808C600CC20DF /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Test API/Test_API.entitlements";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Test API/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Test API";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 GPL v3 http://www.gnu.org/licenses/gpl.html";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.calm-apps.mac.beardie.Test-API";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Beta;
+		};
 		9679335B1855173100A49AC7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 65D57FCF1D02E64F0016F270 /* Config-Debug.xcconfig */;
@@ -3289,6 +3533,16 @@
 				65E6E0572370AC7A009C9448 /* Debug */,
 				65E6E0582370AC7A009C9448 /* Release */,
 				65D795B92643F76200F4C713 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Beta;
+		};
+		65FAB5C52AE808C600CC20DF /* Build configuration list for PBXNativeTarget "Test API" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65FAB5C22AE808C600CC20DF /* Debug */,
+				65FAB5C32AE808C600CC20DF /* Release */,
+				65FAB5C42AE808C600CC20DF /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Beta;

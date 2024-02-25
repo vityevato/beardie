@@ -300,35 +300,29 @@ static NSArray *tabClasses;
 - (NSDictionary *)enabledStrategyDictionary {
     
     NSMutableDictionary *result = [NSMutableDictionary new];
-    NSMutableDictionary *strategies = [NSMutableDictionary new];
+    NSMutableString *strategies = [NSMutableString new];
+//    NSMutableDictionary *strategies = [NSMutableDictionary new];
     for (BSMediaStrategy *strategy in MediaStrategyRegistry.singleton.availableStrategies) {
         
         NSDictionary *params = strategy.acceptParams;
-        if ([params[kBSMediaStrategyAcceptMethod] isEqualToString:kBSMediaStrategyAcceptPredicateOnTab]) {
-            
+        if ([params[kBSMediaStrategyAcceptMethod] isEqualToString:kBSMediaStrategyAcceptPredicateOnTab]) 
+        {
             NSPredicate *predicate = params[kBSMediaStrategyKeyAccept];
-            
-            NSString *converted = [NSString stringWithFormat:@"function bsAccepter(){ return ( %@ );}", [BSPredicateToJS jsFromPredicate:predicate]];
-            if (! [NSString isNullOrEmpty:converted]) {
-                
-                strategies[strategy.fileName] = converted;
-            }
+            NSString *predicateString = [BSPredicateToJS jsFromPredicate:predicate];
+            [strategies appendFormat:@"function (){ return ( %@ ) ? \"%@\" : null ;},\n", predicateString, strategy.fileName];
         }
-        else if ([params[kBSMediaStrategyAcceptMethod] isEqualToString:kBSMediaStrategyAcceptScript]) {
-            
+        else if ([params[kBSMediaStrategyAcceptMethod] isEqualToString:kBSMediaStrategyAcceptScript]) 
+        {
             NSString *script = params[kBSMediaStrategyKeyAccept];
-            if (! [NSString isNullOrEmpty:script]) {
-                
-                strategies[strategy.fileName] = [NSString stringWithFormat:@"function bsAccepter(){ return ( %@ );}",script];
+            if (script.length) {
+                [strategies appendFormat:@"function (){ return ( %@ ) ? \"%@\" : null ;},\n", script, strategy.fileName];
             }
         }
     }
     
-    if (strategies.count) {
+    if (strategies.length) {
         
-        NSData *data = [NSJSONSerialization dataWithJSONObject:strategies options:0 error:NULL];
-        NSString *stringResult = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        result[@"strategies"] = stringResult;
+        result[@"strategies"] = [NSString stringWithFormat:@"[\n%@]",strategies];
         
         result[@"bsJsFunctions"] = [BSPredicateToJS jsFunctions];
         return result;
