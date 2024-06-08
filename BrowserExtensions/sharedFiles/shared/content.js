@@ -195,18 +195,18 @@ var mainScript = function() {
 
         try {
             var code = accepters.bsJsFunctions +
-                "bsJsFunctions();" +
-                "var strategies = " + accepters.strategies + ";" +
-                "Object.getOwnPropertyNames(strategies).find(function(val) {" +
-                "eval(strategies[val]);" +
-                "if (bsAccepter()) {" +
-                "strategyName = val;" +
-                "strategyAccepterFunc = bsAccepter;" +
-                "BSLog(\"(Beardie) Strategy found: \" + strategyName + \".\");" +
-                "return true;" +
-                "}" +
-                "return false;" +
-                "});";
+                "\n" +
+                "bsJsFunctions();\n" +
+                "let strategies = " + accepters.strategies + ";\n" +
+                "strategies.find(function(val) {\n" +
+                "strategyName = val();\n" +
+                "if (strategyName) {\n" +
+                "strategyAccepterFunc = val;\n" +
+                "BSLog(\"(Beardie) Strategy found: \" + strategyName + \".\");\n" +
+                "return true;\n" +
+                "}\n" +
+                "return false;\n" +
+                "});\n";
 
             if (noCSP) {
                 let injectCode = BSUtils.injectAcceptersScript(code, bsParameters);
