@@ -195,11 +195,13 @@ static NSSet *_safariBundleIds;
                     window = nil;
                 }
             }
-            if ([self checkIdentifier:windowId window:window]) {
-                result = window;
-                CFRetain(result);
+            if (window) {
+                if ([self checkIdentifier:windowId window:window]) {
+                    result = window;
+                    CFRetain(result);
+                }
+                CFRelease(window);
             }
-            CFRelease(window);
         }
         
         CFRelease(ref);
