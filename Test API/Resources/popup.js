@@ -4,7 +4,7 @@ console.log("Hello World!", browser);
 
 async function clickFunc()
 {
-    console.warn("TUTA", browser);
+    console.warn ("TUTA", browser);
     debugger;
     let activeTab = await Beardie.getActiveTab();
     Beardie.everyTabs ( async tab => {

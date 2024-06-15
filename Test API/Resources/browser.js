@@ -73,7 +73,7 @@ export default {
         };
 
         try {
-            await chrome.scripting.executeScript({
+            await api.scripting.executeScript({
                 target: tab,
                 func: functionToInject,
                 injectImmediately: true,
@@ -81,7 +81,7 @@ export default {
                 args: [script]
             });
         } catch (e) {
-            logger.debug(`Error on executeScript in the tab ${tab.id}:`, chrome.runtime.lastError, e);
+            logger.debug(`Error on executeScript in the tab ${tab.id}:`, api.runtime.lastError, e);
         }
     }
 

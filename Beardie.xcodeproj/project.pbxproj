@@ -1663,11 +1663,6 @@
 						DevelopmentTeam = TC3Q7MAJXF;
 						ProvisioningStyle = Manual;
 					};
-					65FAB5A72AE808BE00CC20DF = {
-						CreatedOnToolsVersion = 15.0;
-						DevelopmentTeam = 5F2QV47DGC;
-						ProvisioningStyle = Manual;
-					};
 					9679332B1855173100A49AC7 = {
 						DevelopmentTeam = TC3Q7MAJXF;
 						LastSwiftMigration = 1110;
