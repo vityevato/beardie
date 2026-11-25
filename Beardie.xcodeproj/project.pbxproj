@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 47;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1596,7 +1596,6 @@
 				};
 			};
 			buildConfigurationList = 967933271855173100A49AC7 /* Build configuration list for PBXProject "Beardie" */;
-			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -1605,6 +1604,7 @@
 				en,
 			);
 			mainGroup = 967933231855173100A49AC7;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = 9679332D1855173100A49AC7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -2350,7 +2350,11 @@
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/BrowserExtensions/safari/Safari Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_SAFARI_EXTENSION_BUNDLE_ID)";
@@ -2388,7 +2392,11 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/BrowserExtensions/safari/Safari Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_SAFARI_EXTENSION_BUNDLE_ID)";
@@ -2471,7 +2479,11 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = BeardedSpiceControllers/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_CONTROLLER_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2492,7 +2504,11 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = BeardedSpiceControllers/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_CONTROLLER_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2522,7 +2538,10 @@
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = BeardieLaunchAtLogin/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_LAUNCHER_BUNDLE_ID)";
@@ -2552,7 +2571,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = BeardieLaunchAtLogin/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_LAUNCHER_BUNDLE_ID)";
@@ -2685,7 +2707,10 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "BeardedSpice/Beardie-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MARKETING_VERSION = 3.0.;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_BUNDLE_ID)";
 				PRODUCT_NAME = Beardie;
@@ -2710,7 +2735,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BeardedSpice/Beardie-Prefix.pch";
 				INFOPLIST_FILE = "BeardedSpiceTests/BeardieTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "foo.bar.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BeardieTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceTests/BeardieTests-Bridging-Header.h";
@@ -2732,7 +2761,11 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = BeardedSpiceControllers/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_CONTROLLER_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2831,7 +2864,11 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/BrowserExtensions/safari/Safari Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_SAFARI_EXTENSION_BUNDLE_ID)";
@@ -2859,8 +2896,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_B_NATIVE_MESSAGING_CONNECTOR_BUNDLE_ID)";
 				PRODUCT_NAME = "$(BS_NATIVE_MESSAGING_CONNECTOR_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "beardie-nm-connector/Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Beta;
 		};
@@ -2933,7 +2971,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = BeardieLaunchAtLogin/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_LAUNCHER_BUNDLE_ID)";
@@ -2992,8 +3033,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_B_NATIVE_MESSAGING_CONNECTOR_BUNDLE_ID)";
 				PRODUCT_NAME = "$(BS_NATIVE_MESSAGING_CONNECTOR_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "beardie-nm-connector/Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;
 		};
@@ -3125,7 +3167,10 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "BeardedSpice/Beardie-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MARKETING_VERSION = 3.0.;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_BUNDLE_ID)";
 				PRODUCT_NAME = Beardie;
@@ -3149,7 +3194,10 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "BeardedSpice/Beardie-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MARKETING_VERSION = 3.0.;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_BUNDLE_ID)";
 				PRODUCT_NAME = Beardie;
@@ -3174,7 +3222,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BeardedSpice/Beardie-Prefix.pch";
 				INFOPLIST_FILE = "BeardedSpiceTests/BeardieTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "foo.bar.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BeardieTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceTests/BeardieTests-Bridging-Header.h";
@@ -3201,7 +3253,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BeardedSpice/Beardie-Prefix.pch";
 				INFOPLIST_FILE = "BeardedSpiceTests/BeardieTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "foo.bar.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BeardieTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceTests/BeardieTests-Bridging-Header.h";
