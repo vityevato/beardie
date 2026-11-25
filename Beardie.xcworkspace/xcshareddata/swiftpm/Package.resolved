@@ -1,5 +1,5 @@
 {
-  "originHash" : "4c113d85298cb2267a54b3fad163f38923ae53bb5e337023254db524d83ee436",
+  "originHash" : "f44cb255e6522ec39a4719bd86cb3789e93985d8151ddccd565e3f503a2eb40d",
   "pins" : [
     {
       "identity" : "cocoalumberjack",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "80ada1f753b0d53d9b57c465936a7c4169375002",
         "version" : "3.7.4"
+      }
+    },
+    {
+      "identity" : "maspreferences",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/shpakovski/MASPreferences.git",
+      "state" : {
+        "revision" : "56bafeeabffa78a18620f006f74efbbcde3c45e2",
+        "version" : "1.4.1"
       }
     },
     {

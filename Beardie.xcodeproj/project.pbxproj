@@ -28,6 +28,7 @@
 		25D13F6F1E9A2F6400149554 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 25D13F6D1E9A2F6400149554 /* Localizable.stringsdict */; };
 		3471BFC2A350FE0D6331933F /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 4C1DA325433A7C776A231E35 /* CocoaLumberjack */; };
 		3566109C2A60C52A6C4CEBF9 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 5D023EAF53FE2F2FAF3A3BE6 /* CocoaLumberjack */; };
+		5AA90210622F2E2DEDBFC2A3 /* MASPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 519A1D3E8F8915A196AFEB69 /* MASPreferences */; };
 		5E80769F1D58CE180002855D /* DowncastTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E80769E1D58CE180002855D /* DowncastTabAdapter.m */; };
 		60749B9F458FF7C680AF171E /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1C1B7CCBA8D6E62A248DC97D /* CocoaLumberjackSwift */; };
 		65063FEB233DE94E0015F558 /* DeezerTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65063FEA233DE94E0015F558 /* DeezerTabAdapter.m */; };
@@ -686,6 +687,7 @@
 				663AA6C032B2BE9C00555B2E /* libPods-Beardie.a in Frameworks */,
 				3471BFC2A350FE0D6331933F /* CocoaLumberjack in Frameworks */,
 				20E267DC94036E141937EECD /* CocoaLumberjackSwift in Frameworks */,
+				5AA90210622F2E2DEDBFC2A3 /* MASPreferences in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1480,6 +1482,7 @@
 			packageProductDependencies = (
 				4C1DA325433A7C776A231E35 /* CocoaLumberjack */,
 				B5093B87FF88D8364E449D62 /* CocoaLumberjackSwift */,
+				519A1D3E8F8915A196AFEB69 /* MASPreferences */,
 			);
 			productName = BeardedSpice;
 			productReference = 9679332C1855173100A49AC7 /* Beardie.app */;
@@ -1609,6 +1612,7 @@
 			mainGroup = 967933231855173100A49AC7;
 			packageReferences = (
 				A87EF0E8040F79AE7CB599F4 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
+				686789AD2EA4DF24BB06A7DF /* XCRemoteSwiftPackageReference "MASPreferences" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9679332D1855173100A49AC7 /* Products */;
@@ -3329,6 +3333,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		686789AD2EA4DF24BB06A7DF /* XCRemoteSwiftPackageReference "MASPreferences" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/shpakovski/MASPreferences.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.4.1;
+			};
+		};
 		A87EF0E8040F79AE7CB599F4 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack.git";
@@ -3349,6 +3361,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A87EF0E8040F79AE7CB599F4 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
 			productName = CocoaLumberjack;
+		};
+		519A1D3E8F8915A196AFEB69 /* MASPreferences */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 686789AD2EA4DF24BB06A7DF /* XCRemoteSwiftPackageReference "MASPreferences" */;
+			productName = MASPreferences;
 		};
 		5D023EAF53FE2F2FAF3A3BE6 /* CocoaLumberjack */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -4,7 +4,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 project 'Beardie'
 
 target 'Beardie' do
-    pod 'MASPreferences', '~> 1.3'
     pod 'MASShortcut', '~> 2.4.0'
     pod 'Sparkle'
     pod 'RxSSDP', :git => 'https://github.com/Stillness-2/RxSSDP'

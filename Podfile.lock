@@ -1,7 +1,6 @@
 PODS:
   - AEXML (4.6.1)
   - Kiwi (3.0.0)
-  - MASPreferences (1.4.1)
   - MASShortcut (2.4.0)
   - RxSonosLib (0.14.3):
     - AEXML (~> 4.4)
@@ -14,7 +13,6 @@ PODS:
 
 DEPENDENCIES:
   - Kiwi (~> 3.0.0)
-  - MASPreferences (~> 1.3)
   - MASShortcut (~> 2.4.0)
   - RxSonosLib (from `https://github.com/Stillness-2/RxSonosLib`)
   - RxSSDP (from `https://github.com/Stillness-2/RxSSDP`)
@@ -24,7 +22,6 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AEXML
     - Kiwi
-    - MASPreferences
     - MASShortcut
     - RxSwift
     - Sparkle
@@ -46,13 +43,12 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AEXML: 1e255ecc6597212f97a7454a69ebd3ede64ac1cf
   Kiwi: fbeafef0f00e4d8f7dcb3420a4930afe70af77f7
-  MASPreferences: 1ba2deb14086792857af44d22846fc4aae477fd9
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
   RxSonosLib: 4db32e35913f0f5f5d2ab5b4effb47ea98521dd0
   RxSSDP: 44a82c1529884e897a777b57ea82761a8fa7ec12
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
   Sparkle: cb8c851f6247a9acbe9e236539404c5be529f74d
 
-PODFILE CHECKSUM: bd5d3ff5949b4bbd2f3286b422884e2d9c6a5647
+PODFILE CHECKSUM: fd8b7b07a5f6fcd8c60c7c5168868fff764628ca
 
 COCOAPODS: 1.16.2
