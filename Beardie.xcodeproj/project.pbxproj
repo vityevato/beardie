@@ -28,6 +28,7 @@
 		25D13F6F1E9A2F6400149554 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 25D13F6D1E9A2F6400149554 /* Localizable.stringsdict */; };
 		3471BFC2A350FE0D6331933F /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 4C1DA325433A7C776A231E35 /* CocoaLumberjack */; };
 		3566109C2A60C52A6C4CEBF9 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 5D023EAF53FE2F2FAF3A3BE6 /* CocoaLumberjack */; };
+		3CD4F9B6279935D1A5B71CCE /* ShortcutsPreferencesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A2AAAF06FBB4626AD6FFB /* ShortcutsPreferencesUITests.swift */; };
 		5AA90210622F2E2DEDBFC2A3 /* MASPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 519A1D3E8F8915A196AFEB69 /* MASPreferences */; };
 		5E80769F1D58CE180002855D /* DowncastTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E80769E1D58CE180002855D /* DowncastTabAdapter.m */; };
 		60749B9F458FF7C680AF171E /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1C1B7CCBA8D6E62A248DC97D /* CocoaLumberjackSwift */; };
@@ -162,6 +163,7 @@
 		663AA6C032B2BE9C00555B2E /* libPods-Beardie.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 717D81719E5A7FCD8EE92EA6 /* libPods-Beardie.a */; };
 		78D9F8101D808FCD0081E4EE /* BSAppleScriptSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D9F80F1D808FCD0081E4EE /* BSAppleScriptSupport.m */; };
 		78D9F8121D808FD70081E4EE /* BeardieSuite.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 78D9F8111D808FD70081E4EE /* BeardieSuite.sdef */; };
+		7E39DD332B4088DB022E9E87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */; };
 		8C88B5FB5969FE92330D22A3 /* libPods-BeardieControllers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC08A44F46F19C24BCA140C3 /* libPods-BeardieControllers.a */; };
 		95EE243B2018B67D15ACCF21 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 80FA95FF44F86F21338F0F0C /* CocoaLumberjack */; };
 		967933301855173100A49AC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679332F1855173100A49AC7 /* Cocoa.framework */; };
@@ -173,6 +175,7 @@
 		967933501855173100A49AC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679332F1855173100A49AC7 /* Cocoa.framework */; };
 		9679336518551BCC00A49AC7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679336418551BCC00A49AC7 /* ScriptingBridge.framework */; };
 		B82CB206DDE3967A6EC2AEC3 /* RxSonosLib in Frameworks */ = {isa = PBXBuildFile; productRef = 4AEE03C0808046E7609E0292 /* RxSonosLib */; };
+		BD971408720B6CCEB2C25377 /* BeardieUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F54992BB9A44246BD8C516F /* BeardieUITestCase.swift */; };
 		D09EFF221C8CD49E00B24DA9 /* VLCTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = D09EFF1F1C8CD49E00B24DA9 /* VLCTabAdapter.m */; };
 		D59BF53F250A94CF940C6E42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 71F38282AF15EE370BCD09B1 /* RxSwift */; };
 		D5CD37E8725170F194B77BF7 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = C7B6566008748888A5A3548A /* CocoaLumberjack */; };
@@ -262,6 +265,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 9679332B1855173100A49AC7;
 			remoteInfo = BeardedSpice;
+		};
+		FDC1579A4F5472AC3C37D6C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 967933241855173100A49AC7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9679332B1855173100A49AC7;
+			remoteInfo = Beardie;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -375,11 +385,13 @@
 		0BF06ADE1C9513A800534083 /* BSStrategyVersionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BSStrategyVersionManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0BF06ADF1C9513A800534083 /* BSTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSTrack.h; sourceTree = "<group>"; };
 		0BF06AE01C9513A800534083 /* BSTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSTrack.m; sourceTree = "<group>"; };
+		1A1A2AAAF06FBB4626AD6FFB /* ShortcutsPreferencesUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesUITests.swift; sourceTree = "<group>"; };
 		4C25B5F22E427A5715A0D033 /* Pods-BeardieControllers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeardieControllers.release.xcconfig"; path = "Pods/Target Support Files/Pods-BeardieControllers/Pods-BeardieControllers.release.xcconfig"; sourceTree = "<group>"; };
 		4C54B252ADCDA9F3DED06F1E /* Pods-Beardie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beardie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Beardie/Pods-Beardie.debug.xcconfig"; sourceTree = "<group>"; };
 		5E80769C1D58CE180002855D /* Downcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Downcast.h; sourceTree = "<group>"; };
 		5E80769D1D58CE180002855D /* DowncastTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DowncastTabAdapter.h; sourceTree = "<group>"; };
 		5E80769E1D58CE180002855D /* DowncastTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DowncastTabAdapter.m; sourceTree = "<group>"; };
+		5F54992BB9A44246BD8C516F /* BeardieUITestCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BeardieUITestCase.swift; sourceTree = "<group>"; };
 		65063FEA233DE94E0015F558 /* DeezerTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeezerTabAdapter.m; sourceTree = "<group>"; };
 		65063FEC233DE9660015F558 /* DeezerTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeezerTabAdapter.h; sourceTree = "<group>"; };
 		6506A714237604A800DAC132 /* Music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
@@ -620,12 +632,15 @@
 		9679334E1855173100A49AC7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		967933551855173100A49AC7 /* BeardieTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BeardieTests-Info.plist"; sourceTree = "<group>"; };
 		9679336418551BCC00A49AC7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		A2969C5813B95FA63B91B3AF /* BeardieUITests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "BeardieUITests-Info.plist"; sourceTree = "<group>"; };
 		A9C0CF928C3FE35F3869A899 /* Pods-BeardieControllers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeardieControllers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BeardieControllers/Pods-BeardieControllers.debug.xcconfig"; sourceTree = "<group>"; };
+		AD54E77BAF3752964C718E42 /* BeardieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeardieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEA9DD3A273E8C8AA22A8EE3 /* Pods-Beardie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beardie.release.xcconfig"; path = "Pods/Target Support Files/Pods-Beardie/Pods-Beardie.release.xcconfig"; sourceTree = "<group>"; };
 		CFCE1786610637C89C88C109 /* Pods-BeardieControllers.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeardieControllers.beta.xcconfig"; path = "Pods/Target Support Files/Pods-BeardieControllers/Pods-BeardieControllers.beta.xcconfig"; sourceTree = "<group>"; };
 		D09EFF1F1C8CD49E00B24DA9 /* VLCTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLCTabAdapter.m; sourceTree = "<group>"; };
 		D09EFF201C8CD49E00B24DA9 /* VLCTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLCTabAdapter.h; sourceTree = "<group>"; };
 		D09EFF211C8CD49E00B24DA9 /* VLC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLC.h; sourceTree = "<group>"; };
+		DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		EC08A44F46F19C24BCA140C3 /* libPods-BeardieControllers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BeardieControllers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -670,6 +685,14 @@
 			files = (
 				3566109C2A60C52A6C4CEBF9 /* CocoaLumberjack in Frameworks */,
 				60749B9F458FF7C680AF171E /* CocoaLumberjackSwift in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68326BAE02EEC13B96A474F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E39DD332B4088DB022E9E87 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1142,6 +1165,14 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		9274FEB59CFABAD33B17CB76 /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
 		967933231855173100A49AC7 = {
 			isa = PBXGroup;
 			children = (
@@ -1162,6 +1193,7 @@
 				9679332E1855173100A49AC7 /* Frameworks */,
 				9679332D1855173100A49AC7 /* Products */,
 				C5F7A2FBB1AC4C50850BCEEB /* Pods */,
+				C785BD0D3B77C2B26EFB6014 /* BeardieUITests */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -1179,6 +1211,7 @@
 				65E6E0522370AC7A009C9448 /* beardie-nm-connector */,
 				653B09CF25D98146005C5807 /* beardie_restarter */,
 				65AA48F925F585A400D19C60 /* BeardieLaunchAtLogin.app */,
+				AD54E77BAF3752964C718E42 /* BeardieUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1197,6 +1230,7 @@
 				0B96393159D20F45215E45F2 /* libPods-SafariExtension.a */,
 				717D81719E5A7FCD8EE92EA6 /* libPods-Beardie.a */,
 				EC08A44F46F19C24BCA140C3 /* libPods-BeardieControllers.a */,
+				9274FEB59CFABAD33B17CB76 /* OS X */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1296,6 +1330,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		C785BD0D3B77C2B26EFB6014 /* BeardieUITests */ = {
+			isa = PBXGroup;
+			children = (
+				5F54992BB9A44246BD8C516F /* BeardieUITestCase.swift */,
+				1A1A2AAAF06FBB4626AD6FFB /* ShortcutsPreferencesUITests.swift */,
+				A2969C5813B95FA63B91B3AF /* BeardieUITests-Info.plist */,
+			);
+			name = BeardieUITests;
+			path = BeardieUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
@@ -1345,6 +1390,24 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		3929A7CAEF49C4BE3076E96D /* BeardieUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B39A21D01C18207F242AD279 /* Build configuration list for PBXNativeTarget "BeardieUITests" */;
+			buildPhases = (
+				20FBB3A7F219CB54E4AEE128 /* Sources */,
+				68326BAE02EEC13B96A474F0 /* Frameworks */,
+				C876DB90225E4284A6CD2420 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9427610A4E9C3E9ADF1CE5E3 /* PBXTargetDependency */,
+			);
+			name = BeardieUITests;
+			productName = BeardieUITests;
+			productReference = AD54E77BAF3752964C718E42 /* BeardieUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		65384D9D21874F810029D9E9 /* BS-Extension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 65384DB521874F810029D9E9 /* Build configuration list for PBXNativeTarget "BS-Extension" */;
@@ -1627,6 +1690,7 @@
 				65AA828F239D7E2F000442A2 /* prepare-build */,
 				653B09CE25D98146005C5807 /* restarter */,
 				65AA48F825F585A400D19C60 /* BeardieLaunchAtLogin */,
+				3929A7CAEF49C4BE3076E96D /* BeardieUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1682,6 +1746,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				65D57FCC1D02CC250016F270 /* MediaStrategies in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C876DB90225E4284A6CD2420 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1787,6 +1858,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		20FBB3A7F219CB54E4AEE128 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD971408720B6CCEB2C25377 /* BeardieUITestCase.swift in Sources */,
+				3CD4F9B6279935D1A5B71CCE /* ShortcutsPreferencesUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		65384D9A21874F810029D9E9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2016,6 +2096,12 @@
 			target = 65AA828F239D7E2F000442A2 /* prepare-build */;
 			targetProxy = 65F99A6A277B9BBE00D13ABF /* PBXContainerItemProxy */;
 		};
+		9427610A4E9C3E9ADF1CE5E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Beardie;
+			target = 9679332B1855173100A49AC7 /* Beardie */;
+			targetProxy = FDC1579A4F5472AC3C37D6C6 /* PBXContainerItemProxy */;
+		};
 		967933521855173100A49AC7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9679332B1855173100A49AC7 /* Beardie */;
@@ -2075,6 +2161,30 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		393A21EC33D440DBD11DA65F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "BeardieUITests/BeardieUITests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.calm-apps.mac.beardie.uitests";
+				PRODUCT_MODULE_NAME = BeardieUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Beardie;
+			};
+			name = Release;
+		};
 		6507C27B20037DE5003D4B1A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3142,6 +3252,54 @@
 			};
 			name = Release;
 		};
+		C3AAF3B550513237383CA2E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "BeardieUITests/BeardieUITests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.calm-apps.mac.beardie.uitests";
+				PRODUCT_MODULE_NAME = BeardieUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Beardie;
+			};
+			name = Debug;
+		};
+		D9480381D56A9774CBF910D6 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "BeardieUITests/BeardieUITests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.calm-apps.mac.beardie.uitests";
+				PRODUCT_MODULE_NAME = BeardieUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Beardie;
+			};
+			name = Beta;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3254,6 +3412,16 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Beta;
+		};
+		B39A21D01C18207F242AD279 /* Build configuration list for PBXNativeTarget "BeardieUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				393A21EC33D440DBD11DA65F /* Release */,
+				C3AAF3B550513237383CA2E7 /* Debug */,
+				D9480381D56A9774CBF910D6 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

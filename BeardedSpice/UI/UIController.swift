@@ -88,7 +88,13 @@ final class StatusBarMenu: NSObject {
         self.statusItem = NSStatusBar.system.statusItem(withLength: self.length)
         self.statusItem.menu = self.menu
         self.statusItem.button?.image = NSImage(named: "beardie")
+        self.statusItem.button?.setAccessibilityIdentifier("statusItem")
         self.statusItem.isVisible = !UserDefaults.standard.bool(forKey: Self.BSHideStatusItem)
+
+        let preferencesSelector = NSSelectorFromString("openPreferences:")
+        for item in self.menu.items where item.action == preferencesSelector {
+            item.identifier = NSUserInterfaceItemIdentifier("menu.preferences")
+        }
     }
     
     func open() {

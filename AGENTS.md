@@ -17,3 +17,11 @@
 - Dependencies are moving to Swift Package Manager. Pin versions and commit `Package.resolved`.
 - Do not update dependencies unless the task explicitly asks for it.
 - Do not commit or push without explicit user approval.
+
+## UI tests
+
+- UI tests live in `BeardieUITests` and run through the `BeardieUITests` scheme.
+- Load `.agents/skills/beardie-ui-testing/SKILL.md` before writing or running UI tests.
+- Run UI tests selectively with `-only-testing:`; they need an unlocked GUI session.
+- UI tests are local only and must not be added to CI.
+- For UI changes, capture `before`/`after` screenshots and compare them for layout, clipping and readability; pixel-perfect similarity is not required.
