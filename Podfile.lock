@@ -1,46 +1,16 @@
 PODS:
-  - AEXML (4.6.1)
   - MASShortcut (2.4.0)
-  - RxSonosLib (0.14.3):
-    - AEXML (~> 4.4)
-    - RxSSDP (~> 5.0)
-    - RxSwift (~> 4.5)
-  - RxSSDP (5.0.3):
-    - RxSwift (~> 4.5)
-  - RxSwift (4.5.0)
 
 DEPENDENCIES:
   - MASShortcut (~> 2.4.0)
-  - RxSonosLib (from `https://github.com/Stillness-2/RxSonosLib`)
-  - RxSSDP (from `https://github.com/Stillness-2/RxSSDP`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - AEXML
     - MASShortcut
-    - RxSwift
-
-EXTERNAL SOURCES:
-  RxSonosLib:
-    :git: https://github.com/Stillness-2/RxSonosLib
-  RxSSDP:
-    :git: https://github.com/Stillness-2/RxSSDP
-
-CHECKOUT OPTIONS:
-  RxSonosLib:
-    :commit: 266fa2ea06f6ce6c0e33dc149848f9b2909ee133
-    :git: https://github.com/Stillness-2/RxSonosLib
-  RxSSDP:
-    :commit: c72eae7f0b0be684e79d589268ed4fbd6ceef490
-    :git: https://github.com/Stillness-2/RxSSDP
 
 SPEC CHECKSUMS:
-  AEXML: 1e255ecc6597212f97a7454a69ebd3ede64ac1cf
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
-  RxSonosLib: 4db32e35913f0f5f5d2ab5b4effb47ea98521dd0
-  RxSSDP: 44a82c1529884e897a777b57ea82761a8fa7ec12
-  RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
 
-PODFILE CHECKSUM: aea07ca2e8bfd2e294ffb00c5ea7281bdce2cfbc
+PODFILE CHECKSUM: 673835b0dd6c865e665d306c89f3329b8b762718
 
 COCOAPODS: 1.16.2

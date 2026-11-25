@@ -172,7 +172,9 @@
 		9679334F1855173100A49AC7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679334E1855173100A49AC7 /* XCTest.framework */; };
 		967933501855173100A49AC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679332F1855173100A49AC7 /* Cocoa.framework */; };
 		9679336518551BCC00A49AC7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679336418551BCC00A49AC7 /* ScriptingBridge.framework */; };
+		B82CB206DDE3967A6EC2AEC3 /* RxSonosLib in Frameworks */ = {isa = PBXBuildFile; productRef = 4AEE03C0808046E7609E0292 /* RxSonosLib */; };
 		D09EFF221C8CD49E00B24DA9 /* VLCTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = D09EFF1F1C8CD49E00B24DA9 /* VLCTabAdapter.m */; };
+		D59BF53F250A94CF940C6E42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 71F38282AF15EE370BCD09B1 /* RxSwift */; };
 		D5CD37E8725170F194B77BF7 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = C7B6566008748888A5A3548A /* CocoaLumberjack */; };
 /* End PBXBuildFile section */
 
@@ -685,6 +687,8 @@
 				20E267DC94036E141937EECD /* CocoaLumberjackSwift in Frameworks */,
 				5AA90210622F2E2DEDBFC2A3 /* MASPreferences in Frameworks */,
 				648486A5B3FAB6FEFF41C758 /* Sparkle in Frameworks */,
+				B82CB206DDE3967A6EC2AEC3 /* RxSonosLib in Frameworks */,
+				D59BF53F250A94CF940C6E42 /* RxSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1475,6 +1479,8 @@
 				B5093B87FF88D8364E449D62 /* CocoaLumberjackSwift */,
 				519A1D3E8F8915A196AFEB69 /* MASPreferences */,
 				EB278A3A0F3B69D3B4AF3092 /* Sparkle */,
+				4AEE03C0808046E7609E0292 /* RxSonosLib */,
+				71F38282AF15EE370BCD09B1 /* RxSwift */,
 			);
 			productName = BeardedSpice;
 			productReference = 9679332C1855173100A49AC7 /* Beardie.app */;
@@ -1603,6 +1609,8 @@
 				A87EF0E8040F79AE7CB599F4 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 				686789AD2EA4DF24BB06A7DF /* XCRemoteSwiftPackageReference "MASPreferences" */,
 				416CF76B45E6F8D0A7F53126 /* XCRemoteSwiftPackageReference "Sparkle" */,
+				44DCB7191A9E1D3C2DEB71A8 /* XCRemoteSwiftPackageReference "RxSonosLib" */,
+				B5FDB18251ED9301A73BF97A /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9679332D1855173100A49AC7 /* Products */;
@@ -3259,6 +3267,14 @@
 				version = 2.2.2;
 			};
 		};
+		44DCB7191A9E1D3C2DEB71A8 /* XCRemoteSwiftPackageReference "RxSonosLib" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vityevato/RxSonosLib.git";
+			requirement = {
+				kind = exactVersion;
+				version = "0.14.3-spm";
+			};
+		};
 		686789AD2EA4DF24BB06A7DF /* XCRemoteSwiftPackageReference "MASPreferences" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/shpakovski/MASPreferences.git";
@@ -3275,6 +3291,14 @@
 				version = 3.7.4;
 			};
 		};
+		B5FDB18251ED9301A73BF97A /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3282,6 +3306,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A87EF0E8040F79AE7CB599F4 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
 			productName = CocoaLumberjackSwift;
+		};
+		4AEE03C0808046E7609E0292 /* RxSonosLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 44DCB7191A9E1D3C2DEB71A8 /* XCRemoteSwiftPackageReference "RxSonosLib" */;
+			productName = RxSonosLib;
 		};
 		4C1DA325433A7C776A231E35 /* CocoaLumberjack */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -3297,6 +3326,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A87EF0E8040F79AE7CB599F4 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
 			productName = CocoaLumberjack;
+		};
+		71F38282AF15EE370BCD09B1 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5FDB18251ED9301A73BF97A /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 		780846F1EDE3B34F29F09EF5 /* CocoaLumberjack */ = {
 			isa = XCSwiftPackageProductDependency;

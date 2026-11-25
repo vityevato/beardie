@@ -1,6 +1,15 @@
 {
-  "originHash" : "8e19010060bc77e27b0cb48687a8d98da0a2ad66203ea048a2fe727dd1008fa0",
+  "originHash" : "402189a3268e16716c4e744cb4df18c3f470e79c15110594dbe444ba2eaf40d6",
   "pins" : [
+    {
+      "identity" : "aexml",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tadija/AEXML.git",
+      "state" : {
+        "revision" : "38f7d00b23ecd891e1ee656fa6aeebd6ba04ecc3",
+        "version" : "4.6.1"
+      }
+    },
     {
       "identity" : "cocoalumberjack",
       "kind" : "remoteSourceControl",
@@ -17,6 +26,33 @@
       "state" : {
         "revision" : "56bafeeabffa78a18620f006f74efbbcde3c45e2",
         "version" : "1.4.1"
+      }
+    },
+    {
+      "identity" : "rxsonoslib",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vityevato/RxSonosLib.git",
+      "state" : {
+        "revision" : "e63522323acdb627bd0b4d9c96b64bb66fa48cd4",
+        "version" : "0.14.3-spm"
+      }
+    },
+    {
+      "identity" : "rxssdp",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vityevato/RxSSDP.git",
+      "state" : {
+        "revision" : "d20e072e73f7bb7a6ae425b9b860a6b70c474e46",
+        "version" : "5.0.3-spm"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift.git",
+      "state" : {
+        "revision" : "cce95dd704bc08cd3d69c087a05a6fc3118e2722",
+        "version" : "4.5.0"
       }
     },
     {
