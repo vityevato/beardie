@@ -1,84 +1,67 @@
 //
-//  BSStrategyVersionManager.m
+//  BSStrategyTests.m
 //  BeardedSpice
 //
 //  Created by Alex Evers on 12/01/15.
 //  Copyright (c) 2015 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 
-#import <Kiwi/Kiwi.h>
+#import <XCTest/XCTest.h>
 
-#import "BSStrategyMockObject.h"
 #import "BSStrategyCache.h"
 #import "BSMediaStrategy.h"
+#import "NSURL+Utils.h"
 
-SHARED_EXAMPLES_BEGIN(BSMediaStrategyTestHelper)
+@interface BSStrategyTests : XCTestCase
 
-sharedExamplesFor(@"MediaStrategy", ^(NSDictionary *data) {
+@property (nonatomic, strong) BSStrategyCache *cache;
 
-    __block NSString *strategyFileName = nil;
-    __block BSMediaStrategy *strategy = nil;
-    //__block BSStrategyMockObject *mock = nil;
+@end
 
-    beforeAll(^{
-         strategyFileName = data[@"strategyName"];
-         strategy = data[@"strategy"];
-         //mock = [[BSStrategyMockObject alloc] initWithStrategyName:strategyFileName];
-    });
+@implementation BSStrategyTests
 
-    context(@"Tests for Media Strategy", ^{
-        it(@"should be properly loaded", ^{
-            [[theValue(strategy) shouldNot] beNil];
-        });
+- (void)setUp {
+    [super setUp];
 
-        /* Excluding keys:
-            kBSMediaStrategyKeyIsPlaying
-            kBSMediaStrategyKeyFavorite
-            kBSMediaStrategyKeyPrevious
-            kBSMediaStrategyKeyNext
-            kBSMediaStrategyKeyPause
-            kBSMediaStrategyKeyTrackInfo
-        */
-
-        /* Bare minimum components a strategy should have */
-
-        it(@"should have a valid accept script", ^{
-            NSDictionary *acceptParams = strategy.acceptParams;
-            [[acceptParams shouldNot] beNil];
-            [[acceptParams shouldNot] beEmpty];
-
-            NSString *acceptScript = acceptParams[kBSMediaStrategyAcceptMethod];
-            [[acceptScript shouldNot] beNil];
-            [[acceptScript shouldNot] beEmpty];
-        });
-
-        it(@"should have a valid toggle script", ^{
-            NSString *script = strategy.scripts[kBSMediaStrategyKeyToggle];
-            [[script shouldNot] beNil];
-            [[script shouldNot] beEmpty];
-        });
-    });
-});
-
-SHARED_EXAMPLES_END
-
-SPEC_BEGIN(BSMediaStrategyTest)
-
-__block BSStrategyCache *cache = nil;
-
-describe(@"BSStrategyCache properly loads all strategies.", ^{
-    cache = [BSStrategyCache new];
-    [cache updateStrategiesFromSourceURL: [NSURL URLForBundleStrategies]];
-
-    [[theValue([cache allStrategies].count) should] beGreaterThan:theValue(0)];
-});
-
-for (BSMediaStrategy *strategy in [cache allStrategies])
-{
-    describe([NSString stringWithFormat:@"Test %@ for valid javascript", strategy.fileName], ^{
-        itBehavesLike(@"MediaStrategy", @{ @"strategyName": strategy.fileName, @"strategy": strategy });
-    });
-    //break;
+    self.cache = [BSStrategyCache new];
+    XCTAssertTrue([self.cache updateStrategiesFromSourceURL:[NSURL URLForBundleStrategies]],
+                  @"Failed to load strategies from the application bundle");
 }
 
-SPEC_END
+- (void)testAllStrategiesAreLoaded {
+    NSArray<BSMediaStrategy *> *strategies = [self.cache allStrategies];
+    XCTAssertGreaterThan(strategies.count, 0, @"No media strategies were loaded");
+}
+
+- (void)testAllStrategiesHaveValidScripts {
+    NSArray<BSMediaStrategy *> *strategies = [self.cache allStrategies];
+    XCTAssertGreaterThan(strategies.count, 0, @"No media strategies were loaded");
+
+    for (BSMediaStrategy *strategy in strategies) {
+        NSString *fileName = strategy.fileName;
+
+        NSDictionary *acceptParams = strategy.acceptParams;
+        XCTAssertNotNil(acceptParams, @"%@: acceptParams is nil", fileName);
+        XCTAssertGreaterThan(acceptParams.count, 0, @"%@: acceptParams is empty", fileName);
+
+        id acceptScript = acceptParams[kBSMediaStrategyAcceptMethod];
+        XCTAssertNotNil(acceptScript, @"%@: accept script is nil", fileName);
+        XCTAssertTrue([acceptScript isKindOfClass:[NSString class]],
+                      @"%@: accept script is not a string", fileName);
+        if ([acceptScript isKindOfClass:[NSString class]]) {
+            XCTAssertGreaterThan([(NSString *)acceptScript length], 0,
+                                 @"%@: accept script is empty", fileName);
+        }
+
+        id toggleScript = strategy.scripts[kBSMediaStrategyKeyToggle];
+        XCTAssertNotNil(toggleScript, @"%@: toggle script is nil", fileName);
+        XCTAssertTrue([toggleScript isKindOfClass:[NSString class]],
+                      @"%@: toggle script is not a string", fileName);
+        if ([toggleScript isKindOfClass:[NSString class]]) {
+            XCTAssertGreaterThan([(NSString *)toggleScript length], 0,
+                                 @"%@: toggle script is empty", fileName);
+        }
+    }
+}
+
+@end

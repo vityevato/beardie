@@ -6,52 +6,43 @@
 //  Copyright (c) 2015 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 
-#import "Kiwi.h"
+#import <XCTest/XCTest.h>
+
 #import "BSMediaStrategy.h"
 
-SPEC_BEGIN(BSMediaStrategyTests)
+@interface BSMediaStrategyTests : XCTestCase
 
-/*
-describe(@"Create an empty strategy", ^{
-    let(path, ^{ return [[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"MediaStrategies"]; });
+@end
 
-    it(@"will initialize defaults without template data", ^{
-        NSString *fileName = @"random-file-name";
-        NSURL *fileURL = [[NSURL alloc] initWithString:fileName relativeToURL:path];
-        BSMediaStrategy *strategy = [[BSMediaStrategy alloc] initWithStrategyURL:fileURL];
-        [[strategy should] beMemberOfClass:BSMediaStrategy.class];
+@implementation BSMediaStrategyTests
 
-        [[strategy.scripts should] beNil];
-        [[theValue(strategy.strategyVersion) should] equal:theValue(0)];
+- (void)testYouTubeStrategyLoads {
+    NSURL *path = [[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"MediaStrategies"];
+    NSString *fileName = @"YouTube.js";
+    NSURL *fileURL = [NSURL URLWithString:fileName relativeToURL:path];
 
-        [[strategy.displayName should] equal:fileName];
-        [[strategy.fileName should] equal:fileName];
-    });
-});
-*/
+    NSError *error = nil;
+    BSMediaStrategy *strategy = [BSMediaStrategy mediaStrategyWithURL:fileURL error:&error];
 
-describe(@"Load the YouTube strategy", ^{
-    let(path, ^{ return [[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"MediaStrategies"]; });
+    XCTAssertNotNil(strategy, @"Failed to load the YouTube strategy: %@", error);
+    XCTAssertTrue([strategy isMemberOfClass:BSMediaStrategy.class]);
 
-    it(@"will load the strategy properly", ^{
-        NSString *youtubeName = @"YouTube";
-        NSString *fileName = [NSString stringWithFormat:@"%@.js", youtubeName];
-        NSURL *fileURL = [[NSURL alloc] initWithString:fileName relativeToURL:path];
-        BSMediaStrategy *strategy = [BSMediaStrategy mediaStrategyWithURL:fileURL error:nil];
-        [[strategy should] beMemberOfClass:BSMediaStrategy.class];
+    XCTAssertNotNil(strategy.scripts);
+    XCTAssertNotEqual(strategy.strategyVersion, 0);
 
-        [[strategy.scripts shouldNot] beNil];
-        [[theValue(strategy.strategyVersion) shouldNot] equal:theValue(0)];
+    XCTAssertEqualObjects(strategy.displayName, @"YouTube");
+    XCTAssertEqualObjects(strategy.fileName, @"YouTube.js");
+    XCTAssertNotEqualObjects(strategy.displayName, strategy.fileName);
 
-        [[strategy.displayName should] equal:@"YouTube"]; // pasted from js
-        [[strategy.fileName should] equal:@"YouTube.js"];
-        [[strategy.displayName shouldNot] equal:strategy.fileName];
+    XCTAssertNotNil(strategy.scripts[kBSMediaStrategyKeyToggle]);
+    XCTAssertNotNil(strategy.scripts[kBSMediaStrategyKeyPrevious]);
+    XCTAssertNotNil(strategy.scripts[kBSMediaStrategyKeyNext]);
+    XCTAssertNotNil(strategy.scripts[kBSMediaStrategyKeyPause]);
 
-        [[strategy.toggle shouldNot] beNil];
-        [[strategy.previous shouldNot] beNil];
-        [[strategy.next shouldNot] beNil];
-        [[strategy.pause shouldNot] beNil];
-    });
-});
+    XCTAssertNotNil(strategy.toggle);
+    XCTAssertNotNil(strategy.previous);
+    XCTAssertNotNil(strategy.next);
+    XCTAssertNotNil(strategy.pause);
+}
 
-SPEC_END
+@end

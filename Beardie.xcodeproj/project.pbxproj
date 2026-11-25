@@ -174,7 +174,6 @@
 		9679336518551BCC00A49AC7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679336418551BCC00A49AC7 /* ScriptingBridge.framework */; };
 		D09EFF221C8CD49E00B24DA9 /* VLCTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = D09EFF1F1C8CD49E00B24DA9 /* VLCTabAdapter.m */; };
 		D5CD37E8725170F194B77BF7 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = C7B6566008748888A5A3548A /* CocoaLumberjack */; };
-		E0B59E1F1B70459979D4532B /* libPods-Beardie-BeardieTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 313E430BA38EB3FE82296277 /* libPods-Beardie-BeardieTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -374,8 +373,6 @@
 		0BF06ADE1C9513A800534083 /* BSStrategyVersionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BSStrategyVersionManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		0BF06ADF1C9513A800534083 /* BSTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSTrack.h; sourceTree = "<group>"; };
 		0BF06AE01C9513A800534083 /* BSTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSTrack.m; sourceTree = "<group>"; };
-		313E430BA38EB3FE82296277 /* libPods-Beardie-BeardieTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Beardie-BeardieTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		40DF3B86CBA50E36A5C476A9 /* Pods-Beardie-BeardieTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beardie-BeardieTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests.release.xcconfig"; sourceTree = "<group>"; };
 		4C25B5F22E427A5715A0D033 /* Pods-BeardieControllers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeardieControllers.release.xcconfig"; path = "Pods/Target Support Files/Pods-BeardieControllers/Pods-BeardieControllers.release.xcconfig"; sourceTree = "<group>"; };
 		4C54B252ADCDA9F3DED06F1E /* Pods-Beardie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beardie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Beardie/Pods-Beardie.debug.xcconfig"; sourceTree = "<group>"; };
 		5E80769C1D58CE180002855D /* Downcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Downcast.h; sourceTree = "<group>"; };
@@ -602,7 +599,6 @@
 		65FBCE3E1EC0F98A004EFFC7 /* BSVolumeWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BSVolumeWindowController.xib; sourceTree = "<group>"; };
 		65FF756A1B36CEDF00D81CA5 /* BSLaunchAtLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLaunchAtLogin.h; sourceTree = "<group>"; };
 		65FF756B1B36CEDF00D81CA5 /* BSLaunchAtLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSLaunchAtLogin.m; sourceTree = "<group>"; };
-		70EDD446F120CBAA45FA84BC /* Pods-Beardie-BeardieTests.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beardie-BeardieTests.beta.xcconfig"; path = "Pods/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests.beta.xcconfig"; sourceTree = "<group>"; };
 		717D81719E5A7FCD8EE92EA6 /* libPods-Beardie.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Beardie.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78D9F80F1D808FCD0081E4EE /* BSAppleScriptSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSAppleScriptSupport.m; sourceTree = "<group>"; };
 		78D9F8111D808FD70081E4EE /* BeardieSuite.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = BeardieSuite.sdef; sourceTree = "<group>"; };
@@ -624,7 +620,6 @@
 		9679336418551BCC00A49AC7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		A9C0CF928C3FE35F3869A899 /* Pods-BeardieControllers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeardieControllers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BeardieControllers/Pods-BeardieControllers.debug.xcconfig"; sourceTree = "<group>"; };
 		AEA9DD3A273E8C8AA22A8EE3 /* Pods-Beardie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beardie.release.xcconfig"; path = "Pods/Target Support Files/Pods-Beardie/Pods-Beardie.release.xcconfig"; sourceTree = "<group>"; };
-		CBBFA2B82B17CFCD7B935FA5 /* Pods-Beardie-BeardieTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beardie-BeardieTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CFCE1786610637C89C88C109 /* Pods-BeardieControllers.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeardieControllers.beta.xcconfig"; path = "Pods/Target Support Files/Pods-BeardieControllers/Pods-BeardieControllers.beta.xcconfig"; sourceTree = "<group>"; };
 		D09EFF1F1C8CD49E00B24DA9 /* VLCTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLCTabAdapter.m; sourceTree = "<group>"; };
 		D09EFF201C8CD49E00B24DA9 /* VLCTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLCTabAdapter.h; sourceTree = "<group>"; };
@@ -700,7 +695,6 @@
 				0BD1B2F41CD21AB100B72A3E /* JavaScriptCore.framework in Frameworks */,
 				967933501855173100A49AC7 /* Cocoa.framework in Frameworks */,
 				9679334F1855173100A49AC7 /* XCTest.framework in Frameworks */,
-				E0B59E1F1B70459979D4532B /* libPods-Beardie-BeardieTests.a in Frameworks */,
 				037CF82AA8A5403B48327594 /* CocoaLumberjack in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1198,7 +1192,6 @@
 				967933311855173100A49AC7 /* Other Frameworks */,
 				0B96393159D20F45215E45F2 /* libPods-SafariExtension.a */,
 				717D81719E5A7FCD8EE92EA6 /* libPods-Beardie.a */,
-				313E430BA38EB3FE82296277 /* libPods-Beardie-BeardieTests.a */,
 				EC08A44F46F19C24BCA140C3 /* libPods-BeardieControllers.a */,
 			);
 			name = Frameworks;
@@ -1291,10 +1284,7 @@
 			children = (
 				4C54B252ADCDA9F3DED06F1E /* Pods-Beardie.debug.xcconfig */,
 				AEA9DD3A273E8C8AA22A8EE3 /* Pods-Beardie.release.xcconfig */,
-				CBBFA2B82B17CFCD7B935FA5 /* Pods-Beardie-BeardieTests.debug.xcconfig */,
-				40DF3B86CBA50E36A5C476A9 /* Pods-Beardie-BeardieTests.release.xcconfig */,
 				872A98B5B9D77B492948E25F /* Pods-Beardie.beta.xcconfig */,
-				70EDD446F120CBAA45FA84BC /* Pods-Beardie-BeardieTests.beta.xcconfig */,
 				A9C0CF928C3FE35F3869A899 /* Pods-BeardieControllers.debug.xcconfig */,
 				4C25B5F22E427A5715A0D033 /* Pods-BeardieControllers.release.xcconfig */,
 				CFCE1786610637C89C88C109 /* Pods-BeardieControllers.beta.xcconfig */,
@@ -1494,11 +1484,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 967933601855173100A49AC7 /* Build configuration list for PBXNativeTarget "BeardieTests" */;
 			buildPhases = (
-				AB9AD96DE64B6D494415BFF9 /* [CP] Check Pods Manifest.lock */,
 				967933491855173100A49AC7 /* Sources */,
 				9679334A1855173100A49AC7 /* Frameworks */,
 				9679334B1855173100A49AC7 /* Resources */,
-				91766CD3EE98BA9E2F8D3654 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1762,41 +1750,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "\nRESOURCES=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\ncp -fpv \"${XC_CONSTANT_JS_FILE}\" \"$RESOURCES/constants.js\" || exit 1\n";
-		};
-		91766CD3EE98BA9E2F8D3654 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AB9AD96DE64B6D494415BFF9 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Beardie-BeardieTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
 		FB9C467E90A69DD3E88791B1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2644,7 +2597,6 @@
 		};
 		65D795B42643F76200F4C713 /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 70EDD446F120CBAA45FA84BC /* Pods-Beardie-BeardieTests.beta.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -3127,7 +3079,6 @@
 		};
 		967933611855173100A49AC7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBBFA2B82B17CFCD7B935FA5 /* Pods-Beardie-BeardieTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -3158,7 +3109,6 @@
 		};
 		967933621855173100A49AC7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 40DF3B86CBA50E36A5C476A9 /* Pods-Beardie-BeardieTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

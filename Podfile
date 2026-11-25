@@ -8,12 +8,6 @@ target 'Beardie' do
     pod 'RxSSDP', :git => 'https://github.com/Stillness-2/RxSSDP'
 #    pod 'RxSonosLib', :path => '../RxSonosLib'
     pod 'RxSonosLib', :git => 'https://github.com/Stillness-2/RxSonosLib'
-    
-    # all pods for tests should ONLY go here
-    target 'BeardieTests' do
-        pod 'Kiwi', '~> 3.0.0'
-        # pod 'OCMock'
-    end
 end
 target 'BeardieControllers' do
   pod 'MASShortcut', '~> 2.4.0'
