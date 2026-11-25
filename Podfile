@@ -3,15 +3,7 @@ platform :osx, '13.0'
 source 'https://github.com/CocoaPods/Specs.git'
 project 'Beardie'
 
-def commons
-pod 'CocoaLumberjack', :modular_headers => true
-end
-def commons_swift
-pod 'CocoaLumberjack/Swift', :modular_headers => true
-end
-
 target 'Beardie' do
-    commons_swift
     pod 'MASPreferences', '~> 1.3'
     pod 'MASShortcut', '~> 2.4.0'
     pod 'Sparkle'
@@ -25,16 +17,8 @@ target 'Beardie' do
         # pod 'OCMock'
     end
 end
-target 'beardie-nm-connector' do
-  commons_swift
-end
-
-abstract_target "Commons" do
-  commons
-  target 'BS-Extension'
-  target 'BeardieControllers' do
-      pod 'MASShortcut', '~> 2.4.0'
-  end
+target 'BeardieControllers' do
+  pod 'MASShortcut', '~> 2.4.0'
 end
 
 # Xcode 27 no longer supports deployment targets below macOS 12.0.

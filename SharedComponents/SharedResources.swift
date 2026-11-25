@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CocoaLumberjack
+import CocoaLumberjackSwift
 
 /// Place for collecting userDefaults keys in Swift sources.
 enum UserDefaultsKeys {

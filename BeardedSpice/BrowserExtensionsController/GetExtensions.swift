@@ -8,7 +8,7 @@
 
 import Cocoa
 import SafariServices
-import CocoaLumberjack
+import CocoaLumberjackSwift
 
 final class GetExtensions: NSWindowController {
 

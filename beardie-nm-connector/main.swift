@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import CocoaLumberjack
+import CocoaLumberjackSwift
 
 struct Main {
     /// Prevents instantiating

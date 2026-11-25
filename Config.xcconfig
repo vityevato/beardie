@@ -65,6 +65,10 @@ BS_DEFAULT_CHROME_BUNDLE_ID                 = com.google.Chrome
  
 HEADER_SEARCH_PATHS = $(inherited) $(OBJROOT)
 
+// Keep Objective-C categories from static libraries (CocoaLumberjack, etc.)
+// from being stripped after CocoaPods removal.
+OTHER_LDFLAGS = $(inherited) -ObjC
+
 BEARDIE_LOCAL_BUILD_DIR = $(SRCROOT)/build/${CONFIGURATION}
 EXTENSION_BUILD_NAME = web-extensions
 EXTENSIONS_BUILD_DIR = $(BEARDIE_LOCAL_BUILD_DIR)/$(EXTENSION_BUILD_NAME)

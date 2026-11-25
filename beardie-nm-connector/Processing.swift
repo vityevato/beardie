@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import CocoaLumberjack
+import CocoaLumberjackSwift
 
 typealias ExchangeDictionary = [String: Any]
 
