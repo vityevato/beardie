@@ -33,9 +33,5 @@ typedef void (^BSVoidBlock)(void);
 
 - (NSURL *)strategyServiceURL;
 - (NSURL *)strategyTemplateURL;
-- (NSURL *)vcrFileURL;
-
-- (void)recordStrategySite;
-- (void)replayStrategySite;
 
 @end

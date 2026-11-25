@@ -8,11 +8,6 @@
 
 #import "BSStrategyMockObject.h"
 
-#import "Kiwi.h"
-
-#import <VCRURLConnection/VCR.h>
-#import <VCRURLConnection/VCRCassette.h>
-
 #import "NSURL+Utils.h"
 
 @implementation BSStrategyMockObject
@@ -57,19 +52,6 @@
     if (!_strategyName)
         return NO;
 
-   //[self replayStrategySite];
-   //[self recordStrategySite];
-   // VCRCassette *cassette = [VCR cassette];
-    /*if (!cassette || !cassette.data)
-    {
-        [self recordStrategySite];
-        cassette = [VCR cassette];
-    }
-    if (!cassette.data)
-        return NO;*/
-
-    //[[_webView mainFrame] loadData:cassette.data MIMEType:@"application/rtf" textEncodingName:@"utf-8" baseURL:[self strategyServiceURL]];
-
     [self _beginTests];
 
     return YES;
@@ -86,41 +68,6 @@
 - (NSURL *)strategyTemplateURL
 {
     return [NSURL URLForFileName:_strategyName];
-}
-
-- (NSURL *)vcrFileURL
-{
-    NSString *vcrPath = [NSString stringWithFormat:@"/Users/alexevers/workspace/third-party/beardedspice/BeardedSpiceTests/cassettes/%@-cassette.json", _strategyName];
-    return [NSURL URLWithString:vcrPath];
-}
-
-- (void)recordStrategySite
-{
-    [VCR start];
-
-    NSURL *url = [self strategyServiceURL];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-
-    NSHTTPURLResponse *response;
-    NSError *error;
-    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-
-    [VCR save:[self vcrFileURL].path];
-}
-
-- (void)replayStrategySite
-{
-    NSURL *cassetteURL = [self vcrFileURL];
-    [VCR loadCassetteWithContentsOfURL:cassetteURL];
-    [VCR start];
-
-    // request an HTTP interaction that was recorded to cassette.json
-    NSURL *url = [self strategyServiceURL];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-
-    NSHTTPURLResponse *response;
-    NSError *error;
-    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
 }
 
 - (NSString *)evaluateScript:(NSString *)script

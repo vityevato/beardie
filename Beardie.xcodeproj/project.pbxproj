@@ -55,7 +55,6 @@
 		653BCAD21AB25DAC0034D27F /* ShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 653BCAD01AB25DAC0034D27F /* ShortcutsPreferencesViewController.m */; };
 		654D044825EBC83200270533 /* UIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654D044725EBC83200270533 /* UIController.swift */; };
 		654EC7DB1ED0F33A006490F2 /* TidalTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 654EC7DA1ED0F33A006490F2 /* TidalTabAdapter.m */; };
-		654EC7DD1ED1909A006490F2 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 654EC7DC1ED1909A006490F2 /* libsqlite3.tbd */; };
 		6557B4901F6ADCA800295997 /* BSBrowserExtensionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6557B48F1F6ADCA800295997 /* BSBrowserExtensionsController.m */; };
 		655AACA91D3ABFAA00E316EA /* EHCCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 655AACA61D3ABFAA00E316EA /* EHCCache.m */; };
 		655AACAA1D3ABFAA00E316EA /* NSArray+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 655AACA81D3ABFAA00E316EA /* NSArray+Utils.m */; };
@@ -435,7 +434,6 @@
 		654D044725EBC83200270533 /* UIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIController.swift; sourceTree = "<group>"; };
 		654EC7D91ED0F33A006490F2 /* TidalTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TidalTabAdapter.h; sourceTree = "<group>"; };
 		654EC7DA1ED0F33A006490F2 /* TidalTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TidalTabAdapter.m; sourceTree = "<group>"; };
-		654EC7DC1ED1909A006490F2 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		6557B48E1F6ADCA800295997 /* BSBrowserExtensionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSBrowserExtensionsController.h; sourceTree = "<group>"; };
 		6557B48F1F6ADCA800295997 /* BSBrowserExtensionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSBrowserExtensionsController.m; sourceTree = "<group>"; };
 		655AACA51D3ABFAA00E316EA /* EHCCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EHCCache.h; sourceTree = "<group>"; };
@@ -684,7 +682,6 @@
 			files = (
 				65B166641ED58E3700646F9A /* AudioToolbox.framework in Frameworks */,
 				65B166621ED4C82700646F9A /* CoreAudio.framework in Frameworks */,
-				654EC7DD1ED1909A006490F2 /* libsqlite3.tbd in Frameworks */,
 				9679336518551BCC00A49AC7 /* ScriptingBridge.framework in Frameworks */,
 				967933301855173100A49AC7 /* Cocoa.framework in Frameworks */,
 				0BD1B2F31CD21AA900B72A3E /* JavaScriptCore.framework in Frameworks */,
@@ -1188,7 +1185,6 @@
 			children = (
 				65E58D37249669EB00DB66DB /* libCocoaLumberjack-Core-Swift.a */,
 				65B166631ED58E3700646F9A /* AudioToolbox.framework */,
-				654EC7DC1ED1909A006490F2 /* libsqlite3.tbd */,
 				0BD1B2F21CD21AA900B72A3E /* JavaScriptCore.framework */,
 				65E567071B76104300AD2D46 /* CoreAudio.framework */,
 				03F33ECB1855306A00E8F77E /* Carbon.framework */,
@@ -1706,13 +1702,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Commons-BeardieControllers/Pods-Commons-BeardieControllers-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Commons-BeardieControllers/Pods-Commons-BeardieControllers-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1745,13 +1737,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Beardie/Pods-Beardie-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Beardie/Pods-Beardie-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1806,13 +1794,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1845,13 +1829,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1888,13 +1868,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Beardie/Pods-Beardie-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Beardie/Pods-Beardie-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -14,7 +14,6 @@ target 'Beardie' do
     commons_swift
     pod 'MASPreferences', '~> 1.3'
     pod 'MASShortcut', '~> 2.4.0'
-    pod 'FMDB'
     pod 'Sparkle'
     pod 'RxSSDP', :git => 'https://github.com/Stillness-2/RxSSDP'
 #    pod 'RxSonosLib', :path => '../RxSonosLib'
@@ -24,7 +23,6 @@ target 'Beardie' do
     target 'BeardieTests' do
         pod 'Kiwi', '~> 3.0.0'
         # pod 'OCMock'
-        pod 'VCRURLConnection', '~> 0.2.5'
     end
 end
 target 'beardie-nm-connector' do
