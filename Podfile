@@ -5,7 +5,6 @@ project 'Beardie'
 
 target 'Beardie' do
     pod 'MASShortcut', '~> 2.4.0'
-    pod 'Sparkle'
     pod 'RxSSDP', :git => 'https://github.com/Stillness-2/RxSSDP'
 #    pod 'RxSonosLib', :path => '../RxSonosLib'
     pod 'RxSonosLib', :git => 'https://github.com/Stillness-2/RxSonosLib'

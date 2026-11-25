@@ -9,6 +9,5 @@
 #import "BSTrack.h"
 #import "runningSBApplication.h"
 #import "BSSharedResources.h"
-#import <Sparkle/Sparkle.h>
 #import "BSVolumeControlProtocol.h"
 #import "GeneralPreferencesViewController.h"

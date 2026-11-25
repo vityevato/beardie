@@ -31,6 +31,7 @@
 		5AA90210622F2E2DEDBFC2A3 /* MASPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 519A1D3E8F8915A196AFEB69 /* MASPreferences */; };
 		5E80769F1D58CE180002855D /* DowncastTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E80769E1D58CE180002855D /* DowncastTabAdapter.m */; };
 		60749B9F458FF7C680AF171E /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1C1B7CCBA8D6E62A248DC97D /* CocoaLumberjackSwift */; };
+		648486A5B3FAB6FEFF41C758 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = EB278A3A0F3B69D3B4AF3092 /* Sparkle */; };
 		65063FEB233DE94E0015F558 /* DeezerTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65063FEA233DE94E0015F558 /* DeezerTabAdapter.m */; };
 		650781191FAF43EE00A0902A /* EHExecuteBlockDelayed.m in Sources */ = {isa = PBXBuildFile; fileRef = 650781171FAF43E600A0902A /* EHExecuteBlockDelayed.m */; };
 		6507A2FD1F483F3B00775D14 /* BSStrategyWebSocketServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6507A2FC1F483F3A00775D14 /* BSStrategyWebSocketServer.m */; };
@@ -688,6 +689,7 @@
 				3471BFC2A350FE0D6331933F /* CocoaLumberjack in Frameworks */,
 				20E267DC94036E141937EECD /* CocoaLumberjackSwift in Frameworks */,
 				5AA90210622F2E2DEDBFC2A3 /* MASPreferences in Frameworks */,
+				648486A5B3FAB6FEFF41C758 /* Sparkle in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1465,7 +1467,6 @@
 				65E6E05E237224BE009C9448 /* Copy NM Connector */,
 				65AA493225F61A9500D19C60 /* Copy Launch At Login */,
 				FB9C467E90A69DD3E88791B1 /* [CP] Copy Pods Resources */,
-				5A256E006194444BFEDF5326 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1483,6 +1484,7 @@
 				4C1DA325433A7C776A231E35 /* CocoaLumberjack */,
 				B5093B87FF88D8364E449D62 /* CocoaLumberjackSwift */,
 				519A1D3E8F8915A196AFEB69 /* MASPreferences */,
+				EB278A3A0F3B69D3B4AF3092 /* Sparkle */,
 			);
 			productName = BeardedSpice;
 			productReference = 9679332C1855173100A49AC7 /* Beardie.app */;
@@ -1497,7 +1499,6 @@
 				9679334A1855173100A49AC7 /* Frameworks */,
 				9679334B1855173100A49AC7 /* Resources */,
 				91766CD3EE98BA9E2F8D3654 /* [CP] Copy Pods Resources */,
-				D075DA5979B5635A93C9684C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1613,6 +1614,7 @@
 			packageReferences = (
 				A87EF0E8040F79AE7CB599F4 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 				686789AD2EA4DF24BB06A7DF /* XCRemoteSwiftPackageReference "MASPreferences" */,
+				416CF76B45E6F8D0A7F53126 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9679332D1855173100A49AC7 /* Products */;
@@ -1743,23 +1745,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5A256E006194444BFEDF5326 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Beardie/Pods-Beardie-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Beardie/Pods-Beardie-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Beardie/Pods-Beardie-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		657E11E12622314D0006B70B /* Copy Constants to extension */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1811,23 +1796,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D075DA5979B5635A93C9684C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Beardie-BeardieTests/Pods-Beardie-BeardieTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FB9C467E90A69DD3E88791B1 /* [CP] Copy Pods Resources */ = {
@@ -3333,6 +3301,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		416CF76B45E6F8D0A7F53126 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.2.2;
+			};
+		};
 		686789AD2EA4DF24BB06A7DF /* XCRemoteSwiftPackageReference "MASPreferences" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/shpakovski/MASPreferences.git";
@@ -3391,6 +3367,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A87EF0E8040F79AE7CB599F4 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
 			productName = CocoaLumberjack;
+		};
+		EB278A3A0F3B69D3B4AF3092 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 416CF76B45E6F8D0A7F53126 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

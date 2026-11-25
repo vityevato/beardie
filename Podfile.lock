@@ -9,14 +9,12 @@ PODS:
   - RxSSDP (5.0.3):
     - RxSwift (~> 4.5)
   - RxSwift (4.5.0)
-  - Sparkle (2.2.2)
 
 DEPENDENCIES:
   - Kiwi (~> 3.0.0)
   - MASShortcut (~> 2.4.0)
   - RxSonosLib (from `https://github.com/Stillness-2/RxSonosLib`)
   - RxSSDP (from `https://github.com/Stillness-2/RxSSDP`)
-  - Sparkle
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -24,7 +22,6 @@ SPEC REPOS:
     - Kiwi
     - MASShortcut
     - RxSwift
-    - Sparkle
 
 EXTERNAL SOURCES:
   RxSonosLib:
@@ -47,8 +44,7 @@ SPEC CHECKSUMS:
   RxSonosLib: 4db32e35913f0f5f5d2ab5b4effb47ea98521dd0
   RxSSDP: 44a82c1529884e897a777b57ea82761a8fa7ec12
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
-  Sparkle: cb8c851f6247a9acbe9e236539404c5be529f74d
 
-PODFILE CHECKSUM: fd8b7b07a5f6fcd8c60c7c5168868fff764628ca
+PODFILE CHECKSUM: 454307cc8cda5c029f2d362bae3573cbaef2a2f0
 
 COCOAPODS: 1.16.2
