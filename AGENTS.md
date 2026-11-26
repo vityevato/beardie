@@ -10,6 +10,13 @@
 - Do not rewrite existing Objective-C code into Swift just for style. Keep changes scoped to the task.
 - Swift code exposed to Objective-C must use `@objc` / bridging headers and preserve existing behavior.
 
+## Naming
+
+- New Swift files and types do not need the `BS` prefix. Swift types are scoped by the module/target, and the project context is already clear.
+- Use a clear, descriptive name; adding `BS` to new Swift code is optional and should not be mechanical.
+- Keep existing Objective-C `BS`-prefixed names for compatibility. Do not rename existing types just to remove the prefix.
+- When a new Swift type is used from Objective-C or a XIB and the runtime name matters, choose the name explicitly with `@objc(...)`.
+
 ## Project notes
 
 - Main project: `Beardie.xcodeproj`; the workspace is used while CocoaPods remains.

@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import "MASPreferencesViewController.h"
-#import "Shortcut.h"
 
 /////////////////////////////////////////////////////////////////////////
 #pragma mark Notifications

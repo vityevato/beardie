@@ -11,10 +11,16 @@
 
 @implementation BeardedSpiceControllers
 
-- (void)setShortcuts:(NSDictionary <NSString*, MASShortcut *> *)shortcuts{
-    DDLogInfo(@"setShortcuts");
-    
+- (void)setShortcuts:(NSDictionary<NSString *, NSDictionary<NSString *, NSNumber *> *> *)shortcuts{
+    DDLogInfo(@"setShortcuts: %lu actions", (unsigned long)shortcuts.count);
+
     [[BSCService singleton] setShortcuts:shortcuts];
+}
+
+- (void)setShortcutsRegistrationEnabled:(BOOL)enabled{
+    DDLogInfo(@"setShortcutsRegistrationEnabled: %@", enabled ? @"YES" : @"NO");
+
+    [[BSCService singleton] setShortcutsRegistrationEnabled:enabled];
 }
 
 - (void)setMediaKeysSupportedApps:(NSArray <NSString *>*)bundleIds{

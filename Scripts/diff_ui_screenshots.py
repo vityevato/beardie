@@ -31,8 +31,11 @@ def main() -> int:
     after_path = Path(sys.argv[2])
 
     try:
-        before = Image.open(before_path).convert("RGBA")
-        after = Image.open(after_path).convert("RGBA")
+        # Compare RGB, not RGBA: AppKit screenshots can have an all-zero alpha
+        # channel, and ImageChops.getbbox() would then report "identical" even
+        # when the visible pixels differ.
+        before = Image.open(before_path).convert("RGB")
+        after = Image.open(after_path).convert("RGB")
     except OSError as error:
         print(f"Could not open screenshots: {error}", file=sys.stderr)
         return 2
@@ -48,7 +51,12 @@ def main() -> int:
         print("Screenshots are identical")
         return 0
 
-    changed = sum(1 for pixel in diff.getdata() if any(pixel))
+    try:
+        pixels = diff.get_flattened_data()
+    except AttributeError:
+        pixels = diff.getdata()
+
+    changed = sum(1 for pixel in pixels if any(pixel))
     print(f"Screenshots differ: {changed} pixels, bbox={bbox}")
     return 1
 

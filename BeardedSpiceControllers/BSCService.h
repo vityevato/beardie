@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "BSHeadphoneStatusListener.h"
-#import "Shortcut.h"
 
 @interface BSCService : NSObject < BSHeadphoneStatusListenerProtocol >
 
 + (BSCService *)singleton;
 
-- (void)setShortcuts:(NSDictionary <NSString*, MASShortcut *>*)shortcuts;
+- (void)setShortcuts:(NSDictionary<NSString *, NSDictionary<NSString *, NSNumber *> *> *)shortcuts;
+
+- (void)setShortcutsRegistrationEnabled:(BOOL)enabled;
 
 - (void)setMediaKeysSupportedApps:(NSArray <NSString *>*)bundleIds;
 

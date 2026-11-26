@@ -62,13 +62,8 @@
                                             </textField>
                                         </gridCell>
                                         <gridCell row="arQ-PO-mMC" column="r0k-Jj-E6z" id="cQd-D2-2CN">
-                                            <customView key="contentView" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Kc-Xx-M46" userLabel="Activate Shortcut" customClass="BSShortcutView">
+                                            <customView key="contentView" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Kc-Xx-M46" userLabel="Activate Shortcut" customClass="BSShortcutRecorderView">
                                                 <rect key="frame" x="74" y="66" width="120" height="25"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="style">
-                                                        <integer key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </customView>
                                         </gridCell>
                                         <gridCell row="DQA-xe-WbM" column="tzW-6O-qMV" id="LEQ-sK-5fa">
@@ -82,13 +77,8 @@
                                             </textField>
                                         </gridCell>
                                         <gridCell row="DQA-xe-WbM" column="r0k-Jj-E6z" id="Ebx-Fg-HqO">
-                                            <customView key="contentView" focusRingType="none" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9oW-Ht-MHg" userLabel="Activate Shortcut" customClass="BSShortcutView">
+                                            <customView key="contentView" focusRingType="none" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9oW-Ht-MHg" userLabel="Activate Shortcut" customClass="BSShortcutRecorderView">
                                                 <rect key="frame" x="74" y="33" width="120" height="25"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="style">
-                                                        <integer key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </customView>
                                         </gridCell>
                                         <gridCell row="chB-mY-V8S" column="tzW-6O-qMV" id="2Mv-sA-rJk">
@@ -102,13 +92,8 @@
                                             </textField>
                                         </gridCell>
                                         <gridCell row="chB-mY-V8S" column="r0k-Jj-E6z" id="gSL-fU-mpk">
-                                            <customView key="contentView" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cxC-Wi-DZu" userLabel="Activate Shortcut" customClass="BSShortcutView">
+                                            <customView key="contentView" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cxC-Wi-DZu" userLabel="Activate Shortcut" customClass="BSShortcutRecorderView">
                                                 <rect key="frame" x="74" y="0.0" width="120" height="25"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="style">
-                                                        <integer key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </customView>
                                         </gridCell>
                                     </gridCells>
@@ -156,13 +141,8 @@
                                             </textField>
                                         </gridCell>
                                         <gridCell row="4Kw-LJ-76P" column="H94-Pf-X85" id="0fM-YQ-bIk">
-                                            <customView key="contentView" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eV3-4b-v8k" userLabel="Set Active Tab Shortcut" customClass="BSShortcutView">
+                                            <customView key="contentView" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eV3-4b-v8k" userLabel="Set Active Tab Shortcut" customClass="BSShortcutRecorderView">
                                                 <rect key="frame" x="61" y="33" width="120" height="25"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="style">
-                                                        <integer key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </customView>
                                         </gridCell>
                                         <gridCell row="70F-Ir-OqJ" column="mZy-B3-sMN" id="f1a-lh-2dv">
@@ -176,13 +156,8 @@
                                             </textField>
                                         </gridCell>
                                         <gridCell row="70F-Ir-OqJ" column="H94-Pf-X85" id="jyi-FT-IaU">
-                                            <customView key="contentView" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A2w-Vd-OdM" userLabel="Set Active Tab Shortcut" customClass="BSShortcutView">
+                                            <customView key="contentView" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A2w-Vd-OdM" userLabel="Set Active Tab Shortcut" customClass="BSShortcutRecorderView">
                                                 <rect key="frame" x="61" y="0.0" width="120" height="25"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="style">
-                                                        <integer key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </customView>
                                         </gridCell>
                                     </gridCells>
@@ -234,13 +209,8 @@
                             </textField>
                         </gridCell>
                         <gridCell row="0aR-8m-D37" column="9s3-dI-Pfj" id="Qlu-SZ-kWN">
-                            <customView key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="ajF-CB-eLU" userLabel="Set Active Tab Shortcut" customClass="BSShortcutView">
+                            <customView key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="ajF-CB-eLU" userLabel="Set Active Tab Shortcut" customClass="BSShortcutRecorderView">
                                 <rect key="frame" x="332" y="99" width="120" height="25"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="style">
-                                        <integer key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </customView>
                         </gridCell>
                         <gridCell row="JNa-AI-dvi" column="zwc-0w-iG7" id="DGK-B1-gNy">
@@ -254,13 +224,8 @@
                             </textField>
                         </gridCell>
                         <gridCell row="JNa-AI-dvi" column="9s3-dI-Pfj" id="Yvh-55-J3Z">
-                            <customView key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="6DV-Fl-7vz" userLabel="Activate Shortcut" customClass="BSShortcutView">
+                            <customView key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="6DV-Fl-7vz" userLabel="Activate Shortcut" customClass="BSShortcutRecorderView">
                                 <rect key="frame" x="332" y="66" width="120" height="25"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="style">
-                                        <integer key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </customView>
                         </gridCell>
                         <gridCell row="HGA-mN-G1T" column="zwc-0w-iG7" id="ziE-s6-bPk">
@@ -274,13 +239,8 @@
                             </textField>
                         </gridCell>
                         <gridCell row="HGA-mN-G1T" column="9s3-dI-Pfj" id="C7O-wA-pNi">
-                            <customView key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="9E3-kb-9eg" userLabel="Favorite Shortcut" customClass="BSShortcutView">
+                            <customView key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="9E3-kb-9eg" userLabel="Favorite Shortcut" customClass="BSShortcutRecorderView">
                                 <rect key="frame" x="332" y="33" width="120" height="25"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="style">
-                                        <integer key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </customView>
                         </gridCell>
                         <gridCell row="hTr-Oq-Fes" column="zwc-0w-iG7" id="La1-Az-sX8">
@@ -294,13 +254,8 @@
                             </textField>
                         </gridCell>
                         <gridCell row="hTr-Oq-Fes" column="9s3-dI-Pfj" id="H2F-sg-ADg">
-                            <customView key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="M3P-EW-xim" userLabel="Favorite Shortcut" customClass="BSShortcutView">
+                            <customView key="contentView" translatesAutoresizingMaskIntoConstraints="NO" id="M3P-EW-xim" userLabel="Favorite Shortcut" customClass="BSShortcutRecorderView">
                                 <rect key="frame" x="332" y="0.0" width="120" height="25"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="style">
-                                        <integer key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </customView>
                         </gridCell>
                     </gridCells>

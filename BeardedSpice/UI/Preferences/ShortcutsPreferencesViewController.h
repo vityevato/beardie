@@ -8,18 +8,19 @@
 
 #import <Cocoa/Cocoa.h>
 #import "MASPreferencesViewController.h"
-#import "Shortcut.h"
+
+@class BSShortcutRecorderView;
 
 @interface ShortcutsPreferencesViewController : NSViewController <MASPreferencesViewController>
 
-@property (nonatomic, weak) IBOutlet MASShortcutView *playPauseShortcut;
-@property (nonatomic, weak) IBOutlet MASShortcutView *nextTrackShortcut;
-@property (nonatomic, weak) IBOutlet MASShortcutView *previousTrackShortcut;
-@property (nonatomic, weak) IBOutlet MASShortcutView *activatePlayingTabShortcut;
-@property (nonatomic, weak) IBOutlet MASShortcutView *setActiveTabShortcut;
-@property (nonatomic, weak) IBOutlet MASShortcutView *favoriteShortcut;
-@property (nonatomic, weak) IBOutlet MASShortcutView *notificationShortcut;
-@property (nonatomic, weak) IBOutlet MASShortcutView *playerNextShortcut;
-@property (nonatomic, weak) IBOutlet MASShortcutView *playerPreviousShortcut;
+@property (nonatomic, weak) IBOutlet BSShortcutRecorderView *playPauseShortcut;
+@property (nonatomic, weak) IBOutlet BSShortcutRecorderView *nextTrackShortcut;
+@property (nonatomic, weak) IBOutlet BSShortcutRecorderView *previousTrackShortcut;
+@property (nonatomic, weak) IBOutlet BSShortcutRecorderView *activatePlayingTabShortcut;
+@property (nonatomic, weak) IBOutlet BSShortcutRecorderView *setActiveTabShortcut;
+@property (nonatomic, weak) IBOutlet BSShortcutRecorderView *favoriteShortcut;
+@property (nonatomic, weak) IBOutlet BSShortcutRecorderView *notificationShortcut;
+@property (nonatomic, weak) IBOutlet BSShortcutRecorderView *playerNextShortcut;
+@property (nonatomic, weak) IBOutlet BSShortcutRecorderView *playerPreviousShortcut;
 
 @end

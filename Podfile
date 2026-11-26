@@ -4,10 +4,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 project 'Beardie'
 
 target 'Beardie' do
-    pod 'MASShortcut', '~> 2.4.0'
 end
 target 'BeardieControllers' do
-  pod 'MASShortcut', '~> 2.4.0'
 end
 
 # Xcode 27 no longer supports deployment targets below macOS 12.0.

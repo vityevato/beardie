@@ -103,6 +103,9 @@ BOOL accessibilityApiEnabled = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prefChanged:) name: BSStrategiesPreferencesNativeAppChangedNoticiation object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prefChanged:) name: GeneralPreferencesAutoPauseChangedNoticiation object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shortcutsDidChange:) name:BSShortcutsDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shortcutRecordingDidChange:) name:BSShortcutRecordingDidChangeNotification object:nil];
+
 
     // Application notifications
     [self setupSystemEventsCallback];
@@ -113,7 +116,6 @@ BOOL accessibilityApiEnabled = NO;
     MediaStrategyRegistry *registry = [MediaStrategyRegistry singleton];
     [registry setUserDefaults:BeardedSpiceActiveControllers];
 
-    [self shortcutsBind];
     [self newConnectionToControlService];
 
     self.inUpdatingStrategiesState = NO;
@@ -1065,116 +1067,19 @@ BOOL accessibilityApiEnabled = NO;
 }
 
 /////////////////////////////////////////////////////////////////////////
-#pragma mark Shortcuts binding
+#pragma mark Shortcuts
 /////////////////////////////////////////////////////////////////////////
-- (void)shortcutsBind{
 
-//    NSDictionary *options = @{NSValueTransformerNameBindingOption: NSKeyedUnarchiveFromDataTransformerName};
-    NSDictionary *options = @{};
+- (void)shortcutsDidChange:(NSNotification *)notification{
 
-    [self bind:BeardedSpicePlayPauseShortcut
-      toObject:[NSUserDefaultsController sharedUserDefaultsController]
-   withKeyPath:[@"values." stringByAppendingString:BeardedSpicePlayPauseShortcut]
-       options:options];
-
-    [self bind:BeardedSpiceNextTrackShortcut
-      toObject:[NSUserDefaultsController sharedUserDefaultsController]
-   withKeyPath:[@"values." stringByAppendingString:BeardedSpiceNextTrackShortcut]
-       options:options];
-
-    [self bind:BeardedSpicePreviousTrackShortcut
-      toObject:[NSUserDefaultsController sharedUserDefaultsController]
-   withKeyPath:[@"values." stringByAppendingString:BeardedSpicePreviousTrackShortcut]
-       options:options];
-
-    [self bind:BeardedSpiceActiveTabShortcut
-      toObject:[NSUserDefaultsController sharedUserDefaultsController]
-   withKeyPath:[@"values." stringByAppendingString:BeardedSpiceActiveTabShortcut]
-       options:options];
-
-    [self bind:BeardedSpiceFavoriteShortcut
-      toObject:[NSUserDefaultsController sharedUserDefaultsController]
-   withKeyPath:[@"values." stringByAppendingString:BeardedSpiceFavoriteShortcut]
-       options:options];
-
-    [self bind:BeardedSpiceNotificationShortcut
-      toObject:[NSUserDefaultsController sharedUserDefaultsController]
-   withKeyPath:[@"values." stringByAppendingString:BeardedSpiceNotificationShortcut]
-       options:options];
-
-    [self bind:BeardedSpiceActivatePlayingTabShortcut
-      toObject:[NSUserDefaultsController sharedUserDefaultsController]
-   withKeyPath:[@"values." stringByAppendingString:BeardedSpiceActivatePlayingTabShortcut]
-       options:options];
-
-    [self bind:BeardedSpicePlayerNextShortcut
-      toObject:[NSUserDefaultsController sharedUserDefaultsController]
-   withKeyPath:[@"values." stringByAppendingString:BeardedSpicePlayerNextShortcut]
-       options:options];
-
-    [self bind:BeardedSpicePlayerPreviousShortcut
-      toObject:[NSUserDefaultsController sharedUserDefaultsController]
-   withKeyPath:[@"values." stringByAppendingString:BeardedSpicePlayerPreviousShortcut]
-       options:options];
+    [self resetShortcutsToControlService];
 }
 
-- (id)valueForUndefinedKey:(NSString *)key{
+- (void)shortcutRecordingDidChange:(NSNotification *)notification{
 
-    return nil;
-}
-
-- (void)setBeardedSpicePlayPauseShortcut:(id)shortcut{
-
+    BOOL active = [notification.userInfo[BSShortcutRecordingActiveKey] boolValue];
     if (_connectionToService) {
-        [[_connectionToService remoteObjectProxy] setShortcuts:@{BeardedSpicePlayPauseShortcut: shortcut}];
-    }
-}
-- (void)setBeardedSpiceNextTrackShortcut:(id)shortcut{
-
-    if (_connectionToService) {
-        [[_connectionToService remoteObjectProxy] setShortcuts:@{BeardedSpiceNextTrackShortcut: shortcut}];
-    }
-}
-- (void)setBeardedSpicePreviousTrackShortcut:(id)shortcut{
-
-    if (_connectionToService) {
-        [[_connectionToService remoteObjectProxy] setShortcuts:@{BeardedSpicePreviousTrackShortcut: shortcut}];
-    }
-}
-- (void)setBeardedSpiceActiveTabShortcut:(id)shortcut{
-
-    if (_connectionToService) {
-        [[_connectionToService remoteObjectProxy] setShortcuts:@{BeardedSpiceActiveTabShortcut: shortcut}];
-    }
-}
-- (void)setBeardedSpiceFavoriteShortcut:(id)shortcut{
-
-    if (_connectionToService) {
-        [[_connectionToService remoteObjectProxy] setShortcuts:@{BeardedSpiceFavoriteShortcut: shortcut}];
-    }
-}
-- (void)setBeardedSpiceNotificationShortcut:(id)shortcut{
-
-    if (_connectionToService) {
-        [[_connectionToService remoteObjectProxy] setShortcuts:@{BeardedSpiceNotificationShortcut: shortcut}];
-    }
-}
-- (void)setBeardedSpiceActivatePlayingTabShortcut:(id)shortcut{
-
-    if (_connectionToService) {
-        [[_connectionToService remoteObjectProxy] setShortcuts:@{BeardedSpiceActivatePlayingTabShortcut: shortcut}];
-    }
-}
-- (void)setBeardedSpicePlayerNextShortcut:(id)shortcut{
-
-    if (_connectionToService) {
-        [[_connectionToService remoteObjectProxy] setShortcuts:@{BeardedSpicePlayerNextShortcut: shortcut}];
-    }
-}
-- (void)setBeardedSpicePlayerPreviousShortcut:(id)shortcut{
-
-    if (_connectionToService) {
-        [[_connectionToService remoteObjectProxy] setShortcuts:@{BeardedSpicePlayerPreviousShortcut: shortcut}];
+        [[_connectionToService remoteObjectProxy] setShortcutsRegistrationEnabled:!active];
     }
 }
 
@@ -1219,55 +1124,22 @@ BOOL accessibilityApiEnabled = NO;
 
 - (void)resetShortcutsToControlService{
 
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:9];
-
-    NSData *shortcut  = [[NSUserDefaults standardUserDefaults] objectForKey:BeardedSpicePlayPauseShortcut];
-    if (shortcut) {
-        [dict setObject:shortcut forKey:BeardedSpicePlayPauseShortcut];
+    if (NSThread.isMainThread) {
+        [self sendShortcutsToControlService];
     }
-
-    shortcut  = [[NSUserDefaults standardUserDefaults] objectForKey:BeardedSpiceNextTrackShortcut];
-    if (shortcut) {
-        [dict setObject:shortcut forKey:BeardedSpiceNextTrackShortcut];
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self sendShortcutsToControlService];
+        });
     }
+}
 
-    shortcut  = [[NSUserDefaults standardUserDefaults] objectForKey:BeardedSpicePreviousTrackShortcut];
-    if (shortcut) {
-        [dict setObject:shortcut forKey:BeardedSpicePreviousTrackShortcut];
-    }
+- (void)sendShortcutsToControlService{
 
-    shortcut  = [[NSUserDefaults standardUserDefaults] objectForKey:BeardedSpiceActiveTabShortcut];
-    if (shortcut) {
-        [dict setObject:shortcut forKey:BeardedSpiceActiveTabShortcut];
-    }
-
-    shortcut  = [[NSUserDefaults standardUserDefaults] objectForKey:BeardedSpiceFavoriteShortcut];
-    if (shortcut) {
-        [dict setObject:shortcut forKey:BeardedSpiceFavoriteShortcut];
-    }
-
-    shortcut  = [[NSUserDefaults standardUserDefaults] objectForKey:BeardedSpiceNotificationShortcut];
-    if (shortcut) {
-        [dict setObject:shortcut forKey:BeardedSpiceNotificationShortcut];
-    }
-
-    shortcut  = [[NSUserDefaults standardUserDefaults] objectForKey:BeardedSpiceActivatePlayingTabShortcut];
-    if (shortcut) {
-        [dict setObject:shortcut forKey:BeardedSpiceActivatePlayingTabShortcut];
-    }
-
-    shortcut  = [[NSUserDefaults standardUserDefaults] objectForKey:BeardedSpicePlayerNextShortcut];
-    if (shortcut) {
-        [dict setObject:shortcut forKey:BeardedSpicePlayerNextShortcut];
-    }
-
-    shortcut  = [[NSUserDefaults standardUserDefaults] objectForKey:BeardedSpicePlayerPreviousShortcut];
-    if (shortcut) {
-        [dict setObject:shortcut forKey:BeardedSpicePlayerPreviousShortcut];
-    }
+    NSDictionary<NSString *, NSDictionary<NSString *, NSNumber *> *> *shortcuts = [BSShortcuts shortcutDictionary];
 
     if (_connectionToService) {
-        [[_connectionToService remoteObjectProxy] setShortcuts:dict];
+        [[_connectionToService remoteObjectProxy] setShortcuts:shortcuts];
     }
 }
 

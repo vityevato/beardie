@@ -26,20 +26,33 @@ case "$SUBDIR" in
 esac
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
-CONTAINER=$(find "$HOME/Library/Containers" -maxdepth 1 -type d -name "*BeardieUITests.xctrunner" 2>/dev/null | head -1)
+CONTAINER=$(find "$HOME/Library/Containers" -maxdepth 1 -type d -iname "*beardie*uitests.xctrunner" 2>/dev/null | head -1)
 
-CANDIDATES=("$REPO/.tmp/ui-screenshots/raw" "$TMPDIR/BeardieUITests/latest")
+CANDIDATES=("$REPO/.tmp/ui-screenshots/raw")
 if [ -n "$CONTAINER" ]; then
     CANDIDATES+=("$CONTAINER/Data/tmp/BeardieUITests/latest")
 fi
+CANDIDATES+=("$TMPDIR/BeardieUITests/latest")
 
 SRC=""
+# Prefer a directory that actually contains the pane capture. A signed
+# UI-test runner is sandboxed and writes into its container, while a stale
+# temporary directory may contain only failure diagnostics.
 for candidate in "${CANDIDATES[@]}"; do
-    if [ -d "$candidate" ]; then
+    if [ -f "$candidate/shortcuts-pane.png" ]; then
         SRC="$candidate"
         break
     fi
 done
+
+if [ -z "$SRC" ]; then
+    for candidate in "${CANDIDATES[@]}"; do
+        if [ -d "$candidate" ]; then
+            SRC="$candidate"
+            break
+        fi
+    done
+fi
 
 if [ -z "$SRC" ]; then
     echo "Beardie UI-test screenshots were not found." >&2
@@ -47,9 +60,17 @@ if [ -z "$SRC" ]; then
     exit 1
 fi
 
+DEST="$REPO/.tmp/ui-screenshots/$SUBDIR"
 mkdir -p "$REPO/.tmp/ui-screenshots"
-rm -rf "$REPO/.tmp/ui-screenshots/$SUBDIR"
-cp -R "$SRC" "$REPO/.tmp/ui-screenshots/$SUBDIR"
+rm -rf "$DEST"
+mkdir -p "$DEST"
+
+# Failure diagnostics are useful for debugging, but stale failure PNGs from
+# earlier runs must not replace the current capture screenshot.
+find "$SRC" -maxdepth 1 -type f -name "*.png" ! -name "failure-*" -exec cp {} "$DEST/" \;
+if [ -z "$(ls -A "$DEST")" ]; then
+    cp -R "$SRC/." "$DEST/"
+fi
 
 echo "Screenshots copied to .tmp/ui-screenshots/$SUBDIR"
-ls -1 "$REPO/.tmp/ui-screenshots/$SUBDIR"
+ls -1 "$DEST"

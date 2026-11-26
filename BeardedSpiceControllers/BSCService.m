@@ -9,7 +9,7 @@
 #import "BSCService.h"
 #import "BSSharedResources.h"
 #import "BeardedSpiceHostAppProtocol.h"
-#import "BSCShortcutMonitor.h"
+#import "BeardieControllers-Swift.h"
 
 //#include <IOKit/hid/IOHIDUsageTables.h>
 
@@ -23,6 +23,10 @@
 #define MIKEY_REPEAT_TIMEOUT                0.6  //seconds
 #define RCD_SERVICE_PLIST                   @"/System/Library/LaunchAgents/com.apple.rcd.plist"
 
+@interface BSCService ()
+- (void)handleShortcutAction:(BSShortcutAction)action;
+@end
+
 @implementation BSCService{
 
     SPMediaKeyTap *_keyTap;
@@ -30,7 +34,8 @@
     NSMutableArray *_appleRemotes;
     BSHeadphoneStatusListener *_hpuListener;
 
-    NSMutableDictionary *_shortcuts;
+    NSMutableDictionary<NSString *, NSDictionary<NSString *, NSNumber *> *> *_shortcuts;
+    BSShortcutEventTap *_shortcutEventTap;
 
     BOOL _remoteControlDaemonEnabled;
     NSArray *_mediaKeysSupportedApps;
@@ -40,9 +45,8 @@
     NSMutableArray *_connections;
 
     BOOL _enabled;
+    BOOL _shortcutsRegistrationEnabled;
 
-    EventLoopRef _shortcutThreadRL;
-    
     EHExecuteBlockDelayed *_miKeyCommandBlock;
 }
 
@@ -58,7 +62,16 @@ static BSCService *bscSingleton;
             
             _connections = [NSMutableArray arrayWithCapacity:1];
             _shortcuts = [NSMutableDictionary dictionary];
+            _shortcutsRegistrationEnabled = YES;
             _remoteControlDaemonEnabled = NO;
+
+            _shortcutEventTap = [BSShortcutEventTap new];
+            __weak typeof(self) weakSelf = self;
+            _shortcutEventTap.actionHandler = ^(BSShortcutAction action) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf handleShortcutAction:action];
+                });
+            };
 
             workingQueue = dispatch_queue_create("BeardedSpiceControllerService", DISPATCH_QUEUE_SERIAL);
 
@@ -87,20 +100,11 @@ static BSCService *bscSingleton;
              object: NULL];
             //--------------------------------------------
 
-//            [BSCShortcutMonitor sharedMonitor];
-
         }
         return self;
     }
 
     return nil;
-}
-
-- (void)dealloc{
-
-    if (_shortcutThreadRL) {
-        QuitEventLoop(_shortcutThreadRL);
-    }
 }
 
 + (BSCService *)singleton{
@@ -117,25 +121,22 @@ static BSCService *bscSingleton;
 
 #pragma mark - Public Methods
 
-- (void)setShortcuts:(NSDictionary *)shortcuts{
+- (void)setShortcuts:(NSDictionary<NSString *, NSDictionary<NSString *, NSNumber *> *> *)shortcuts{
 
     dispatch_async(dispatch_get_main_queue(), ^{
         @autoreleasepool {
 
-            if (shortcuts) {
-
-                [shortcuts enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-                    MASShortcut *shortcut = [NSKeyedUnarchiver unarchivedObjectOfClass:[MASShortcut class] fromData:obj error:nil];
-                    if (shortcut) {
-                        [self->_shortcuts setObject:shortcut forKey:key];
-                    }
-                    else{
-                        [self->_shortcuts removeObjectForKey:key];
-                    }
-                }];
-                [self refreshShortcutMonitor];
-            }
+            self->_shortcuts = shortcuts ? [shortcuts mutableCopy] : [NSMutableDictionary dictionary];
+            [self refreshShortcutMonitor];
         }
+    });
+}
+
+- (void)setShortcutsRegistrationEnabled:(BOOL)enabled{
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self->_shortcutsRegistrationEnabled = enabled;
+        [self refreshShortcutMonitor];
     });
 }
 
@@ -160,13 +161,20 @@ static BSCService *bscSingleton;
         if (connection) {
             if (!_enabled) {
                 _enabled = YES;
+                // A previous app session may have ended while a recorder was
+                // active. Recording state is per-session, so start enabled.
+                _shortcutsRegistrationEnabled = YES;
                 [self rcdControl];
                 [self refreshShortcutMonitor];
-                _enabled = [self refreshAllControllers:nil];
+
+                // Media keys need an event tap and may be unavailable without
+                // Accessibility/Input Monitoring permission. Global shortcuts
+                // use Carbon hot keys and must keep working in that case.
+                if ([self refreshAllControllers:nil] == NO) {
+                    DDLogError(@"Media keys are unavailable; continuing with global shortcuts only");
+                }
             }
-            if (_enabled) {
-                [_connections addObject:connection];
-            }
+            [_connections addObject:connection];
         }
     });
     return _enabled;
@@ -178,6 +186,7 @@ static BSCService *bscSingleton;
             [_connections removeObject:connection];
             if (!_connections.count && _enabled) {
                 _enabled = NO;
+                _shortcutsRegistrationEnabled = YES;
                 [self rcdControl];
                 [self refreshShortcutMonitor];
                 [self refreshAllControllers:nil];
@@ -410,97 +419,66 @@ static BSCService *bscSingleton;
 
 - (void)refreshShortcutMonitor{
 
-    dispatch_async(workingQueue, ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         @autoreleasepool {
 
-            [[BSCShortcutMonitor sharedMonitor] unregisterAllShortcuts];
-            if (self->_enabled) {
+            BOOL registrationEnabled = self->_enabled && self->_shortcutsRegistrationEnabled;
+            [self->_shortcutEventTap setEnabled:registrationEnabled];
+            [self->_shortcutEventTap updateShortcuts:[self->_shortcuts copy]];
 
-                MASShortcut *shortcut = self->_shortcuts[BeardedSpicePlayPauseShortcut];
-                if (shortcut){
-                    [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
-
-                        [self sendMessagesToConnections:@selector(playPauseToggle) object:nil];
-                    }];
-                }
-
-                shortcut = self->_shortcuts[BeardedSpiceNextTrackShortcut];
-                if (shortcut){
-                    [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
-
-                        [self sendMessagesToConnections:@selector(nextTrack) object:nil];
-                    }];
-                }
-
-                shortcut = self->_shortcuts[BeardedSpicePreviousTrackShortcut];
-                if (shortcut){
-                    [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
-
-                        [self sendMessagesToConnections:@selector(previousTrack) object:nil];
-                    }];
-                }
-
-                shortcut = self->_shortcuts[BeardedSpiceActiveTabShortcut];
-                if (shortcut){
-                    [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
-
-                        [self refreshMediaKeys];
-                        
-                        [self sendMessagesToConnections:@selector(activeTab) object:nil];
-                    }];
-                }
-
-                shortcut = self->_shortcuts[BeardedSpiceFavoriteShortcut];
-                if (shortcut){
-                    [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
-
-                        [self sendMessagesToConnections:@selector(favorite) object:nil];
-                    }];
-                }
-
-                shortcut = self->_shortcuts[BeardedSpiceNotificationShortcut];
-                if (shortcut){
-                    [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
-
-                        [self refreshMediaKeys];
-                        
-                        [self sendMessagesToConnections:@selector(notification) object:nil];
-                    }];
-                }
-
-                shortcut = self->_shortcuts[BeardedSpiceActivatePlayingTabShortcut];
-                if (shortcut){
-                    [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
-                        
-                        [self refreshMediaKeys];
-
-                        [self sendMessagesToConnections:@selector(activatePlayingTab) object:nil];
-                    }];
-                }
-
-                shortcut = self->_shortcuts[BeardedSpicePlayerNextShortcut];
-                if (shortcut){
-                    [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
-
-                        [self refreshMediaKeys];
-
-                        [self sendMessagesToConnections:@selector(playerNext) object:nil];
-                    }];
-                }
-
-                shortcut = self->_shortcuts[BeardedSpicePlayerPreviousShortcut];
-                if (shortcut){
-                    [[BSCShortcutMonitor sharedMonitor] registerShortcut:shortcut withAction:^{
-
-                        [self refreshMediaKeys];
-                        
-                        [self sendMessagesToConnections:@selector(playerPrevious) object:nil];
-                    }];
-                }
-
-            }
+            DDLogDebug(@"Shortcut event tap active: %@, actions: %lu",
+                       self->_shortcutEventTap.isActive ? @"YES" : @"NO",
+                       (unsigned long)self->_shortcuts.count);
         }
     });
+}
+
+- (void)handleShortcutAction:(BSShortcutAction)action{
+
+    DDLogDebug(@"Shortcut action: %ld", (long)action);
+
+    switch (action) {
+        case BSShortcutActionPlayPause:
+            [self sendMessagesToConnections:@selector(playPauseToggle) object:nil];
+            break;
+
+        case BSShortcutActionNextTrack:
+            [self sendMessagesToConnections:@selector(nextTrack) object:nil];
+            break;
+
+        case BSShortcutActionPreviousTrack:
+            [self sendMessagesToConnections:@selector(previousTrack) object:nil];
+            break;
+
+        case BSShortcutActionActiveTab:
+            [self refreshMediaKeys];
+            [self sendMessagesToConnections:@selector(activeTab) object:nil];
+            break;
+
+        case BSShortcutActionFavorite:
+            [self sendMessagesToConnections:@selector(favorite) object:nil];
+            break;
+
+        case BSShortcutActionNotification:
+            [self refreshMediaKeys];
+            [self sendMessagesToConnections:@selector(notification) object:nil];
+            break;
+
+        case BSShortcutActionActivatePlayingTab:
+            [self refreshMediaKeys];
+            [self sendMessagesToConnections:@selector(activatePlayingTab) object:nil];
+            break;
+
+        case BSShortcutActionPlayerNext:
+            [self refreshMediaKeys];
+            [self sendMessagesToConnections:@selector(playerNext) object:nil];
+            break;
+
+        case BSShortcutActionPlayerPrevious:
+            [self refreshMediaKeys];
+            [self sendMessagesToConnections:@selector(playerPrevious) object:nil];
+            break;
+    }
 }
 
 - (void)sendMessagesToConnections:(SEL)selector object:(id)object{

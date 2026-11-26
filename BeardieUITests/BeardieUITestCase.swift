@@ -17,6 +17,8 @@ enum UITestLaunchArguments {
         "-SUHasLaunchedBefore", "YES",
         "-BSHideStatusItem", "NO",
         "-BeardedSpiceLaunchAtLogin", "NO",
+        // Avoid the system local-network permission prompt while capturing UI.
+        "-SonosSupport", "NO",
     ]
 }
 
@@ -57,8 +59,19 @@ class BeardieUITestCase: XCTestCase {
         try super.tearDownWithError()
     }
 
+    /// Relaunches the app with additional launch arguments. Used by tests that
+    /// need a deterministic keyboard-navigation mode.
+    func relaunch(extraArguments: [String]) {
+        app?.terminate()
+
+        let app = XCUIApplication()
+        app.launchArguments = UITestLaunchArguments.base + extraArguments
+        app.launch()
+        self.app = app
+    }
+
     override func record(_ issue: XCTIssue) {
-        if issue.type != .performanceRegression, !didSaveFailureDiagnostics, app != nil {
+        if issue.type == .assertionFailure, !didSaveFailureDiagnostics, app != nil {
             didSaveFailureDiagnostics = true
             saveFailureDiagnostics()
         }

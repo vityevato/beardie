@@ -20,18 +20,18 @@ extern DDLogLevel ddLogLevel;
 extern DDLogLevel defLogLevel;
 extern DDLogLevel verboseLogLevel;
 
-extern NSString *const BeardedSpicePlayPauseShortcut;
-extern NSString *const BeardedSpiceNextTrackShortcut;
-extern NSString *const BeardedSpicePreviousTrackShortcut;
-extern NSString *const BeardedSpiceActiveTabShortcut;
-extern NSString *const BeardedSpiceFavoriteShortcut;
-extern NSString *const BeardedSpiceNotificationShortcut;
-extern NSString *const BeardedSpiceActivatePlayingTabShortcut;
-extern NSString *const BeardedSpicePlayerNextShortcut;
-extern NSString *const BeardedSpicePlayerPreviousShortcut;
 
 extern NSString *const BeardedSpiceFirstRun;
 extern NSString *const BeardieBrowserExtensionsFirstRun;
+
+/// Posted when the user records or clears a shortcut in Preferences.
+extern NSNotificationName const BSShortcutsDidChangeNotification;
+
+/// Posted when a shortcut recorder starts or stops recording.
+extern NSNotificationName const BSShortcutRecordingDidChangeNotification;
+
+/// Key in `BSShortcutRecordingDidChangeNotification` with a `BOOL` value.
+extern NSString *const BSShortcutRecordingActiveKey;
 
 /**
  Timeout for command of the user iteraction.

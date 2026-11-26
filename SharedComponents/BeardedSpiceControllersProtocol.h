@@ -8,12 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-@class MASShortcut;
-
 // The protocol that this service will vend as its API. This header file will also need to be visible to the process hosting the service.
 @protocol BeardedSpiceControllersProtocol
 
-- (void)setShortcuts:(NSDictionary <NSString*, MASShortcut *> *)shortcuts;
+/// Shortcuts are serialized as `{action: {keyCode, carbonModifiers}}` so the
+/// payload contains only property-list types.
+- (void)setShortcuts:(NSDictionary<NSString *, NSDictionary<NSString *, NSNumber *> *> *)shortcuts;
+
+/// Temporarily disables global shortcut registration while the app records a
+/// new shortcut. The XPC service registers the same Carbon hot keys as the
+/// app, so it must release them during recording.
+- (void)setShortcutsRegistrationEnabled:(BOOL)enabled;
 
 - (void)setMediaKeysSupportedApps:(NSArray <NSString *>*)bundleIds;
 

@@ -23,18 +23,13 @@
 /////////////////////////////////////////////////////////////////////
 #pragma mark - BSSharedResources Constants
 
-NSString *const BeardedSpicePlayPauseShortcut = @"BeardedSpicePlayPauseShortcut";
-NSString *const BeardedSpiceNextTrackShortcut = @"BeardedSpiceNextTrackShortcut";
-NSString *const BeardedSpicePreviousTrackShortcut = @"BeardedSpicePreviousTrackShortcut";
-NSString *const BeardedSpiceActiveTabShortcut = @"BeardedSpiceActiveTabShortcut";
-NSString *const BeardedSpiceFavoriteShortcut = @"BeardedSpiceFavoriteShortcut";
-NSString *const BeardedSpiceNotificationShortcut = @"BeardedSpiceNotificationShortcut";
-NSString *const BeardedSpiceActivatePlayingTabShortcut = @"BeardedSpiceActivatePlayingTabShortcut";
-NSString *const BeardedSpicePlayerNextShortcut = @"BeardedSpicePlayerNextShortcut";
-NSString *const BeardedSpicePlayerPreviousShortcut = @"BeardedSpicePlayerPreviousShortcut";
 
 NSString *const BeardedSpiceFirstRun = @"BeardedSpiceFirstRun";
 NSString *const BeardieBrowserExtensionsFirstRun = @"BeardieBrowserExtensionsFirstRun";
+
+NSNotificationName const BSShortcutsDidChangeNotification = @"BSShortcutsDidChangeNotification";
+NSNotificationName const BSShortcutRecordingDidChangeNotification = @"BSShortcutRecordingDidChangeNotification";
+NSString *const BSShortcutRecordingActiveKey = @"BSShortcutRecordingActiveKey";
 
 /////////////////////////////////////////////////////////////////////
 #pragma mark - BSSharedResources
