@@ -2,12 +2,15 @@
 
 ## Language
 
-- Swift is the preferred language for all new code. Write new types, helpers, UI, services, and tests in Swift whenever the platform and existing architecture allow it.
-- Use Objective-C only when it is genuinely required:
-  - integrating with an existing Objective-C API or an XPC boundary;
+- Swift is the default language for all new code and for any code we need to change. Write new types, helpers, UI, services, and tests in Swift whenever the platform and existing architecture allow it.
+- If a task requires modifying an existing Objective-C implementation, migrate that implementation to Swift as part of the task instead of adding another Objective-C patch. Keep the Objective-C-facing API stable with `@objc`, `@objc(...)`, bridging headers, or a thin compatibility wrapper, and update call sites in the same change.
+- Objective-C is still allowed where it is genuinely required:
+  - integrating with an existing Objective-C-only API or an XPC boundary;
   - a dependency or API is Objective-C-only;
-  - making a minimal fix in an existing Objective-C file.
-- Do not rewrite existing Objective-C code into Swift just for style. Keep changes scoped to the task.
+  - a C/Objective-C ABI or runtime constraint makes Swift impractical.
+  In those cases keep the Objective-C surface as thin as possible and put new logic in Swift.
+- Scope migrations to the file(s) the task actually changes. Do not mechanically rewrite unrelated Objective-C files just for style.
+- A migration must preserve behavior and the existing public/Objective-C API. For large or risky files, do a behavior-preserving Swift migration first, then make the functional change as a separate step.
 - Swift code exposed to Objective-C must use `@objc` / bridging headers and preserve existing behavior.
 
 ## Naming
