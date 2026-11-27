@@ -1,6 +1,9 @@
 #project
 .devconfig.xcconfig
 
+# Local plans (not committed)
+.plans/
+
 # OS X
 .DS_Store
 
