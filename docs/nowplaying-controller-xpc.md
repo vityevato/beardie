@@ -87,20 +87,17 @@ Smoke-тест XPC:
     доставлены в app (`Refreshing tabs...`, `isPlaying result` в логе app);
   - volume up/down/mute — получены XPC-контроллером и доставлены в app;
   - глобальный shortcut Control+Option+Space — `Shortcut action: 0` в XPC и
-    обработка в app.
+    обработка в app;
+  - headphone plug/unplug — `headphonePlugAction` и `headphoneUnplugAction`
+    в XPC-контроллере, команда доставлена в app;
+  - запись shortcut в Preferences — `setShortcutsRegistrationEnabled: NO`
+    при записи, `setShortcuts` + `YES` при отмене/завершении.
 - `kill -9` XPC-процесса: launchd перезапустил сервис, app заново отправил
   настройки; в логе новый `New connection` и 9 shortcuts.
 - При выходе app: `rcdControl disable`, `rcdControl load`,
   `Shortcut event tap enabled: false`, соединение удалено.
 
-Не проверено автоматически в этой сессии:
-
-- headphone unplug: на текущем аудиоустройстве нет доступного data source,
-  нужен физический разъём/наушники;
-- запись нового shortcut в Preferences (регистрация уже проверена, сама запись
-  не менялась).
-
-Эти пункты нужно прогнать вручную на подписанной сборке перед мержем.
+Все пункты ручного regression-чека Stage 0.5 пройдены на подписанной Debug-сборке.
 
 ## Следующие этапы
 
