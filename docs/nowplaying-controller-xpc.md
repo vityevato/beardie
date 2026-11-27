@@ -104,3 +104,8 @@ Smoke-тест XPC:
 Stage 0.5 не добавляет MediaRemote, LaunchAgent и новых XPC-методов.
 `NowPlayingService`, `ElectionController` и MediaRemote adapter появляются в
 Stage 1/4 согласно плану.
+
+Известное поведение, унаследованное от исходного ObjC-кода: если XPC убить
+(`kill -9`) и затем закрыть app, новый экземпляр `BSCService` не знает, что
+предыдущий выгружал `com.apple.rcd`, и не загружает его обратно. Это не
+регрессия миграции; восстановление после kill относится к Stage 4.
