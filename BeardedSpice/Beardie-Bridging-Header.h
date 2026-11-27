@@ -9,5 +9,6 @@
 #import "BSTrack.h"
 #import "runningSBApplication.h"
 #import "BSSharedResources.h"
+#import "BeardedSpiceControllersProtocol.h"
 #import "BSVolumeControlProtocol.h"
 #import "GeneralPreferencesViewController.h"

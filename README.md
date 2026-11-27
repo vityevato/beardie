@@ -12,7 +12,7 @@ Beardie is more than just play/pause, it has some additional controls that add t
 
 # Development
 
-Requirements: macOS 13 or greater and a compatible Xcode.
+Requirements: macOS 27 or greater and a compatible Xcode.
 
 Dependencies are managed with Swift Package Manager. Open `Beardie.xcodeproj`, let Xcode resolve the packages, and build the `Beardie` scheme. CocoaPods and `pod install` are no longer used.
 
@@ -22,7 +22,7 @@ Dependencies are managed with Swift Package Manager. Open `Beardie.xcodeproj`, l
 
 ## Install
 
-**macOS 13 or greater required.**
+**macOS 27 or greater required.**
 
 You can download the [latest release here](https://github.com/Stillness-2/beardie/releases/latest), or find a full list of all our [previously released binaries here](https://github.com/Stillness-2/beardie/releases).
 
