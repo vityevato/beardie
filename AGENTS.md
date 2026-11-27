@@ -13,6 +13,15 @@
 - A migration must preserve behavior and the existing public/Objective-C API. For large or risky files, do a behavior-preserving Swift migration first, then make the functional change as a separate step.
 - Swift code exposed to Objective-C must use `@objc` / bridging headers and preserve existing behavior.
 
+## Documentation and comments
+
+- All documentation in the repository must be written in English: Markdown
+  files, docs, READMEs, and other project documentation.
+- All source-code comments must be written in English, including file headers,
+  inline comments, and documentation comments.
+- Do not add Russian or other non-English prose to documentation or source
+  comments, even when the conversation is in another language.
+
 ## Naming
 
 - New Swift files and types do not need the `BS` prefix. Swift types are scoped by the module/target, and the project context is already clear.

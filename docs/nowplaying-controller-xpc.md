@@ -1,111 +1,123 @@
 # BeardedSpiceControllers: Swift migration (Stage 0.5)
 
-- Дата: 2026-11-28.
-- Этап: 0.5 плана `beardie-nowplaying-transition-plan`.
-- Цель: behavior-preserving перевод собственного ObjC-кода XPC-контроллера на
-  Swift. MediaRemote, новые XPC-методы и функциональные изменения не входят.
-- Worktree: `nowplaying-controller-swift`, ветка `nowplaying-stage-0.5`.
+- Date: 2026-11-28.
+- Stage: 0.5 of the `beardie-nowplaying-transition-plan`.
+- Goal: migrate the XPC controller's own Objective-C code to Swift without
+  changing behavior. MediaRemote, new XPC methods, and functional changes are
+  out of scope.
+- Worktree: `nowplaying-controller-swift`, branch `nowplaying-stage-0.5`.
 
-## Что переведено
+## Migrated files
 
-| Было | Стало |
+| Before | After |
 |---|---|
 | `BeardedSpiceControllers/main.m` | `BeardedSpiceControllers/main.swift` |
 | `BeardedSpiceControllers/BeardedSpiceControllers.{h,m}` | `BeardedSpiceControllers/BeardedSpiceControllers.swift` |
 | `BeardedSpiceControllers/BSCService.{h,m}` | `BeardedSpiceControllers/BSCService.swift` |
 | `Controllers/BSHeadphoneStatusListener.{h,m}` | `Controllers/BSHeadphoneStatusListener.swift` |
 
-`BeardedSpiceControllers` сохраняет ObjC-имя класса (`@objc(BeardedSpiceControllers)`),
-`BeardedSpiceControllersProtocol` и `BeardedSpiceHostAppProtocol` не менялись.
-Bundle ID, `Info.plist` (`XPCService`, `ServiceType = Application`) и
-`Components.entitlements` не менялись.
+`BeardedSpiceControllers` keeps its Objective-C class name
+(`@objc(BeardedSpiceControllers)`); `BeardedSpiceControllersProtocol` and
+`BeardedSpiceHostAppProtocol` are unchanged. The bundle ID, `Info.plist`
+(`XPCService`, `ServiceType = Application`), and `Components.entitlements`
+are unchanged.
 
-Добавлен bridging header
-`BeardedSpiceControllers/BeardedSpiceControllers-Bridging-Header.h`. В него
-вынесены только ObjC-заголовки, нужные Swift-коду: XPC-протоколы,
+The controller target now has a bridging header,
+`BeardedSpiceControllers/BeardedSpiceControllers-Bridging-Header.h`. It only
+imports the Objective-C headers needed by Swift: the XPC protocols,
 `BSSharedResources`, `SPMediaKeyTap`, `DDHidAppleMikey`, `EHSystemUtils`,
-`EHExecuteBlockDelayed`, `NSException+Utils` и `IOHIDUsageTables`.
+`EHExecuteBlockDelayed`, `NSException+Utils`, and `IOHIDUsageTables`.
 
-`SharedResources.swift` добавлен в target контроллера, чтобы Swift-логи
-(`DDLogDebug`/`DDLogInfo`) подчинялись тому же `DebugLogLevel`, что и прежние
-ObjC-логи. Без этого CocoaLumberjackSwift использовал бы `dynamicLogLevel = .all`.
+`SharedResources.swift` was added to the controller target so Swift logs
+(`DDLogDebug`/`DDLogInfo`) honor the same `DebugLogLevel` as the previous
+Objective-C logs. Without it, CocoaLumberjackSwift would keep
+`dynamicLogLevel = .all`.
 
-## Что осталось на ObjC и почему
+## Remaining Objective-C and rationale
 
-| Файлы | Причина |
+| Files | Reason |
 |---|---|
-| `Controllers/DDHidLib/*` | IOKit/HID-обёртки, MRC-код; не входят в объём миграции |
-| `Controllers/SPMediaKeyTap/*` | Carbon media key tap; не входит в объём миграции |
-| `SharedComponents/BeardedSpiceControllersProtocol.h` | XPC/ObjC-граница, compatibility surface |
-| `SharedComponents/BeardedSpiceHostAppProtocol.{h,m}` | XPC/ObjC-граница и `BS_XPCEvent` |
-| `Utils/NSException+Utils.{h,m}` | `tryBlock` — единственный способ поймать ObjC-исключения из Swift; используется для вызовов DDHidLib |
+| `Controllers/DDHidLib/*` | IOKit/HID wrappers with manual reference counting; out of scope for this stage |
+| `Controllers/SPMediaKeyTap/*` | Carbon media key tap; out of scope for this stage |
+| `SharedComponents/BeardedSpiceControllersProtocol.h` | XPC/Objective-C boundary and compatibility surface |
+| `SharedComponents/BeardedSpiceHostAppProtocol.{h,m}` | XPC/Objective-C boundary and `BS_XPCEvent` |
+| `Utils/NSException+Utils.{h,m}` | `tryBlock` is the only way to catch Objective-C exceptions from Swift; it wraps DDHidLib calls |
 
-Исключения DDHidLib (`allMikeys`, `startListening`, `stopListening`) остались
-обёрнутыми в `tryBlock`, как раньше были обёрнуты в `@try/@catch`. Это сохраняет
-устойчивость сервиса при ошибках IOKit без добавления нового ObjC-кода.
+DDHidLib exceptions (`allMikeys`, `startListening`, `stopListening`) are still
+wrapped in `tryBlock`, just as they were previously wrapped in `@try/@catch`.
+This preserves the service's resilience to IOKit errors without adding new
+Objective-C code.
 
-## Поведение и lifecycle
+## Behavior and lifecycle
 
-- `main.swift`: `NSXPCListener.service()`, delegate, `disableAutomaticTermination`,
-  инициализация логгера и `BSCService.shared` — в том же порядке, что и раньше.
-- Экспортируемый объект создаётся на каждое соединение и хранит weak-ссылку на
-  `NSXPCConnection`.
-- `BSCService` — синглтон. Media keys, shortcuts, volume, Apple Mikey,
-  headphone listener, rcd control и отправка команд в app сохранены.
-- `addConnection`/`removeConnection` по-прежнему работают через main queue;
-  включение/выключение сервиса и `rcdControl` выполняются в те же моменты.
-- Команды app отправляются через `remoteObjectProxy` в `workingQueue`, как и
-  раньше; `volumeUp:`/`volumeDown:`/`volumeMute:` теперь передают `nil` явно
-  (раньше `performSelector:` вызывался без аргумента для nil-событий).
-- Headphone listener слушает default output device и `kAudioDevicePropertyDataSource`;
-  `kAudioObjectPropertyElementMaster` заменён на эквивалентный
-  `kAudioObjectPropertyElementMain` (macOS 12+), поведение то же.
+- `main.swift`: `NSXPCListener.service()`, the delegate,
+  `disableAutomaticTermination`, logger initialization, and
+  `BSCService.shared` are set up in the same order as before.
+- A new exported object is created for every connection and keeps a weak
+  reference to its `NSXPCConnection`.
+- `BSCService` is a singleton. Media keys, shortcuts, volume, Apple Mikey,
+  the headphone listener, rcd control, and command delivery to the app are
+  preserved.
+- `addConnection`/`removeConnection` still run on the main queue; service
+  enable/disable and `rcdControl` run at the same points as before.
+- Commands are sent to the app through `remoteObjectProxy` on `workingQueue`
+  as before; `volumeUp:`/`volumeDown:`/`volumeMute:` now pass `nil` explicitly
+  (previously `performSelector:` was called without an argument for nil
+  events).
+- The headphone listener observes the default output device and
+  `kAudioDevicePropertyDataSource`; `kAudioObjectPropertyElementMaster` was
+  replaced with the equivalent `kAudioObjectPropertyElementMain` (macOS 12+),
+  with identical behavior.
 
-## Проверки
+## Verification
 
-Сборка:
+Builds:
 
-- `xcodebuild -scheme BeardieControllers -configuration Debug` — успешно.
-- `xcodebuild -scheme Beardie -configuration Debug` — успешно.
-- `xcodebuild -scheme Beardie -configuration Release` — успешно.
-- Подписанная Debug-сборка (`Apple Development`, team `TC3Q7MAJXF`) — успешно.
+- `xcodebuild -scheme BeardieControllers -configuration Debug` — succeeded.
+- `xcodebuild -scheme Beardie -configuration Debug` — succeeded.
+- `xcodebuild -scheme Beardie -configuration Release` — succeeded.
+- Signed Debug build (`Apple Development`, team `TC3Q7MAJXF`) — succeeded.
 
-Unit-тесты:
+Unit tests:
 
-- `xcodebuild test -scheme Beardie -only-testing:BeardieTests` — все тесты
-  прошли (14/14).
+- `xcodebuild test -scheme Beardie -only-testing:BeardieTests` — all tests
+  passed (14/14).
 
-Smoke-тест XPC:
+XPC smoke test:
 
-- Подписанное Debug-приложение запущено, XPC-сервис стартовал.
-- В логе контроллера: `New connection`, `rcdControl enabled`,
+- The signed Debug app launched and the XPC service started.
+- Controller log: `New connection`, `rcdControl enabled`,
   `Shortcut event tap started`, `active: true`, 9 shortcuts.
-- App → XPC: `setShortcuts: 9 actions`, `setMediaKeysSupportedApps`,
-  `setPhoneUnplugActionEnabled` получены.
-- Ручной прогон клавиш (физические нажатия):
-  - media keys Play/Pause, Previous, Next — получены XPC-контроллером и
-    доставлены в app (`Refreshing tabs...`, `isPlaying result` в логе app);
-  - volume up/down/mute — получены XPC-контроллером и доставлены в app;
-  - глобальный shortcut Control+Option+Space — `Shortcut action: 0` в XPC и
-    обработка в app;
-  - headphone plug/unplug — `headphonePlugAction` и `headphoneUnplugAction`
-    в XPC-контроллере, команда доставлена в app;
-  - запись shortcut в Preferences — `setShortcutsRegistrationEnabled: NO`
-    при записи, `setShortcuts` + `YES` при отмене/завершении.
-- `kill -9` XPC-процесса: launchd перезапустил сервис, app заново отправил
-  настройки; в логе новый `New connection` и 9 shortcuts.
-- При выходе app: `rcdControl disable`, `rcdControl load`,
-  `Shortcut event tap enabled: false`, соединение удалено.
+- App → XPC: `setShortcuts: 9 actions`, `setMediaKeysSupportedApps`, and
+  `setPhoneUnplugActionEnabled` were received.
+- Manual key run (physical key presses):
+  - Media keys Play/Pause, Previous, Next — received by the XPC controller and
+    delivered to the app (`Refreshing tabs...`, `isPlaying result` in the app
+    log);
+  - volume up/down/mute — received by the XPC controller and delivered to the
+    app;
+  - global shortcut Control+Option+Space — `Shortcut action: 0` in XPC and
+    handled in the app;
+  - headphone plug/unplug — `headphonePlugAction` and
+    `headphoneUnplugAction` in the XPC controller, command delivered to the
+    app;
+  - shortcut recording in Preferences — `setShortcutsRegistrationEnabled: NO`
+    while recording, `setShortcuts` + `YES` on cancel/finish.
+- `kill -9` of the XPC process: launchd restarted the service and the app
+  re-sent its settings; the log shows a new `New connection` and 9 shortcuts.
+- On app quit: `rcdControl disable`, `rcdControl load`,
+  `Shortcut event tap enabled: false`, and the connection was removed.
 
-Все пункты ручного regression-чека Stage 0.5 пройдены на подписанной Debug-сборке.
+Every Stage 0.5 manual regression item passed on the signed Debug build.
 
-## Следующие этапы
+## Next stages
 
-Stage 0.5 не добавляет MediaRemote, LaunchAgent и новых XPC-методов.
-`NowPlayingService`, `ElectionController` и MediaRemote adapter появляются в
-Stage 1/4 согласно плану.
+Stage 0.5 does not add MediaRemote, a LaunchAgent, or new XPC methods.
+`NowPlayingService`, `ElectionController`, and the MediaRemote adapter arrive
+in Stages 1/4 according to the plan.
 
-Известное поведение, унаследованное от исходного ObjC-кода: если XPC убить
-(`kill -9`) и затем закрыть app, новый экземпляр `BSCService` не знает, что
-предыдущий выгружал `com.apple.rcd`, и не загружает его обратно. Это не
-регрессия миграции; восстановление после kill относится к Stage 4.
+Known behavior inherited from the original Objective-C code: if XPC is killed
+(`kill -9`) and the app is then closed, the new `BSCService` instance does not
+know that the previous instance unloaded `com.apple.rcd`, so it does not load
+it back. This is not a migration regression; recovery after a kill belongs to
+Stage 4.
