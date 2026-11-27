@@ -207,6 +207,10 @@ static BSBrowserExtensionsController *singletonBSBrowserExtensionsController;
 /// Remove manifests for native messaging app and so on
 /// for supported browsers
 - (void)uninstallNativeMessagingComponents {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"UseBrowserBridge"]) {
+        DDLogInfo(@"Keeping native messaging manifest for the Now Playing browser bridge");
+        return;
+    }
     BOOL result = [ChromeNativeMessaging removeManifest];
     DDLogInfo(@"ChromeNativeMessaging uninstall result: %@", result ? @"YES" : @"NO");
 }

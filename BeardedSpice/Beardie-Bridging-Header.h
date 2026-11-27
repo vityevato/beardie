@@ -10,5 +10,7 @@
 #import "runningSBApplication.h"
 #import "BSSharedResources.h"
 #import "BeardedSpiceControllersProtocol.h"
+#import "PSWebSocketServer.h"
+#import "PSWebSocket.h"
 #import "BSVolumeControlProtocol.h"
 #import "GeneralPreferencesViewController.h"
