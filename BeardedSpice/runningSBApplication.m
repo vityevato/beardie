@@ -418,17 +418,36 @@ static BOOL _frontmostAppFocusedWindowFullScreen = NO;
 }
 
 - (void)repairFrontmost {
-    if (_frontmostApp) {
-        if ([_frontmostApp activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)]
-            && _frontmostAppFocusedWindow) {
-            AXUIElementPerformAction(_frontmostAppFocusedWindow, CFSTR("AXRaise"));
-            CFRelease(_frontmostAppFocusedWindow);
-            _frontmostAppFocusedWindow = nil;
-            _frontmostAppFocusedWindowFullScreen = NO;
-        }
-        _frontmostApp = nil;
+    NSRunningApplication *frontmostApp = _frontmostApp;
+    AXUIElementRef focusedWindow = _frontmostAppFocusedWindow;
+    _frontmostApp = nil;
+    _frontmostAppFocusedWindow = nil;
+    _frontmostAppFocusedWindowFullScreen = NO;
+
+    if (!frontmostApp) {
+        return;
     }
 
+    void (^repair)(void) = ^{
+        if ([frontmostApp activateWithOptions:(NSApplicationActivateIgnoringOtherApps | NSApplicationActivateAllWindows)]
+            && focusedWindow) {
+            AXUIElementPerformAction(focusedWindow, CFSTR("AXRaise"));
+        }
+        if (focusedWindow) {
+            CFRelease(focusedWindow);
+        }
+    };
+
+    // AXRaise for Beardie's own window runs AppKit's accessibility
+    // implementation in-process. Calling it from the working queue trips
+    // AppKit's "must only be used from the main thread" assertion, so defer
+    // that case to the main queue instead of blocking the worker.
+    if (frontmostApp.processIdentifier == getpid() && !NSThread.isMainThread) {
+        dispatch_async(dispatch_get_main_queue(), repair);
+    }
+    else {
+        repair();
+    }
 }
 
 + (BOOL)isFullscreenUIElementWindow:(AXUIElementRef)window {
