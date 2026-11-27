@@ -24,5 +24,7 @@
 	<true/>
 	<key>SonosSeekOnLongTrack</key>
 	<true/>
+	<key>UseSystemNowPlaying</key>
+	<false/>
 </dict>
 </plist>

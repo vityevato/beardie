@@ -43,6 +43,33 @@ final class BeardedSpiceControllers: NSObject, BeardedSpiceControllersProtocol {
         BSCService.shared.setPhoneUnplugActionEnabled(enabled)
     }
 
+    @objc(getNowPlayingSnapshotWithCompletion:)
+    func getNowPlayingSnapshot(completion: @escaping (Data?) -> Void) {
+        BSCService.shared.nowPlayingService.snapshot { result in
+            switch result {
+            case .success(let snapshot):
+                completion(try? JSONEncoder().encode(snapshot))
+            case .failure(let error):
+                DDLogError("NowPlaying snapshot failed: \(error.localizedDescription)")
+                completion(nil)
+            }
+        }
+    }
+
+    @objc(getNowPlayingHealthWithCompletion:)
+    func getNowPlayingHealth(completion: @escaping (Data) -> Void) {
+        BSCService.shared.nowPlayingService.health { health in
+            completion((try? JSONEncoder().encode(health)) ?? Data())
+        }
+    }
+
+    @objc(resetNowPlayingWithCompletion:)
+    func resetNowPlaying(completion: @escaping (Bool) -> Void) {
+        BSCService.shared.nowPlayingService.reset { success in
+            completion(success)
+        }
+    }
+
     @objc(prepareForClosingConnectionWithCompletion:)
     func prepareForClosingConnection(completion: @escaping () -> Void) {
 

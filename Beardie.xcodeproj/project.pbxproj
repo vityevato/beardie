@@ -11,6 +11,8 @@
 		0369231F1862936600E04DDB /* GeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0369231D1862936600E04DDB /* GeneralPreferencesViewController.m */; };
 		037CF82AA8A5403B48327594 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 780846F1EDE3B34F29F09EF5 /* CocoaLumberjack */; };
 		03A34922185EA43900C4A62B /* MediaStrategyRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A34921185EA43900C4A62B /* MediaStrategyRegistry.m */; };
+		045B0B434BF2139A3681B73B /* NowPlayingSnapshotCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD55C0275A2D592C8153C70 /* NowPlayingSnapshotCache.swift */; };
+		09F895EB97137EB272C822FA /* Debounce.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A4B18514360CD21AD907CA /* Debounce.m */; };
 		0B064FFE1DC6A85A00CD5F35 /* BSActiveTab.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B064FFD1DC6A85A00CD5F35 /* BSActiveTab.m */; };
 		0B1AF37E1CCE4D4C0021BBEA /* BSMediaStrategyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B1AF3761CCE4D4C0021BBEA /* BSMediaStrategyTests.m */; };
 		0B1AF37F1CCE4D4C0021BBEA /* BSStrategyMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B1AF3781CCE4D4C0021BBEA /* BSStrategyMockObject.m */; };
@@ -24,19 +26,33 @@
 		0BF06AE31C9513A800534083 /* BSStrategyVersionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF06ADE1C9513A800534083 /* BSStrategyVersionManager.m */; };
 		0BF06AE51C9513A800534083 /* BSTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF06AE01C9513A800534083 /* BSTrack.m */; };
 		0BF9CAE71CFFDB2F00E9986B /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 656A002C1C8AD41A00BD29F5 /* NSString+Utils.m */; };
+		0DCD0CE8B2CAD43D7B6C14FC /* NowPlayingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9621A4C7E86CE19BD2AD4CF /* NowPlayingModels.swift */; };
+		123CEBDD3BCCD69E69AE77A8 /* MediaRemoteAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D60449FA012EE9C34A7BF28 /* MediaRemoteAdapter.h */; };
+		1A019A399C3EFB06C01E6609 /* mediaremote-adapter.pl in Resources */ = {isa = PBXBuildFile; fileRef = 843CCFE270412C8BBEE6F2FE /* mediaremote-adapter.pl */; };
 		1ABF4B7540A2D0953317F0AB /* BSShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C58FCDC84FC349897E1099F /* BSShortcuts.swift */; };
+		1C9E5D4346F6D77F12A88FC0 /* stream.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F8B55E2E2CCA82B4505AAD7 /* stream.m */; };
 		1E9EBD1A0108A2BD12607853 /* BeardedSpiceControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F621822BDA09C91C224A4FE7 /* BeardedSpiceControllers.swift */; };
 		20E267DC94036E141937EECD /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B5093B87FF88D8364E449D62 /* CocoaLumberjackSwift */; };
 		22F7EA0A6E92A24355056BC0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B5B6D70B551BBE4970FC0565 /* CocoaLumberjackSwift */; };
 		25D13F6F1E9A2F6400149554 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 25D13F6D1E9A2F6400149554 /* Localizable.stringsdict */; };
+		2789497086429B97C078F33C /* NowPlayingSnapshotCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD55C0275A2D592C8153C70 /* NowPlayingSnapshotCache.swift */; };
 		2C8D354607B10E00BDB8DA33 /* AppTabKeyEventTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177EAB8018EE070F97E9501C /* AppTabKeyEventTap.swift */; };
+		2CC071663EB2417FE7C4542C /* send.m in Sources */ = {isa = PBXBuildFile; fileRef = 826769D4C37136BEBFB118D9 /* send.m */; };
+		30E579923BFF70A0D38526F8 /* helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A3CC6D1226B703B51A24800 /* helpers.m */; };
 		3471BFC2A350FE0D6331933F /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 4C1DA325433A7C776A231E35 /* CocoaLumberjack */; };
 		3566109C2A60C52A6C4CEBF9 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 5D023EAF53FE2F2FAF3A3BE6 /* CocoaLumberjack */; };
+		3699AD9D942746EA5E33CC19 /* MediaRemoteAdapter.framework in Embed MediaRemoteAdapter */ = {isa = PBXBuildFile; fileRef = AF599B983308676100340731 /* MediaRemoteAdapter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3CD4F9B6279935D1A5B71CCE /* ShortcutsPreferencesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A2AAAF06FBB4626AD6FFB /* ShortcutsPreferencesUITests.swift */; };
+		3D987C86935A23553DF3A11C /* globals.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC59A045B04665E5D7948F7 /* globals.m */; };
 		4C41A3726999086B9CCA45B1 /* BSShortcutEventTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4CACA789483BA07FBD96DE /* BSShortcutEventTap.swift */; };
+		4FD1132CBBCB9DDF9CCEF808 /* NowPlayingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9621A4C7E86CE19BD2AD4CF /* NowPlayingModels.swift */; };
+		54FAC60CEB567D53D76FD864 /* get.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F8C131A161DB8E1DE077E3 /* get.m */; };
 		5AA90210622F2E2DEDBFC2A3 /* MASPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 519A1D3E8F8915A196AFEB69 /* MASPreferences */; };
 		5E80769F1D58CE180002855D /* DowncastTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E80769E1D58CE180002855D /* DowncastTabAdapter.m */; };
 		60749B9F458FF7C680AF171E /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1C1B7CCBA8D6E62A248DC97D /* CocoaLumberjackSwift */; };
+		60A8223A317DA3D54DE9F0C1 /* commands.m in Sources */ = {isa = PBXBuildFile; fileRef = 812A6563A5A9C98B62A10518 /* commands.m */; };
+		632C11C18D381F708F275016 /* speed.m in Sources */ = {isa = PBXBuildFile; fileRef = 01EFCC5BBB33D72691AE0377 /* speed.m */; };
+		63F84DF8FF757EDE0C461EEE /* NowPlayingParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E2E21B781E707795A32737 /* NowPlayingParser.swift */; };
 		648486A5B3FAB6FEFF41C758 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = EB278A3A0F3B69D3B4AF3092 /* Sparkle */; };
 		65063FEB233DE94E0015F558 /* DeezerTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 65063FEA233DE94E0015F558 /* DeezerTabAdapter.m */; };
 		650781191FAF43EE00A0902A /* EHExecuteBlockDelayed.m in Sources */ = {isa = PBXBuildFile; fileRef = 650781171FAF43E600A0902A /* EHExecuteBlockDelayed.m */; };
@@ -160,11 +176,18 @@
 		65FBCE401EC0F98A004EFFC7 /* BSVolumeWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65FBCE3E1EC0F98A004EFFC7 /* BSVolumeWindowController.xib */; };
 		65FF756C1B36CEDF00D81CA5 /* BSLaunchAtLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 65FF756B1B36CEDF00D81CA5 /* BSLaunchAtLogin.m */; };
 		695F6DB922B01546E3334899 /* BSCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F925F5162624E0C489F85F8 /* BSCService.swift */; };
+		69C66F072602A65B6429D34E /* NowPlayingXPCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A1EF6391D992FBC23E547D /* NowPlayingXPCClient.swift */; };
 		6AFD7B07359F9EF4FED6E13B /* BSShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C58FCDC84FC349897E1099F /* BSShortcuts.swift */; };
+		6E879AD47C8AEF7FABA93A31 /* env.m in Sources */ = {isa = PBXBuildFile; fileRef = E5536A04BE81540A68349955 /* env.m */; };
 		78D9F8101D808FCD0081E4EE /* BSAppleScriptSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D9F80F1D808FCD0081E4EE /* BSAppleScriptSupport.m */; };
 		78D9F8121D808FD70081E4EE /* BeardieSuite.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 78D9F8111D808FD70081E4EE /* BeardieSuite.sdef */; };
+		7B0F79326095BCEF3CAEFD38 /* test.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E80BB8CFE4F17EB3DEDAF4F /* test.m */; };
+		7CEBA83D373E0C09E4580A48 /* MediaRemoteAdapterRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BB87BFF0897D6F5107DEA4 /* MediaRemoteAdapterRunner.swift */; };
 		7E39DD332B4088DB022E9E87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */; };
+		8002A6A7B25A7214B61B711F /* ArtworkCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB956F319B9BCB7A8430C901 /* ArtworkCache.swift */; };
+		879F776B3C18CB627DFCF5B1 /* NowPlayingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37110DB6DEBBDAF6C3F36091 /* NowPlayingService.swift */; };
 		8FA60993CA8E55BF93DD88BA /* BSHeadphoneStatusListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0534FF322142FE9988BEBF4F /* BSHeadphoneStatusListener.swift */; };
+		90D3E5A38DF181417D0CE8EA /* MediaRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D5D9A9EB89B9FDEFEA98AFB /* MediaRemote.m */; };
 		95EE243B2018B67D15ACCF21 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 80FA95FF44F86F21338F0F0C /* CocoaLumberjack */; };
 		967933301855173100A49AC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679332F1855173100A49AC7 /* Cocoa.framework */; };
 		9679333C1855173100A49AC7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9679333B1855173100A49AC7 /* main.m */; };
@@ -174,16 +197,27 @@
 		9679334F1855173100A49AC7 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679334E1855173100A49AC7 /* XCTest.framework */; };
 		967933501855173100A49AC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679332F1855173100A49AC7 /* Cocoa.framework */; };
 		9679336518551BCC00A49AC7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679336418551BCC00A49AC7 /* ScriptingBridge.framework */; };
+		9FF061B0C62A1B02B909E474 /* repeat.m in Sources */ = {isa = PBXBuildFile; fileRef = 6008BAC022E492CAC19BE019 /* repeat.m */; };
+		A0C7A2090BD23B17ACD65B8D /* seek.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB71A2D1F1E0DF6ED19211 /* seek.m */; };
+		A2008FB2B471C0AD7B843C5D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */; };
+		AB2DDA43B6C290C4C07E180D /* ArtworkCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB956F319B9BCB7A8430C901 /* ArtworkCache.swift */; };
+		B0094B5BF82D6F445CFE7378 /* shuffle.m in Sources */ = {isa = PBXBuildFile; fileRef = C6CB680A38E914DD0538209A /* shuffle.m */; };
+		B2D1F58BBA6AC185137ADF61 /* reset.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B06D7970596243B7E71EE3D /* reset.m */; };
 		B82CB206DDE3967A6EC2AEC3 /* RxSonosLib in Frameworks */ = {isa = PBXBuildFile; productRef = 4AEE03C0808046E7609E0292 /* RxSonosLib */; };
 		BD971408720B6CCEB2C25377 /* BeardieUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F54992BB9A44246BD8C516F /* BeardieUITestCase.swift */; };
 		C6F667AFC51C156AD3A5427C /* SharedResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E58D3B24968BA900DB66DB /* SharedResources.swift */; };
+		C9908312DD2177196EEC596B /* now_playing.m in Sources */ = {isa = PBXBuildFile; fileRef = 01893206829038C8401989BF /* now_playing.m */; };
 		CFC19898A926B555C3717F2E /* BSShortcuts+KeyboardShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24233D95971E5FB9DAA6E5DA /* BSShortcuts+KeyboardShortcuts.swift */; };
 		D09EFF221C8CD49E00B24DA9 /* VLCTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = D09EFF1F1C8CD49E00B24DA9 /* VLCTabAdapter.m */; };
 		D59BF53F250A94CF940C6E42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 71F38282AF15EE370BCD09B1 /* RxSwift */; };
 		D5CD37E8725170F194B77BF7 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = C7B6566008748888A5A3548A /* CocoaLumberjack */; };
 		D93D01C5DA97B95BB2194641 /* BSShortcutRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0146AA8F358926C732A8C9E5 /* BSShortcutRecorderView.swift */; };
+		DCAB536235AFC142C1F02006 /* keys.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEA6800521801ED6F535969 /* keys.m */; };
 		E285C738BD80CB521A7E2711 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 933BF904B75513C4FB809B64 /* KeyboardShortcuts */; };
+		E46BC5A51F49D9866D73CC4D /* NowPlayingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3763528BF58BECAC78B16609 /* NowPlayingTests.swift */; };
 		E80D5C4C62D762E848FC6EF4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B9C7D8C114B178336D1BA8 /* main.swift */; };
+		EC3957AF105033014AF68216 /* NowPlayingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2F69C18F2CD9535449C4D8 /* NowPlayingCoordinator.swift */; };
+		F7FF856B7F35ED404F5AB0E8 /* NowPlayingParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E2E21B781E707795A32737 /* NowPlayingParser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -263,6 +297,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 65AA828F239D7E2F000442A2;
 			remoteInfo = "prepare-build";
+		};
+		7AA5782AE4DB64B1C3CC7B42 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 967933241855173100A49AC7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2CF42A8909F8AF023D081B10;
+			remoteInfo = MediaRemoteAdapter;
 		};
 		967933511855173100A49AC7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -364,10 +405,23 @@
 			name = "Copy NM Connector";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EEE2FC7A6EF6E2D218BEFD82 /* Embed MediaRemoteAdapter */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3699AD9D942746EA5E33CC19 /* MediaRemoteAdapter.framework in Embed MediaRemoteAdapter */,
+			);
+			name = "Embed MediaRemoteAdapter";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0146AA8F358926C732A8C9E5 /* BSShortcutRecorderView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSShortcutRecorderView.swift; sourceTree = "<group>"; };
+		01893206829038C8401989BF /* now_playing.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = now_playing.m; sourceTree = "<group>"; };
+		01EFCC5BBB33D72691AE0377 /* speed.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = speed.m; sourceTree = "<group>"; };
 		030123391868B1F90080115F /* Defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Defaults.plist; sourceTree = "<group>"; };
 		0369231C1862936600E04DDB /* GeneralPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralPreferencesViewController.h; sourceTree = "<group>"; };
 		0369231D1862936600E04DDB /* GeneralPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GeneralPreferencesViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -375,6 +429,7 @@
 		03A34921185EA43900C4A62B /* MediaStrategyRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MediaStrategyRegistry.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03F33ECB1855306A00E8F77E /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		0534FF322142FE9988BEBF4F /* BSHeadphoneStatusListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSHeadphoneStatusListener.swift; sourceTree = "<group>"; };
+		0A3CC6D1226B703B51A24800 /* helpers.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = helpers.m; sourceTree = "<group>"; };
 		0B064FFC1DC6A85A00CD5F35 /* BSActiveTab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSActiveTab.h; sourceTree = "<group>"; };
 		0B064FFD1DC6A85A00CD5F35 /* BSActiveTab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSActiveTab.m; sourceTree = "<group>"; };
 		0B1AF3761CCE4D4C0021BBEA /* BSMediaStrategyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSMediaStrategyTests.m; sourceTree = "<group>"; };
@@ -393,13 +448,23 @@
 		0BF06AE01C9513A800534083 /* BSTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSTrack.m; sourceTree = "<group>"; };
 		177EAB8018EE070F97E9501C /* AppTabKeyEventTap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppTabKeyEventTap.swift; sourceTree = "<group>"; };
 		1A1A2AAAF06FBB4626AD6FFB /* ShortcutsPreferencesUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesUITests.swift; sourceTree = "<group>"; };
+		1D2F69C18F2CD9535449C4D8 /* NowPlayingCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingCoordinator.swift; sourceTree = "<group>"; };
+		1F8B55E2E2CCA82B4505AAD7 /* stream.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = stream.m; sourceTree = "<group>"; };
+		21C96FF5FC626051AEDA3C66 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		24233D95971E5FB9DAA6E5DA /* BSShortcuts+KeyboardShortcuts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "BSShortcuts+KeyboardShortcuts.swift"; sourceTree = "<group>"; };
+		2DD55C0275A2D592C8153C70 /* NowPlayingSnapshotCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingSnapshotCache.swift; sourceTree = "<group>"; };
+		2E80BB8CFE4F17EB3DEDAF4F /* test.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = test.m; sourceTree = "<group>"; };
+		37110DB6DEBBDAF6C3F36091 /* NowPlayingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingService.swift; sourceTree = "<group>"; };
+		3763528BF58BECAC78B16609 /* NowPlayingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingTests.swift; sourceTree = "<group>"; };
+		3B86229D8E1D338B04FCAB72 /* CMakeLists.txt */ = {isa = PBXFileReference; includeInIndex = 1; path = CMakeLists.txt; sourceTree = "<group>"; };
+		3D60449FA012EE9C34A7BF28 /* MediaRemoteAdapter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MediaRemoteAdapter.h; sourceTree = "<group>"; };
 		4E61A45C681C7B2C5EBE5B83 /* BeardedSpiceControllers-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BeardedSpiceControllers-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E80769C1D58CE180002855D /* Downcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Downcast.h; sourceTree = "<group>"; };
 		5E80769D1D58CE180002855D /* DowncastTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DowncastTabAdapter.h; sourceTree = "<group>"; };
 		5E80769E1D58CE180002855D /* DowncastTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DowncastTabAdapter.m; sourceTree = "<group>"; };
 		5F54992BB9A44246BD8C516F /* BeardieUITestCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BeardieUITestCase.swift; sourceTree = "<group>"; };
 		5F925F5162624E0C489F85F8 /* BSCService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSCService.swift; sourceTree = "<group>"; };
+		6008BAC022E492CAC19BE019 /* repeat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = repeat.m; sourceTree = "<group>"; };
 		65063FEA233DE94E0015F558 /* DeezerTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeezerTabAdapter.m; sourceTree = "<group>"; };
 		65063FEC233DE9660015F558 /* DeezerTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeezerTabAdapter.h; sourceTree = "<group>"; };
 		6506A714237604A800DAC132 /* Music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
@@ -611,9 +676,19 @@
 		65FF756A1B36CEDF00D81CA5 /* BSLaunchAtLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLaunchAtLogin.h; sourceTree = "<group>"; };
 		65FF756B1B36CEDF00D81CA5 /* BSLaunchAtLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSLaunchAtLogin.m; sourceTree = "<group>"; };
 		6C58FCDC84FC349897E1099F /* BSShortcuts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSShortcuts.swift; sourceTree = "<group>"; };
+		6D5C503BB43BF64B696E2089 /* Makefile */ = {isa = PBXFileReference; includeInIndex = 1; path = Makefile; sourceTree = "<group>"; };
+		6FC59A045B04665E5D7948F7 /* globals.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = globals.m; sourceTree = "<group>"; };
+		74C717201B8E4ABAAFE97845 /* NowPlayingTest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = NowPlayingTest.h; sourceTree = "<group>"; };
 		78D9F80F1D808FCD0081E4EE /* BSAppleScriptSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSAppleScriptSupport.m; sourceTree = "<group>"; };
 		78D9F8111D808FD70081E4EE /* BeardieSuite.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = BeardieSuite.sdef; sourceTree = "<group>"; };
+		7B06D7970596243B7E71EE3D /* reset.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = reset.m; sourceTree = "<group>"; };
+		7D5D9A9EB89B9FDEFEA98AFB /* MediaRemote.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MediaRemote.m; sourceTree = "<group>"; };
+		812A6563A5A9C98B62A10518 /* commands.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = commands.m; sourceTree = "<group>"; };
+		826769D4C37136BEBFB118D9 /* send.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = send.m; sourceTree = "<group>"; };
+		843CCFE270412C8BBEE6F2FE /* mediaremote-adapter.pl */ = {isa = PBXFileReference; includeInIndex = 1; path = "mediaremote-adapter.pl"; sourceTree = "<group>"; };
 		8A4CACA789483BA07FBD96DE /* BSShortcutEventTap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSShortcutEventTap.swift; sourceTree = "<group>"; };
+		8ABEB03AF4894496690FDD4E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		8BBB71A2D1F1E0DF6ED19211 /* seek.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = seek.m; sourceTree = "<group>"; };
 		9679332C1855173100A49AC7 /* Beardie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beardie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9679332F1855173100A49AC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		967933321855173100A49AC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -629,14 +704,32 @@
 		9679334E1855173100A49AC7 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		967933551855173100A49AC7 /* BeardieTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BeardieTests-Info.plist"; sourceTree = "<group>"; };
 		9679336418551BCC00A49AC7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		9CEA6800521801ED6F535969 /* keys.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = keys.m; sourceTree = "<group>"; };
 		A2969C5813B95FA63B91B3AF /* BeardieUITests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "BeardieUITests-Info.plist"; sourceTree = "<group>"; };
+		A5CA0F685E90B8DF0A7B8DB8 /* helpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = helpers.h; sourceTree = "<group>"; };
+		A9A4B18514360CD21AD907CA /* Debounce.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Debounce.m; sourceTree = "<group>"; };
 		AD54E77BAF3752964C718E42 /* BeardieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeardieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF599B983308676100340731 /* MediaRemoteAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MediaRemoteAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3F8C131A161DB8E1DE077E3 /* get.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = get.m; sourceTree = "<group>"; };
+		B6BB87BFF0897D6F5107DEA4 /* MediaRemoteAdapterRunner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MediaRemoteAdapterRunner.swift; sourceTree = "<group>"; };
+		B6E2E21B781E707795A32737 /* NowPlayingParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingParser.swift; sourceTree = "<group>"; };
+		C3DC60A14FAB3CB277B320B6 /* main.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C6CB680A38E914DD0538209A /* shuffle.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = shuffle.m; sourceTree = "<group>"; };
 		D09EFF1F1C8CD49E00B24DA9 /* VLCTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLCTabAdapter.m; sourceTree = "<group>"; };
 		D09EFF201C8CD49E00B24DA9 /* VLCTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLCTabAdapter.h; sourceTree = "<group>"; };
 		D09EFF211C8CD49E00B24DA9 /* VLC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLC.h; sourceTree = "<group>"; };
+		D6BCCF66AE8D9C54CB3C3CE3 /* Debounce.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Debounce.h; sourceTree = "<group>"; };
+		D7C7CFF99A4BEC9F7B0D0222 /* PATCHES.md */ = {isa = PBXFileReference; includeInIndex = 1; path = PATCHES.md; sourceTree = "<group>"; };
+		DB956F319B9BCB7A8430C901 /* ArtworkCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ArtworkCache.swift; sourceTree = "<group>"; };
 		DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		E2FC1583166C06395C41110D /* NowPlayingTest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = NowPlayingTest.m; sourceTree = "<group>"; };
+		E5536A04BE81540A68349955 /* env.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = env.m; sourceTree = "<group>"; };
 		E9B9C7D8C114B178336D1BA8 /* main.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		EA1176DDCF94A7DDBF34B7F2 /* MediaRemote.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MediaRemote.h; sourceTree = "<group>"; };
 		F621822BDA09C91C224A4FE7 /* BeardedSpiceControllers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BeardedSpiceControllers.swift; sourceTree = "<group>"; };
+		F778B687506EE541C4BD210C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		F9621A4C7E86CE19BD2AD4CF /* NowPlayingModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingModels.swift; sourceTree = "<group>"; };
+		F9A1EF6391D992FBC23E547D /* NowPlayingXPCClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingXPCClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -721,9 +814,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDD2E54CD1CA787CEBFD5020 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A2008FB2B471C0AD7B843C5D /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		027DB286A39EDAE57275A972 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				3D60449FA012EE9C34A7BF28 /* MediaRemoteAdapter.h */,
+			);
+			name = include;
+			path = include;
+			sourceTree = "<group>";
+		};
 		0369231B1862934000E04DDB /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
@@ -747,6 +857,29 @@
 				0146AA8F358926C732A8C9E5 /* BSShortcutRecorderView.swift */,
 			);
 			path = Preferences;
+			sourceTree = "<group>";
+		};
+		048F03A9B100C6D2D12E4248 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				84AC779970D273C35398B72B /* adapter */,
+				BF3F63253EE61E8A14BBFC87 /* private */,
+				42BFD20B2E6008DBF04BAFFC /* test */,
+				99FABC9D5650C2B1BBAB181C /* utility */,
+			);
+			name = src;
+			path = src;
+			sourceTree = "<group>";
+		};
+		42BFD20B2E6008DBF04BAFFC /* test */ = {
+			isa = PBXGroup;
+			children = (
+				74C717201B8E4ABAAFE97845 /* NowPlayingTest.h */,
+				E2FC1583166C06395C41110D /* NowPlayingTest.m */,
+				C3DC60A14FAB3CB277B320B6 /* main.m */,
+			);
+			name = test;
+			path = test;
 			sourceTree = "<group>";
 		};
 		650794ED1FB7737600930B70 /* Resources */ = {
@@ -913,6 +1046,7 @@
 				65B39581265576B300DBD144 /* BeardedSpiceHostAppProtocol.m */,
 				65E58D3B24968BA900DB66DB /* SharedResources.swift */,
 				6C58FCDC84FC349897E1099F /* BSShortcuts.swift */,
+				E759069E0A9B7079D77761C7 /* NowPlaying */,
 			);
 			path = SharedComponents;
 			sourceTree = "<group>";
@@ -927,6 +1061,8 @@
 				F621822BDA09C91C224A4FE7 /* BeardedSpiceControllers.swift */,
 				E9B9C7D8C114B178336D1BA8 /* main.swift */,
 				4E61A45C681C7B2C5EBE5B83 /* BeardedSpiceControllers-Bridging-Header.h */,
+				B6BB87BFF0897D6F5107DEA4 /* MediaRemoteAdapterRunner.swift */,
+				37110DB6DEBBDAF6C3F36091 /* NowPlayingService.swift */,
 			);
 			path = BeardedSpiceControllers;
 			sourceTree = SOURCE_ROOT;
@@ -1132,6 +1268,8 @@
 				651146E22766876100353BFC /* UserNotification.swift */,
 				24233D95971E5FB9DAA6E5DA /* BSShortcuts+KeyboardShortcuts.swift */,
 				177EAB8018EE070F97E9501C /* AppTabKeyEventTap.swift */,
+				F9A1EF6391D992FBC23E547D /* NowPlayingXPCClient.swift */,
+				1D2F69C18F2CD9535449C4D8 /* NowPlayingCoordinator.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1159,12 +1297,52 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		6DF58CDF184350B752D673BD /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				A3B66B09C6767C306B61651E /* MediaRemoteAdapter */,
+			);
+			name = Vendor;
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		84AC779970D273C35398B72B /* adapter */ = {
+			isa = PBXGroup;
+			children = (
+				812A6563A5A9C98B62A10518 /* commands.m */,
+				E5536A04BE81540A68349955 /* env.m */,
+				B3F8C131A161DB8E1DE077E3 /* get.m */,
+				6FC59A045B04665E5D7948F7 /* globals.m */,
+				9CEA6800521801ED6F535969 /* keys.m */,
+				01893206829038C8401989BF /* now_playing.m */,
+				6008BAC022E492CAC19BE019 /* repeat.m */,
+				7B06D7970596243B7E71EE3D /* reset.m */,
+				8BBB71A2D1F1E0DF6ED19211 /* seek.m */,
+				826769D4C37136BEBFB118D9 /* send.m */,
+				C6CB680A38E914DD0538209A /* shuffle.m */,
+				01EFCC5BBB33D72691AE0377 /* speed.m */,
+				1F8B55E2E2CCA82B4505AAD7 /* stream.m */,
+				2E80BB8CFE4F17EB3DEDAF4F /* test.m */,
+			);
+			name = adapter;
+			path = adapter;
+			sourceTree = "<group>";
+		};
 		9274FEB59CFABAD33B17CB76 /* OS X */ = {
 			isa = PBXGroup;
 			children = (
 				DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */,
 			);
 			name = "OS X";
+			sourceTree = "<group>";
+		};
+		93F286E4FBC0DDAD9477C13B /* bin */ = {
+			isa = PBXGroup;
+			children = (
+				843CCFE270412C8BBEE6F2FE /* mediaremote-adapter.pl */,
+			);
+			name = bin;
+			path = bin;
 			sourceTree = "<group>";
 		};
 		967933231855173100A49AC7 = {
@@ -1187,6 +1365,7 @@
 				9679332E1855173100A49AC7 /* Frameworks */,
 				9679332D1855173100A49AC7 /* Products */,
 				C785BD0D3B77C2B26EFB6014 /* BeardieUITests */,
+				6DF58CDF184350B752D673BD /* Vendor */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -1205,6 +1384,7 @@
 				653B09CF25D98146005C5807 /* beardie_restarter */,
 				65AA48F925F585A400D19C60 /* BeardieLaunchAtLogin.app */,
 				AD54E77BAF3752964C718E42 /* BeardieUITests.xctest */,
+				AF599B983308676100340731 /* MediaRemoteAdapter.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1295,6 +1475,7 @@
 				967933541855173100A49AC7 /* Supporting Files */,
 				65F4AC0824953654000EB61F /* BSSwiftTest.swift */,
 				65F4AC0724953654000EB61F /* BeardieTests-Bridging-Header.h */,
+				3763528BF58BECAC78B16609 /* NowPlayingTests.swift */,
 			);
 			path = BeardedSpiceTests;
 			sourceTree = "<group>";
@@ -1305,6 +1486,45 @@
 				967933551855173100A49AC7 /* BeardieTests-Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		99FABC9D5650C2B1BBAB181C /* utility */ = {
+			isa = PBXGroup;
+			children = (
+				D6BCCF66AE8D9C54CB3C3CE3 /* Debounce.h */,
+				A9A4B18514360CD21AD907CA /* Debounce.m */,
+				A5CA0F685E90B8DF0A7B8DB8 /* helpers.h */,
+				0A3CC6D1226B703B51A24800 /* helpers.m */,
+			);
+			name = utility;
+			path = utility;
+			sourceTree = "<group>";
+		};
+		A3B66B09C6767C306B61651E /* MediaRemoteAdapter */ = {
+			isa = PBXGroup;
+			children = (
+				93F286E4FBC0DDAD9477C13B /* bin */,
+				027DB286A39EDAE57275A972 /* include */,
+				048F03A9B100C6D2D12E4248 /* src */,
+				F778B687506EE541C4BD210C /* LICENSE */,
+				8ABEB03AF4894496690FDD4E /* README.md */,
+				D7C7CFF99A4BEC9F7B0D0222 /* PATCHES.md */,
+				21C96FF5FC626051AEDA3C66 /* Info.plist */,
+				3B86229D8E1D338B04FCAB72 /* CMakeLists.txt */,
+				6D5C503BB43BF64B696E2089 /* Makefile */,
+			);
+			name = MediaRemoteAdapter;
+			path = MediaRemoteAdapter;
+			sourceTree = "<group>";
+		};
+		BF3F63253EE61E8A14BBFC87 /* private */ = {
+			isa = PBXGroup;
+			children = (
+				EA1176DDCF94A7DDBF34B7F2 /* MediaRemote.h */,
+				7D5D9A9EB89B9FDEFEA98AFB /* MediaRemote.m */,
+			);
+			name = private;
+			path = private;
 			sourceTree = "<group>";
 		};
 		C785BD0D3B77C2B26EFB6014 /* BeardieUITests */ = {
@@ -1318,7 +1538,30 @@
 			path = BeardieUITests;
 			sourceTree = "<group>";
 		};
+		E759069E0A9B7079D77761C7 /* NowPlaying */ = {
+			isa = PBXGroup;
+			children = (
+				F9621A4C7E86CE19BD2AD4CF /* NowPlayingModels.swift */,
+				B6E2E21B781E707795A32737 /* NowPlayingParser.swift */,
+				DB956F319B9BCB7A8430C901 /* ArtworkCache.swift */,
+				2DD55C0275A2D592C8153C70 /* NowPlayingSnapshotCache.swift */,
+			);
+			name = NowPlaying;
+			path = NowPlaying;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		A30DFEC5DE34AE6ED6257740 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				123CEBDD3BCCD69E69AE77A8 /* MediaRemoteAdapter.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXLegacyTarget section */
 		6507C27920037DE5003D4B1A /* Prepare Extensions */ = {
@@ -1367,6 +1610,24 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		2CF42A8909F8AF023D081B10 /* MediaRemoteAdapter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5F35D6F52A390C7C8D5B0810 /* Build configuration list for PBXNativeTarget "MediaRemoteAdapter" */;
+			buildPhases = (
+				A30DFEC5DE34AE6ED6257740 /* Headers */,
+				748698454E2F075DFE59625B /* Sources */,
+				EDD2E54CD1CA787CEBFD5020 /* Frameworks */,
+				963A793ACC40F46FA2820007 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MediaRemoteAdapter;
+			productName = MediaRemoteAdapter;
+			productReference = AF599B983308676100340731 /* MediaRemoteAdapter.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		3929A7CAEF49C4BE3076E96D /* BeardieUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B39A21D01C18207F242AD279 /* Build configuration list for PBXNativeTarget "BeardieUITests" */;
@@ -1431,11 +1692,13 @@
 				656AFFE61C8ACDCF00BD29F5 /* Sources */,
 				656AFFE71C8ACDCF00BD29F5 /* Frameworks */,
 				656AFFE81C8ACDCF00BD29F5 /* Resources */,
+				EEE2FC7A6EF6E2D218BEFD82 /* Embed MediaRemoteAdapter */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				65AA8296239D7EEA000442A2 /* PBXTargetDependency */,
+				DE61E4D4AEB9E5C0899C9F29 /* PBXTargetDependency */,
 			);
 			name = BeardieControllers;
 			packageProductDependencies = (
@@ -1667,6 +1930,7 @@
 				653B09CE25D98146005C5807 /* restarter */,
 				65AA48F825F585A400D19C60 /* BeardieLaunchAtLogin */,
 				3929A7CAEF49C4BE3076E96D /* BeardieUITests */,
+				2CF42A8909F8AF023D081B10 /* MediaRemoteAdapter */,
 			);
 		};
 /* End PBXProject section */
@@ -1684,6 +1948,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A019A399C3EFB06C01E6609 /* mediaremote-adapter.pl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1693,6 +1958,13 @@
 			files = (
 				65AA494025F61C0C00D19C60 /* Images.xcassets in Resources */,
 				65AA490625F585A500D19C60 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		963A793ACC40F46FA2820007 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1817,6 +2089,12 @@
 				E80D5C4C62D762E848FC6EF4 /* main.swift in Sources */,
 				8FA60993CA8E55BF93DD88BA /* BSHeadphoneStatusListener.swift in Sources */,
 				C6F667AFC51C156AD3A5427C /* SharedResources.swift in Sources */,
+				4FD1132CBBCB9DDF9CCEF808 /* NowPlayingModels.swift in Sources */,
+				63F84DF8FF757EDE0C461EEE /* NowPlayingParser.swift in Sources */,
+				AB2DDA43B6C290C4C07E180D /* ArtworkCache.swift in Sources */,
+				2789497086429B97C078F33C /* NowPlayingSnapshotCache.swift in Sources */,
+				7CEBA83D373E0C09E4580A48 /* MediaRemoteAdapterRunner.swift in Sources */,
+				879F776B3C18CB627DFCF5B1 /* NowPlayingService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1838,6 +2116,30 @@
 				6583E9EC23A6DDE700A9C91A /* BSSharedResources.m in Sources */,
 				65E6E0552370AC7A009C9448 /* main.swift in Sources */,
 				6590426523BACC2300890457 /* Processing.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		748698454E2F075DFE59625B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60A8223A317DA3D54DE9F0C1 /* commands.m in Sources */,
+				6E879AD47C8AEF7FABA93A31 /* env.m in Sources */,
+				54FAC60CEB567D53D76FD864 /* get.m in Sources */,
+				3D987C86935A23553DF3A11C /* globals.m in Sources */,
+				DCAB536235AFC142C1F02006 /* keys.m in Sources */,
+				C9908312DD2177196EEC596B /* now_playing.m in Sources */,
+				9FF061B0C62A1B02B909E474 /* repeat.m in Sources */,
+				B2D1F58BBA6AC185137ADF61 /* reset.m in Sources */,
+				A0C7A2090BD23B17ACD65B8D /* seek.m in Sources */,
+				2CC071663EB2417FE7C4542C /* send.m in Sources */,
+				B0094B5BF82D6F445CFE7378 /* shuffle.m in Sources */,
+				632C11C18D381F708F275016 /* speed.m in Sources */,
+				1C9E5D4346F6D77F12A88FC0 /* stream.m in Sources */,
+				7B0F79326095BCEF3CAEFD38 /* test.m in Sources */,
+				90D3E5A38DF181417D0CE8EA /* MediaRemote.m in Sources */,
+				09F895EB97137EB272C822FA /* Debounce.m in Sources */,
+				30E579923BFF70A0D38526F8 /* helpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1922,6 +2224,12 @@
 				D93D01C5DA97B95BB2194641 /* BSShortcutRecorderView.swift in Sources */,
 				CFC19898A926B555C3717F2E /* BSShortcuts+KeyboardShortcuts.swift in Sources */,
 				2C8D354607B10E00BDB8DA33 /* AppTabKeyEventTap.swift in Sources */,
+				0DCD0CE8B2CAD43D7B6C14FC /* NowPlayingModels.swift in Sources */,
+				F7FF856B7F35ED404F5AB0E8 /* NowPlayingParser.swift in Sources */,
+				8002A6A7B25A7214B61B711F /* ArtworkCache.swift in Sources */,
+				045B0B434BF2139A3681B73B /* NowPlayingSnapshotCache.swift in Sources */,
+				69C66F072602A65B6429D34E /* NowPlayingXPCClient.swift in Sources */,
+				EC3957AF105033014AF68216 /* NowPlayingCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1938,6 +2246,7 @@
 				65F4AC06249535EF000EB61F /* BSSharedResources.m in Sources */,
 				65D57FCD1D02CCB00016F270 /* NSURL+Utils.m in Sources */,
 				0B1AF3801CCE4D4C0021BBEA /* BSStrategyTests.m in Sources */,
+				E46BC5A51F49D9866D73CC4D /* NowPlayingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2010,6 +2319,12 @@
 			target = 9679332B1855173100A49AC7 /* Beardie */;
 			targetProxy = 967933511855173100A49AC7 /* PBXContainerItemProxy */;
 		};
+		DE61E4D4AEB9E5C0899C9F29 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MediaRemoteAdapter;
+			target = 2CF42A8909F8AF023D081B10 /* MediaRemoteAdapter */;
+			targetProxy = 7AA5782AE4DB64B1C3CC7B42 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -2064,6 +2379,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		0969D939BE48FA574AB76B25 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Vendor/MediaRemoteAdapter/include",
+					"$(SRCROOT)/Vendor/MediaRemoteAdapter/src",
+				);
+				INFOPLIST_FILE = Vendor/MediaRemoteAdapter/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fvisibility=default",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vandenbe.MediaRemoteAdapter;
+				PRODUCT_NAME = MediaRemoteAdapter;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Beta;
+		};
 		393A21EC33D440DBD11DA65F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2077,7 +2432,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.calm-apps.mac.beardie.uitests";
 				PRODUCT_MODULE_NAME = BeardieUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2118,6 +2473,7 @@
 					"$(inherited)",
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -2149,6 +2505,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -2186,6 +2543,7 @@
 					"$(inherited)",
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -2217,6 +2575,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -2261,6 +2620,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_SAFARI_EXTENSION_BUNDLE_ID)";
@@ -2302,6 +2662,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_SAFARI_EXTENSION_BUNDLE_ID)";
@@ -2329,6 +2690,7 @@
 					"$(inherited)",
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_RESTARTER_BUNDLE_ID)";
@@ -2355,6 +2717,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREFIX_HEADER = "";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_RESTARTER_BUNDLE_ID)";
@@ -2382,6 +2745,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_CONTROLLER_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2407,6 +2771,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_CONTROLLER_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2441,6 +2806,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_LAUNCHER_BUNDLE_ID)";
@@ -2474,6 +2840,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_LAUNCHER_BUNDLE_ID)";
@@ -2505,6 +2872,7 @@
 					"$(inherited)",
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				OTHER_CFLAGS = "";
@@ -2528,6 +2896,7 @@
 				DEVELOPMENT_TEAM = 5F2QV47DGC;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_CFLAGS = "";
@@ -2584,7 +2953,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -2609,6 +2978,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MARKETING_VERSION = 3.0.;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_BUNDLE_ID)";
 				PRODUCT_NAME = Beardie;
@@ -2637,6 +3007,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "foo.bar.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BeardieTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceTests/BeardieTests-Bridging-Header.h";
@@ -2662,6 +3033,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_CONTROLLER_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2694,6 +3066,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -2725,6 +3098,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -2765,6 +3139,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_SAFARI_EXTENSION_BUNDLE_ID)";
@@ -2786,6 +3161,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_B_NATIVE_MESSAGING_CONNECTOR_BUNDLE_ID)";
@@ -2812,6 +3188,7 @@
 				DEVELOPMENT_TEAM = 5F2QV47DGC;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_CFLAGS = "";
@@ -2835,6 +3212,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREFIX_HEADER = "";
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_RESTARTER_BUNDLE_ID)";
@@ -2867,6 +3245,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_LAUNCHER_BUNDLE_ID)";
@@ -2894,6 +3273,7 @@
 					"$(inherited)",
 				);
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_B_NATIVE_MESSAGING_CONNECTOR_BUNDLE_ID)";
@@ -2918,6 +3298,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_B_NATIVE_MESSAGING_CONNECTOR_BUNDLE_ID)";
@@ -2979,7 +3360,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				SDKROOT = macosx;
@@ -3035,7 +3416,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -3060,6 +3441,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MARKETING_VERSION = 3.0.;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_BUNDLE_ID)";
 				PRODUCT_NAME = Beardie;
@@ -3086,6 +3468,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				MARKETING_VERSION = 3.0.;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_BUNDLE_ID)";
 				PRODUCT_NAME = Beardie;
@@ -3114,6 +3497,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "foo.bar.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BeardieTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceTests/BeardieTests-Bridging-Header.h";
@@ -3144,11 +3528,92 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "foo.bar.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BeardieTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceTests/BeardieTests-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Beardie.app/Contents/MacOS/Beardie";
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		AA9D9531066926AFD5A0D226 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Vendor/MediaRemoteAdapter/include",
+					"$(SRCROOT)/Vendor/MediaRemoteAdapter/src",
+				);
+				INFOPLIST_FILE = Vendor/MediaRemoteAdapter/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fvisibility=default",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vandenbe.MediaRemoteAdapter;
+				PRODUCT_NAME = MediaRemoteAdapter;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C106CD6047D7245386859F7D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Vendor/MediaRemoteAdapter/include",
+					"$(SRCROOT)/Vendor/MediaRemoteAdapter/src",
+				);
+				INFOPLIST_FILE = Vendor/MediaRemoteAdapter/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fvisibility=default",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.vandenbe.MediaRemoteAdapter;
+				PRODUCT_NAME = MediaRemoteAdapter;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -3165,7 +3630,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.calm-apps.mac.beardie.uitests";
 				PRODUCT_MODULE_NAME = BeardieUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3189,7 +3654,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.calm-apps.mac.beardie.uitests";
 				PRODUCT_MODULE_NAME = BeardieUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3203,6 +3668,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5F35D6F52A390C7C8D5B0810 /* Build configuration list for PBXNativeTarget "MediaRemoteAdapter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C106CD6047D7245386859F7D /* Release */,
+				AA9D9531066926AFD5A0D226 /* Debug */,
+				0969D939BE48FA574AB76B25 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6507C27A20037DE5003D4B1A /* Build configuration list for PBXLegacyTarget "Prepare Extensions" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

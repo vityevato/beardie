@@ -114,7 +114,8 @@ Every Stage 0.5 manual regression item passed on the signed Debug build.
 
 Stage 0.5 does not add MediaRemote, a LaunchAgent, or new XPC methods.
 `NowPlayingService`, `ElectionController`, and the MediaRemote adapter arrive
-in Stages 1/4 according to the plan.
+in Stages 1/4 according to the plan. Stage 1's read-only service is documented
+in `docs/nowplaying-mediaremote-adapter.md`.
 
 Known behavior inherited from the original Objective-C code: if XPC is killed
 (`kill -9`) and the app is then closed, the new `BSCService` instance does not

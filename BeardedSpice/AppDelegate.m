@@ -117,6 +117,7 @@ BOOL accessibilityApiEnabled = NO;
     [registry setUserDefaults:BeardedSpiceActiveControllers];
 
     [self newConnectionToControlService];
+    [NowPlayingCoordinator startWithConnection:_connectionToService];
 
     self.inUpdatingStrategiesState = NO;
     

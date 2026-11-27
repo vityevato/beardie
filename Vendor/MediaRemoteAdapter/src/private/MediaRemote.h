@@ -1,0 +1,221 @@
+// clang-format off
+
+#ifndef MEDIAREMOTE_PRIVATE_H_
+#define MEDIAREMOTE_PRIVATE_H_
+
+#include <Foundation/Foundation.h>
+
+#pragma mark Notifications
+
+extern NSString *kMRMediaRemoteNowPlayingInfoDidChangeNotification;
+extern NSString *kMRMediaRemoteSupportedCommandsDidChangeNotification;
+extern NSString *kMRMediaRemoteNowPlayingPlaybackQueueDidChangeNotification;
+extern NSString *kMRMediaRemotePickableRoutesDidChangeNotification;
+extern NSString *kMRMediaRemoteNowPlayingApplicationDidChangeNotification;
+extern NSString *kMRMediaRemoteNowPlayingApplicationIsPlayingDidChangeNotification;
+extern NSString *kMRMediaRemoteRouteStatusDidChangeNotification;
+
+#pragma mark Keys
+
+extern NSString *kMRMediaRemoteNowPlayingApplicationPIDUserInfoKey;
+extern NSString *kMRMediaRemoteNowPlayingApplicationIsPlayingUserInfoKey;
+extern NSString *kMRMediaRemoteNowPlayingInfoAlbum;
+extern NSString *kMRMediaRemoteNowPlayingInfoArtist;
+extern NSString *kMRMediaRemoteNowPlayingInfoArtworkData;
+extern NSString *kMRMediaRemoteNowPlayingInfoArtworkMIMEType;
+extern NSString *kMRMediaRemoteNowPlayingInfoChapterNumber;
+extern NSString *kMRMediaRemoteNowPlayingInfoComposer;
+extern NSString *kMRMediaRemoteNowPlayingInfoDuration;
+extern NSString *kMRMediaRemoteNowPlayingInfoElapsedTime;
+extern NSString *kMRMediaRemoteNowPlayingInfoGenre;
+extern NSString *kMRMediaRemoteNowPlayingInfoIsAdvertisement;
+extern NSString *kMRMediaRemoteNowPlayingInfoIsBanned;
+extern NSString *kMRMediaRemoteNowPlayingInfoIsInWishList;
+extern NSString *kMRMediaRemoteNowPlayingInfoIsLiked;
+extern NSString *kMRMediaRemoteNowPlayingInfoIsMusicApp;
+extern NSString *kMRMediaRemoteNowPlayingInfoPlaybackRate;
+extern NSString *kMRMediaRemoteNowPlayingInfoProhibitsSkip;
+extern NSString *kMRMediaRemoteNowPlayingInfoQueueIndex;
+extern NSString *kMRMediaRemoteNowPlayingInfoRadioStationIdentifier;
+extern NSString *kMRMediaRemoteNowPlayingInfoRepeatMode;
+extern NSString *kMRMediaRemoteNowPlayingInfoShuffleMode;
+extern NSString *kMRMediaRemoteNowPlayingInfoStartTime;
+extern NSString *kMRMediaRemoteNowPlayingInfoSupportsFastForward15Seconds;
+extern NSString *kMRMediaRemoteNowPlayingInfoSupportsIsBanned;
+extern NSString *kMRMediaRemoteNowPlayingInfoSupportsIsLiked;
+extern NSString *kMRMediaRemoteNowPlayingInfoSupportsRewind15Seconds;
+extern NSString *kMRMediaRemoteNowPlayingInfoTimestamp;
+extern NSString *kMRMediaRemoteNowPlayingInfoTitle;
+extern NSString *kMRMediaRemoteNowPlayingInfoTotalChapterCount;
+extern NSString *kMRMediaRemoteNowPlayingInfoTotalDiscCount;
+extern NSString *kMRMediaRemoteNowPlayingInfoTotalQueueCount;
+extern NSString *kMRMediaRemoteNowPlayingInfoTotalTrackCount;
+extern NSString *kMRMediaRemoteNowPlayingInfoTrackNumber;
+extern NSString *kMRMediaRemoteNowPlayingInfoUniqueIdentifier;
+extern NSString *kMRMediaRemoteNowPlayingInfoContentItemIdentifier;
+extern NSString *kMRMediaRemoteNowPlayingInfoRadioStationHash;
+extern NSString *kMRMediaRemoteNowPlayingInfoMediaType;
+extern NSString *kMRMediaRemoteNowPlayingInfoServiceIdentifier;
+extern NSString *kMRMediaRemoteOptionMediaType;
+extern NSString *kMRMediaRemoteOptionSourceID;
+extern NSString *kMRMediaRemoteOptionTrackID;
+extern NSString *kMRMediaRemoteOptionStationID;
+extern NSString *kMRMediaRemoteOptionStationHash;
+extern NSString *kMRMediaRemoteRouteDescriptionUserInfoKey;
+extern NSString *kMRMediaRemoteRouteStatusUserInfoKey;
+
+#pragma mark API
+
+typedef enum {
+    /*
+     * Use nil for userInfo.
+     */
+    kMRPlay = 0,
+    kMRPause = 1,
+    kMRTogglePlayPause = 2,
+    kMRStop = 3,
+    kMRNextTrack = 4,
+    kMRPreviousTrack = 5,
+    kMRToggleShuffle = 6,
+    kMRToggleRepeat = 7,
+    kMRStartForwardSeek = 8,
+    kMREndForwardSeek = 9,
+    kMRStartBackwardSeek = 10,
+    kMREndBackwardSeek = 11,
+    kMRGoBackFifteenSeconds = 12,
+    kMRSkipFifteenSeconds = 13,
+
+    /*
+     * Use a NSDictionary for userInfo, which contains three keys:
+     * kMRMediaRemoteOptionTrackID
+     * kMRMediaRemoteOptionStationID
+     * kMRMediaRemoteOptionStationHash
+     */
+    kMRLikeTrack = 0x6A,
+    kMRBanTrack = 0x6B,
+    kMRAddTrackToWishList = 0x6C,
+    kMRRemoveTrackFromWishList = 0x6D
+} MRCommand;
+
+extern CFStringRef MRMediaRemoteSendCommand;
+typedef bool (*MRMediaRemoteSendCommand_t)(MRCommand command, id userInfo);
+
+extern CFStringRef MRMediaRemoteSetPlaybackSpeed;
+extern CFStringRef MRMediaRemoteSetElapsedTime;
+extern CFStringRef MRMediaRemoteSetShuffleMode;
+extern CFStringRef MRMediaRemoteSetRepeatMode;
+extern CFStringRef MRMediaRemoteSetNowPlayingApplicationOverrideEnabled;
+typedef void (*MRMediaRemoteSetPlaybackSpeed_t)(int speed);
+typedef void (*MRMediaRemoteSetElapsedTime_t)(double elapsedTime);
+typedef void (*MRMediaRemoteSetShuffleMode_t)(int mode);
+typedef void (*MRMediaRemoteSetRepeatMode_t)(int mode);
+typedef void (*MRMediaRemoteSetNowPlayingApplicationOverrideEnabled_t)(Boolean enabled);
+
+extern CFStringRef MRMediaRemoteRegisterForNowPlayingNotifications;
+extern CFStringRef MRMediaRemoteUnregisterForNowPlayingNotifications;
+extern CFStringRef MRMediaRemoteGetNowPlayingApplicationPID;
+extern CFStringRef MRMediaRemoteGetNowPlayingClient;
+extern CFStringRef MRMediaRemoteGetNowPlayingInfo;
+extern CFStringRef MRMediaRemoteGetNowPlayingApplicationIsPlaying;
+
+typedef void (*MRMediaRemoteRegisterForNowPlayingNotifications_t)(dispatch_queue_t queue);
+typedef void (*MRMediaRemoteUnregisterForNowPlayingNotifications_t)();
+typedef void (*MRMediaRemoteSetWantsSupportedCommandsChangedNotifications_t)(Boolean wants);
+
+typedef void (^MRMediaRemoteGetNowPlayingInfoCompletion_t)(NSDictionary *information);
+typedef void (^MRMediaRemoteGetNowPlayingApplicationPIDCompletion_t)(int PID);
+typedef void (^MRMediaRemoteGetNowPlayingClientCompletion_t)(id clientObj);
+typedef void (^MRMediaRemoteGetNowPlayingApplicationIsPlayingCompletion_t)(bool isPlaying);
+
+typedef void (*MRMediaRemoteGetNowPlayingApplicationPID_t)(dispatch_queue_t queue, MRMediaRemoteGetNowPlayingApplicationPIDCompletion_t completion);
+typedef void (*MRMediaRemoteGetNowPlayingClient_t)(dispatch_queue_t queue, MRMediaRemoteGetNowPlayingClientCompletion_t completion);
+typedef void (*MRMediaRemoteGetNowPlayingInfo_t)(dispatch_queue_t queue, MRMediaRemoteGetNowPlayingInfoCompletion_t completion);
+typedef void (*MRMediaRemoteGetNowPlayingApplicationIsPlaying_t)(dispatch_queue_t queue, MRMediaRemoteGetNowPlayingApplicationIsPlayingCompletion_t completion);
+typedef void (*MRMediaRemoteCopySupportedCommands_t)(dispatch_queue_t queue, void (^completion)(NSArray *commands));
+typedef int (*MRMediaRemoteCommandInfoGetCommand_t)(id command);
+typedef Boolean (*MRMediaRemoteCommandInfoGetEnabled_t)(id command);
+typedef CFTypeRef (*MRMediaRemoteCommandInfoCopyValueForKey_t)(id command, CFStringRef key);
+
+// Per-client access. Every application that registered with MediaRemote is a
+// "now playing client", not only the one the system elected as the now playing
+// application. Its state can be read through a player path built from the
+// local origin and the client. The player may be nil, which selects the
+// client's default player.
+extern CFStringRef MRMediaRemoteGetPlaybackStateForPlayer;
+typedef void (^MRMediaRemoteGetPlaybackStateForPlayerCompletion_t)(unsigned int state);
+typedef void (*MRMediaRemoteGetPlaybackStateForPlayer_t)(id playerPath, dispatch_queue_t queue, MRMediaRemoteGetPlaybackStateForPlayerCompletion_t completion);
+
+extern CFStringRef MRMediaRemoteGetNowPlayingClients;
+extern CFStringRef MRNowPlayingClientGetBundleIdentifier;
+extern CFStringRef MRNowPlayingClientGetProcessIdentifier;
+extern CFStringRef MRMediaRemoteGetLocalOrigin;
+extern CFStringRef MRNowPlayingPlayerPathCreate;
+extern CFStringRef MRMediaRemoteGetNowPlayingInfoForPlayer;
+
+typedef void (^MRMediaRemoteGetNowPlayingClientsCompletion_t)(NSArray *clients);
+// The second argument is not an error. It is the artwork image
+// (MRNowPlayingArtworkImage) when artwork was requested and is available,
+// otherwise nil. A failed request yields nil information.
+typedef void (^MRMediaRemoteGetNowPlayingInfoForPlayerCompletion_t)(NSDictionary *information, id artwork);
+typedef void (^MRMediaRemoteGetSupportedCommandsForPlayerCompletion_t)(NSArray *commands);
+
+typedef void (*MRMediaRemoteGetNowPlayingClients_t)(dispatch_queue_t queue, MRMediaRemoteGetNowPlayingClientsCompletion_t completion);
+typedef CFStringRef (*MRNowPlayingClientGetBundleIdentifier_t)(id client);
+typedef int (*MRNowPlayingClientGetProcessIdentifier_t)(id client);
+typedef id (*MRMediaRemoteGetLocalOrigin_t)(void);
+typedef CFTypeRef (*MRNowPlayingPlayerPathCreate_t)(id origin, id client, id player);
+// includeArtwork makes the request ask for artwork, like
+// MRMediaRemoteGetNowPlayingInfo does. Without it, the information contains
+// the artwork MIME type, but no artwork data.
+typedef void (*MRMediaRemoteGetNowPlayingInfoForPlayer_t)(id playerPath, bool includeArtwork, dispatch_queue_t queue, MRMediaRemoteGetNowPlayingInfoForPlayerCompletion_t completion);
+typedef void (*MRMediaRemoteGetSupportedCommandsForPlayer_t)(id playerPath, dispatch_queue_t queue, MRMediaRemoteGetSupportedCommandsForPlayerCompletion_t completion);
+
+#pragma mark Miscellaneous
+
+extern NSString *kMRNowPlayingClientUserInfoKey;
+
+// Accessed with the kMRNowPlayingClientUserInfoKey
+// on the userInfo dictionary of an NSNotification.
+@interface MRClient : NSObject {}
+-(NSString *)parentApplicationBundleIdentifier;
+-(NSString *)bundleIdentifier;
+-(NSString *)displayName;
+@end
+
+@interface MediaRemote : NSObject
+// Commands
+@property(readonly) MRMediaRemoteSendCommand_t sendCommand;
+// Other controls
+@property(readonly) MRMediaRemoteSetPlaybackSpeed_t setPlaybackSpeed;
+@property(readonly) MRMediaRemoteSetElapsedTime_t setElapsedTime;
+@property(readonly) MRMediaRemoteSetShuffleMode_t setShuffleMode;
+@property(readonly) MRMediaRemoteSetRepeatMode_t setRepeatMode;
+@property(readonly) MRMediaRemoteSetNowPlayingApplicationOverrideEnabled_t
+    setNowPlayingApplicationOverrideEnabled;
+// Observers
+@property(readonly) MRMediaRemoteRegisterForNowPlayingNotifications_t registerForNowPlayingNotifications;
+@property(readonly) MRMediaRemoteUnregisterForNowPlayingNotifications_t unregisterForNowPlayingNotifications;
+@property(readonly) MRMediaRemoteSetWantsSupportedCommandsChangedNotifications_t setWantsSupportedCommandsChangedNotifications;
+// Metadata
+@property(readonly) MRMediaRemoteGetNowPlayingApplicationPID_t getNowPlayingApplicationPID;
+@property(readonly) MRMediaRemoteGetNowPlayingClient_t getNowPlayingClient;
+@property(readonly) MRMediaRemoteGetNowPlayingInfo_t getNowPlayingInfo;
+@property(readonly) MRMediaRemoteGetNowPlayingApplicationIsPlaying_t getNowPlayingApplicationIsPlaying;
+// Per-client metadata (may be NULL on systems that lack these symbols)
+@property(readonly) MRMediaRemoteGetPlaybackStateForPlayer_t getPlaybackStateForPlayer;
+@property(readonly) MRMediaRemoteGetNowPlayingClients_t getNowPlayingClients;
+@property(readonly) MRNowPlayingClientGetBundleIdentifier_t nowPlayingClientGetBundleIdentifier;
+@property(readonly) MRNowPlayingClientGetProcessIdentifier_t nowPlayingClientGetProcessIdentifier;
+@property(readonly) MRMediaRemoteGetLocalOrigin_t getLocalOrigin;
+@property(readonly) MRNowPlayingPlayerPathCreate_t nowPlayingPlayerPathCreate;
+@property(readonly) MRMediaRemoteGetNowPlayingInfoForPlayer_t getNowPlayingInfoForPlayer;
+@property(readonly) MRMediaRemoteGetSupportedCommandsForPlayer_t getSupportedCommandsForPlayer;
+@property(readonly) MRMediaRemoteCopySupportedCommands_t copySupportedCommands;
+@property(readonly) MRMediaRemoteCommandInfoGetCommand_t commandInfoGetCommand;
+@property(readonly) MRMediaRemoteCommandInfoGetEnabled_t commandInfoGetEnabled;
+@property(readonly) MRMediaRemoteCommandInfoCopyValueForKey_t commandInfoCopyValueForKey;
+// Constructor
+-(id)init;
+@end
+
+#endif /* MEDIAREMOTE_PRIVATE_H_ */

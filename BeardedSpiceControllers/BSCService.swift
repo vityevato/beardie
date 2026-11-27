@@ -39,6 +39,8 @@ final class BSCService: NSObject, BSHeadphoneStatusListenerProtocol {
     private var mikeys: [DDHidAppleMikey]?
     private var headphoneStatusListener: BSHeadphoneStatusListener?
 
+    let nowPlayingService = NowPlayingService()
+
     private var shortcuts: [String: [String: NSNumber]] = [:]
     private var shortcutEventTap: BSShortcutEventTap!
 
@@ -113,6 +115,8 @@ final class BSCService: NSObject, BSHeadphoneStatusListenerProtocol {
             name: NSNotification.Name("com.apple.screensaver.didstop"),
             object: nil
         )
+
+        nowPlayingService.start()
     }
 
     // MARK: - Public Methods

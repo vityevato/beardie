@@ -24,6 +24,16 @@
 
 - (void)setPhoneUnplugActionEnabled:(BOOL)enabled;
 
+/// Returns a JSON-encoded `NowPlayingSnapshot` with every MediaRemote client.
+/// The payload is nil when the adapter failed and no cached snapshot exists.
+- (void)getNowPlayingSnapshotWithCompletion:(void (^)(NSData * _Nullable snapshotJSON))completion;
+
+/// Returns a JSON-encoded `NowPlayingHealth` payload. Always returns data.
+- (void)getNowPlayingHealthWithCompletion:(void (^)(NSData * _Nonnull healthJSON))completion;
+
+/// Clears a stale MediaRemote election override and invalidates the cache.
+- (void)resetNowPlayingWithCompletion:(void (^)(BOOL success))completion;
+
 - (void)prepareForClosingConnectionWithCompletion:(void (^)(void))completion;
 
 @end
