@@ -162,12 +162,10 @@
 		65FBCE3F1EC0F98A004EFFC7 /* BSVolumeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65FBCE3D1EC0F98A004EFFC7 /* BSVolumeWindowController.m */; };
 		65FBCE401EC0F98A004EFFC7 /* BSVolumeWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65FBCE3E1EC0F98A004EFFC7 /* BSVolumeWindowController.xib */; };
 		65FF756C1B36CEDF00D81CA5 /* BSLaunchAtLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 65FF756B1B36CEDF00D81CA5 /* BSLaunchAtLogin.m */; };
-		663AA6C032B2BE9C00555B2E /* libPods-Beardie.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 717D81719E5A7FCD8EE92EA6 /* libPods-Beardie.a */; };
 		6AFD7B07359F9EF4FED6E13B /* BSShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C58FCDC84FC349897E1099F /* BSShortcuts.swift */; };
 		78D9F8101D808FCD0081E4EE /* BSAppleScriptSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D9F80F1D808FCD0081E4EE /* BSAppleScriptSupport.m */; };
 		78D9F8121D808FD70081E4EE /* BeardieSuite.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 78D9F8111D808FD70081E4EE /* BeardieSuite.sdef */; };
 		7E39DD332B4088DB022E9E87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */; };
-		8C88B5FB5969FE92330D22A3 /* libPods-BeardieControllers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC08A44F46F19C24BCA140C3 /* libPods-BeardieControllers.a */; };
 		95EE243B2018B67D15ACCF21 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 80FA95FF44F86F21338F0F0C /* CocoaLumberjack */; };
 		967933301855173100A49AC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679332F1855173100A49AC7 /* Cocoa.framework */; };
 		9679333C1855173100A49AC7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9679333B1855173100A49AC7 /* main.m */; };
@@ -384,7 +382,6 @@
 		0B1AF37C1CCE4D4C0021BBEA /* BSTrackTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSTrackTests.m; sourceTree = "<group>"; };
 		0B33014C1CFA643F0090DB67 /* BSStrategyCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSStrategyCache.h; sourceTree = "<group>"; };
 		0B33014D1CFA643F0090DB67 /* BSStrategyCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSStrategyCache.m; sourceTree = "<group>"; };
-		0B96393159D20F45215E45F2 /* libPods-SafariExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SafariExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BD1B2F21CD21AA900B72A3E /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		0BF06ADB1C9513A800534083 /* BSMediaStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSMediaStrategy.h; sourceTree = "<group>"; };
 		0BF06ADC1C9513A800534083 /* BSMediaStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSMediaStrategy.m; sourceTree = "<group>"; };
@@ -395,8 +392,6 @@
 		177EAB8018EE070F97E9501C /* AppTabKeyEventTap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppTabKeyEventTap.swift; sourceTree = "<group>"; };
 		1A1A2AAAF06FBB4626AD6FFB /* ShortcutsPreferencesUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesUITests.swift; sourceTree = "<group>"; };
 		24233D95971E5FB9DAA6E5DA /* BSShortcuts+KeyboardShortcuts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "BSShortcuts+KeyboardShortcuts.swift"; sourceTree = "<group>"; };
-		4C25B5F22E427A5715A0D033 /* Pods-BeardieControllers.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeardieControllers.release.xcconfig"; path = "Pods/Target Support Files/Pods-BeardieControllers/Pods-BeardieControllers.release.xcconfig"; sourceTree = "<group>"; };
-		4C54B252ADCDA9F3DED06F1E /* Pods-Beardie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beardie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Beardie/Pods-Beardie.debug.xcconfig"; sourceTree = "<group>"; };
 		5E80769C1D58CE180002855D /* Downcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Downcast.h; sourceTree = "<group>"; };
 		5E80769D1D58CE180002855D /* DowncastTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DowncastTabAdapter.h; sourceTree = "<group>"; };
 		5E80769E1D58CE180002855D /* DowncastTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DowncastTabAdapter.m; sourceTree = "<group>"; };
@@ -619,10 +614,8 @@
 		65FF756A1B36CEDF00D81CA5 /* BSLaunchAtLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLaunchAtLogin.h; sourceTree = "<group>"; };
 		65FF756B1B36CEDF00D81CA5 /* BSLaunchAtLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSLaunchAtLogin.m; sourceTree = "<group>"; };
 		6C58FCDC84FC349897E1099F /* BSShortcuts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSShortcuts.swift; sourceTree = "<group>"; };
-		717D81719E5A7FCD8EE92EA6 /* libPods-Beardie.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Beardie.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78D9F80F1D808FCD0081E4EE /* BSAppleScriptSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSAppleScriptSupport.m; sourceTree = "<group>"; };
 		78D9F8111D808FD70081E4EE /* BeardieSuite.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = BeardieSuite.sdef; sourceTree = "<group>"; };
-		872A98B5B9D77B492948E25F /* Pods-Beardie.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beardie.beta.xcconfig"; path = "Pods/Target Support Files/Pods-Beardie/Pods-Beardie.beta.xcconfig"; sourceTree = "<group>"; };
 		8A4CACA789483BA07FBD96DE /* BSShortcutEventTap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSShortcutEventTap.swift; sourceTree = "<group>"; };
 		9679332C1855173100A49AC7 /* Beardie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beardie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9679332F1855173100A49AC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -640,15 +633,11 @@
 		967933551855173100A49AC7 /* BeardieTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BeardieTests-Info.plist"; sourceTree = "<group>"; };
 		9679336418551BCC00A49AC7 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		A2969C5813B95FA63B91B3AF /* BeardieUITests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "BeardieUITests-Info.plist"; sourceTree = "<group>"; };
-		A9C0CF928C3FE35F3869A899 /* Pods-BeardieControllers.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeardieControllers.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BeardieControllers/Pods-BeardieControllers.debug.xcconfig"; sourceTree = "<group>"; };
 		AD54E77BAF3752964C718E42 /* BeardieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeardieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AEA9DD3A273E8C8AA22A8EE3 /* Pods-Beardie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Beardie.release.xcconfig"; path = "Pods/Target Support Files/Pods-Beardie/Pods-Beardie.release.xcconfig"; sourceTree = "<group>"; };
-		CFCE1786610637C89C88C109 /* Pods-BeardieControllers.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeardieControllers.beta.xcconfig"; path = "Pods/Target Support Files/Pods-BeardieControllers/Pods-BeardieControllers.beta.xcconfig"; sourceTree = "<group>"; };
 		D09EFF1F1C8CD49E00B24DA9 /* VLCTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLCTabAdapter.m; sourceTree = "<group>"; };
 		D09EFF201C8CD49E00B24DA9 /* VLCTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLCTabAdapter.h; sourceTree = "<group>"; };
 		D09EFF211C8CD49E00B24DA9 /* VLC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLC.h; sourceTree = "<group>"; };
 		DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		EC08A44F46F19C24BCA140C3 /* libPods-BeardieControllers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BeardieControllers.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -675,7 +664,6 @@
 				65A8501A1C8DE9E000D54C77 /* CoreAudio.framework in Frameworks */,
 				65A850191C8DE9D900D54C77 /* Carbon.framework in Frameworks */,
 				95EE243B2018B67D15ACCF21 /* CocoaLumberjack in Frameworks */,
-				8C88B5FB5969FE92330D22A3 /* libPods-BeardieControllers.a in Frameworks */,
 				22F7EA0A6E92A24355056BC0 /* CocoaLumberjackSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -713,7 +701,6 @@
 				9679336518551BCC00A49AC7 /* ScriptingBridge.framework in Frameworks */,
 				967933301855173100A49AC7 /* Cocoa.framework in Frameworks */,
 				0BD1B2F31CD21AA900B72A3E /* JavaScriptCore.framework in Frameworks */,
-				663AA6C032B2BE9C00555B2E /* libPods-Beardie.a in Frameworks */,
 				3471BFC2A350FE0D6331933F /* CocoaLumberjack in Frameworks */,
 				20E267DC94036E141937EECD /* CocoaLumberjackSwift in Frameworks */,
 				5AA90210622F2E2DEDBFC2A3 /* MASPreferences in Frameworks */,
@@ -1202,7 +1189,6 @@
 				65AA48FA25F585A400D19C60 /* BeardieLaunchAtLogin */,
 				9679332E1855173100A49AC7 /* Frameworks */,
 				9679332D1855173100A49AC7 /* Products */,
-				C5F7A2FBB1AC4C50850BCEEB /* Pods */,
 				C785BD0D3B77C2B26EFB6014 /* BeardieUITests */,
 			);
 			indentWidth = 4;
@@ -1237,9 +1223,6 @@
 				9679332F1855173100A49AC7 /* Cocoa.framework */,
 				9679334E1855173100A49AC7 /* XCTest.framework */,
 				967933311855173100A49AC7 /* Other Frameworks */,
-				0B96393159D20F45215E45F2 /* libPods-SafariExtension.a */,
-				717D81719E5A7FCD8EE92EA6 /* libPods-Beardie.a */,
-				EC08A44F46F19C24BCA140C3 /* libPods-BeardieControllers.a */,
 				9274FEB59CFABAD33B17CB76 /* OS X */,
 			);
 			name = Frameworks;
@@ -1325,19 +1308,6 @@
 				967933551855173100A49AC7 /* BeardieTests-Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		C5F7A2FBB1AC4C50850BCEEB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				4C54B252ADCDA9F3DED06F1E /* Pods-Beardie.debug.xcconfig */,
-				AEA9DD3A273E8C8AA22A8EE3 /* Pods-Beardie.release.xcconfig */,
-				872A98B5B9D77B492948E25F /* Pods-Beardie.beta.xcconfig */,
-				A9C0CF928C3FE35F3869A899 /* Pods-BeardieControllers.debug.xcconfig */,
-				4C25B5F22E427A5715A0D033 /* Pods-BeardieControllers.release.xcconfig */,
-				CFCE1786610637C89C88C109 /* Pods-BeardieControllers.beta.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		C785BD0D3B77C2B26EFB6014 /* BeardieUITests */ = {
@@ -1461,7 +1431,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 656AFFF81C8ACDCF00BD29F5 /* Build configuration list for PBXNativeTarget "BeardieControllers" */;
 			buildPhases = (
-				19168B7827BBC96768A4C0E7 /* [CP] Check Pods Manifest.lock */,
 				656AFFE61C8ACDCF00BD29F5 /* Sources */,
 				656AFFE71C8ACDCF00BD29F5 /* Frameworks */,
 				656AFFE81C8ACDCF00BD29F5 /* Resources */,
@@ -1523,7 +1492,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9679335D1855173100A49AC7 /* Build configuration list for PBXNativeTarget "Beardie" */;
 			buildPhases = (
-				444DB68E61F8ED39440C7D99 /* [CP] Check Pods Manifest.lock */,
 				967933281855173100A49AC7 /* Sources */,
 				967933291855173100A49AC7 /* Frameworks */,
 				9679332A1855173100A49AC7 /* Resources */,
@@ -1770,42 +1738,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		19168B7827BBC96768A4C0E7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BeardieControllers-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		444DB68E61F8ED39440C7D99 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Beardie-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		657E11E12622314D0006B70B /* Copy Constants to extension */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2437,7 +2369,6 @@
 		};
 		656AFFF61C8ACDCF00BD29F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A9C0CF928C3FE35F3869A899 /* Pods-BeardieControllers.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -2462,7 +2393,6 @@
 		};
 		656AFFF71C8ACDCF00BD29F5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4C25B5F22E427A5715A0D033 /* Pods-BeardieControllers.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -2664,7 +2594,6 @@
 		};
 		65D795B32643F76200F4C713 /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 872A98B5B9D77B492948E25F /* Pods-Beardie.beta.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -2718,7 +2647,6 @@
 		};
 		65D795B52643F76200F4C713 /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CFCE1786610637C89C88C109 /* Pods-BeardieControllers.beta.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -3116,7 +3044,6 @@
 		};
 		9679335E1855173100A49AC7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4C54B252ADCDA9F3DED06F1E /* Pods-Beardie.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -3143,7 +3070,6 @@
 		};
 		9679335F1855173100A49AC7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AEA9DD3A273E8C8AA22A8EE3 /* Pods-Beardie.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

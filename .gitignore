@@ -22,10 +22,8 @@ DerivedData
 *.hmap
 *.ipa
 
-# CocoaPods / Ruby env
+# Legacy CocoaPods checkout (old branches only)
 Pods
-.ruby-version
-.ruby-gemset
 
 # DMGs
 *.dmg

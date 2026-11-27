@@ -10,6 +10,12 @@ It allows you to manage web based players (*SoundCloud*, *YouTube* ... [List of 
 
 Beardie is more than just play/pause, it has some additional controls that add to the convenience. You can keep several player applications open, and several tabs of several browsers with web players, since Beardie "understands" what exactly you want to control at the moment. :) It also allows you to easily switch between running (open) players.
 
+# Development
+
+Requirements: macOS 13 or greater and a compatible Xcode.
+
+Dependencies are managed with Swift Package Manager. Open `Beardie.xcodeproj`, let Xcode resolve the packages, and build the `Beardie` scheme. CocoaPods and `pod install` are no longer used.
+
 # Users Guide
 
 [![Beardie](images/bs.png)](images/bs.png)

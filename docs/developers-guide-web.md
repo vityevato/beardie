@@ -3,14 +3,9 @@
 
 ## Dependencies
 
-We use [CocoaPods](https://cocoapods.org/) to manage all obj-c/cocoa dependences. cd to the directory containing the workspace, then install them locally using:
-```bash
-sudo gem install cocoapods
-pod setup
-pod install
-```
+Dependencies are managed with Swift Package Manager and are declared in the Xcode project. Xcode resolves them automatically when you open `Beardie.xcodeproj`; there is no separate install step.
 
-*Always* use `BeardedSpice.xcworkspace` for development, *NOT* `BeardedSpice.xcodeproject`
+Open `Beardie.xcodeproj` and build the `Beardie` scheme. Do not use a workspace or `pod install`.
 
 BeardedSpice is built with [SPMediaKeyTap](https://github.com/nevyn/SPMediaKeyTap) and works well with other applications listening to media key events.
 

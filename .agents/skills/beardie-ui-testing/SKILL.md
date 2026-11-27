@@ -22,7 +22,7 @@ Unsigned smoke/capture/record tests:
 
 ```sh
 TEST_RUNNER_UI_SCREENSHOT_DIR="$PWD/.tmp/ui-screenshots/raw" \
-xcodebuild test -workspace Beardie.xcworkspace -scheme BeardieUITests \
+xcodebuild test -project Beardie.xcodeproj -scheme BeardieUITests \
   -configuration Debug -destination 'platform=OS X,arch=arm64' \
   -derivedDataPath .tmp/ui-tests/DerivedData \
   -only-testing:BeardieUITests/ShortcutsPreferencesUITests/testShortcutsPaneShowsAllRecorders \
@@ -34,7 +34,7 @@ xcodebuild test -workspace Beardie.xcworkspace -scheme BeardieUITests \
 Signed Tab-navigation test:
 
 ```sh
-xcodebuild test -workspace Beardie.xcworkspace -scheme BeardieUITests \
+xcodebuild test -project Beardie.xcodeproj -scheme BeardieUITests \
   -configuration Debug -destination 'platform=OS X,arch=arm64' \
   -derivedDataPath DerivedData \
   -only-testing:BeardieUITests/ShortcutsPreferencesUITests/testTabNavigation \

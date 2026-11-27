@@ -19,9 +19,9 @@
 
 ## Project notes
 
-- Main project: `Beardie.xcodeproj`; the workspace is used while CocoaPods remains.
+- Main project: `Beardie.xcodeproj`; use `-project Beardie.xcodeproj` in `xcodebuild` commands. Dependencies are managed by Swift Package Manager.
 - Minimum macOS version: 13.0.
-- Dependencies are moving to Swift Package Manager. Pin versions and commit `Package.resolved`.
+- Dependencies are managed by Swift Package Manager. Pin versions and commit `Package.resolved`.
 - Do not update dependencies unless the task explicitly asks for it.
 - Do not commit or push without explicit user approval.
 
