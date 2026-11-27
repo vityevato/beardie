@@ -25,6 +25,7 @@
 		0BF06AE51C9513A800534083 /* BSTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF06AE01C9513A800534083 /* BSTrack.m */; };
 		0BF9CAE71CFFDB2F00E9986B /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 656A002C1C8AD41A00BD29F5 /* NSString+Utils.m */; };
 		1ABF4B7540A2D0953317F0AB /* BSShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C58FCDC84FC349897E1099F /* BSShortcuts.swift */; };
+		1E9EBD1A0108A2BD12607853 /* BeardedSpiceControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F621822BDA09C91C224A4FE7 /* BeardedSpiceControllers.swift */; };
 		20E267DC94036E141937EECD /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B5093B87FF88D8364E449D62 /* CocoaLumberjackSwift */; };
 		22F7EA0A6E92A24355056BC0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B5B6D70B551BBE4970FC0565 /* CocoaLumberjackSwift */; };
 		25D13F6F1E9A2F6400149554 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 25D13F6D1E9A2F6400149554 /* Localizable.stringsdict */; };
@@ -92,10 +93,7 @@
 		656A00351C8AD41A00BD29F5 /* NSString+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 656A002C1C8AD41A00BD29F5 /* NSString+Utils.m */; };
 		656A00371C8AD41A00BD29F5 /* NSURL+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 656A002E1C8AD41A00BD29F5 /* NSURL+Utils.m */; };
 		656A00381C8AD41A00BD29F5 /* NSURL+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 656A002E1C8AD41A00BD29F5 /* NSURL+Utils.m */; };
-		656AFFEF1C8ACDCF00BD29F5 /* BeardedSpiceControllers.m in Sources */ = {isa = PBXBuildFile; fileRef = 656AFFEE1C8ACDCF00BD29F5 /* BeardedSpiceControllers.m */; };
-		656AFFF11C8ACDCF00BD29F5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 656AFFF01C8ACDCF00BD29F5 /* main.m */; };
 		656AFFF51C8ACDCF00BD29F5 /* BeardieControllers.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = 656AFFEA1C8ACDCF00BD29F5 /* BeardieControllers.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		656AFFFD1C8AD3B400BD29F5 /* BSHeadphoneStatusListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 656AFFFC1C8AD3B400BD29F5 /* BSHeadphoneStatusListener.m */; };
 		6576179626BB802900731CEA /* PodcastsTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6576179526BB802900731CEA /* PodcastsTabAdapter.m */; };
 		657635A81E8819E300A4FCAD /* AirfoilSatelliteTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 657635A71E8819E300A4FCAD /* AirfoilSatelliteTabAdapter.m */; };
 		657BE28B1F95576C0051EC8E /* MYAnonymousIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = 657BE2891F9553470051EC8E /* MYAnonymousIdentity.m */; };
@@ -115,7 +113,6 @@
 		6590426523BACC2300890457 /* Processing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6590426423BACC2300890457 /* Processing.swift */; };
 		659643CF25DEE3E900A5D582 /* QuodLibetTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 659643CE25DEE3E900A5D582 /* QuodLibetTabAdapter.m */; };
 		65A57BC0239D846B0013476E /* EHFileLocker.m in Sources */ = {isa = PBXBuildFile; fileRef = 65E63AC3218DAB3000C039B7 /* EHFileLocker.m */; };
-		65A850161C8B065000D54C77 /* BSCService.m in Sources */ = {isa = PBXBuildFile; fileRef = 65A850151C8B065000D54C77 /* BSCService.m */; };
 		65A850191C8DE9D900D54C77 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F33ECB1855306A00E8F77E /* Carbon.framework */; };
 		65A8501A1C8DE9E000D54C77 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65E567071B76104300AD2D46 /* CoreAudio.framework */; };
 		65AA48FC25F585A400D19C60 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65AA48FB25F585A400D19C60 /* AppDelegate.swift */; };
@@ -162,10 +159,12 @@
 		65FBCE3F1EC0F98A004EFFC7 /* BSVolumeWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 65FBCE3D1EC0F98A004EFFC7 /* BSVolumeWindowController.m */; };
 		65FBCE401EC0F98A004EFFC7 /* BSVolumeWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65FBCE3E1EC0F98A004EFFC7 /* BSVolumeWindowController.xib */; };
 		65FF756C1B36CEDF00D81CA5 /* BSLaunchAtLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 65FF756B1B36CEDF00D81CA5 /* BSLaunchAtLogin.m */; };
+		695F6DB922B01546E3334899 /* BSCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F925F5162624E0C489F85F8 /* BSCService.swift */; };
 		6AFD7B07359F9EF4FED6E13B /* BSShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C58FCDC84FC349897E1099F /* BSShortcuts.swift */; };
 		78D9F8101D808FCD0081E4EE /* BSAppleScriptSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D9F80F1D808FCD0081E4EE /* BSAppleScriptSupport.m */; };
 		78D9F8121D808FD70081E4EE /* BeardieSuite.sdef in Resources */ = {isa = PBXBuildFile; fileRef = 78D9F8111D808FD70081E4EE /* BeardieSuite.sdef */; };
 		7E39DD332B4088DB022E9E87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */; };
+		8FA60993CA8E55BF93DD88BA /* BSHeadphoneStatusListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0534FF322142FE9988BEBF4F /* BSHeadphoneStatusListener.swift */; };
 		95EE243B2018B67D15ACCF21 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 80FA95FF44F86F21338F0F0C /* CocoaLumberjack */; };
 		967933301855173100A49AC7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679332F1855173100A49AC7 /* Cocoa.framework */; };
 		9679333C1855173100A49AC7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9679333B1855173100A49AC7 /* main.m */; };
@@ -177,12 +176,14 @@
 		9679336518551BCC00A49AC7 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9679336418551BCC00A49AC7 /* ScriptingBridge.framework */; };
 		B82CB206DDE3967A6EC2AEC3 /* RxSonosLib in Frameworks */ = {isa = PBXBuildFile; productRef = 4AEE03C0808046E7609E0292 /* RxSonosLib */; };
 		BD971408720B6CCEB2C25377 /* BeardieUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F54992BB9A44246BD8C516F /* BeardieUITestCase.swift */; };
+		C6F667AFC51C156AD3A5427C /* SharedResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E58D3B24968BA900DB66DB /* SharedResources.swift */; };
 		CFC19898A926B555C3717F2E /* BSShortcuts+KeyboardShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24233D95971E5FB9DAA6E5DA /* BSShortcuts+KeyboardShortcuts.swift */; };
 		D09EFF221C8CD49E00B24DA9 /* VLCTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = D09EFF1F1C8CD49E00B24DA9 /* VLCTabAdapter.m */; };
 		D59BF53F250A94CF940C6E42 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 71F38282AF15EE370BCD09B1 /* RxSwift */; };
 		D5CD37E8725170F194B77BF7 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = C7B6566008748888A5A3548A /* CocoaLumberjack */; };
 		D93D01C5DA97B95BB2194641 /* BSShortcutRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0146AA8F358926C732A8C9E5 /* BSShortcutRecorderView.swift */; };
 		E285C738BD80CB521A7E2711 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 933BF904B75513C4FB809B64 /* KeyboardShortcuts */; };
+		E80D5C4C62D762E848FC6EF4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B9C7D8C114B178336D1BA8 /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -373,6 +374,7 @@
 		03A34920185EA43900C4A62B /* MediaStrategyRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MediaStrategyRegistry.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		03A34921185EA43900C4A62B /* MediaStrategyRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MediaStrategyRegistry.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03F33ECB1855306A00E8F77E /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		0534FF322142FE9988BEBF4F /* BSHeadphoneStatusListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSHeadphoneStatusListener.swift; sourceTree = "<group>"; };
 		0B064FFC1DC6A85A00CD5F35 /* BSActiveTab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSActiveTab.h; sourceTree = "<group>"; };
 		0B064FFD1DC6A85A00CD5F35 /* BSActiveTab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSActiveTab.m; sourceTree = "<group>"; };
 		0B1AF3761CCE4D4C0021BBEA /* BSMediaStrategyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSMediaStrategyTests.m; sourceTree = "<group>"; };
@@ -392,10 +394,12 @@
 		177EAB8018EE070F97E9501C /* AppTabKeyEventTap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppTabKeyEventTap.swift; sourceTree = "<group>"; };
 		1A1A2AAAF06FBB4626AD6FFB /* ShortcutsPreferencesUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesUITests.swift; sourceTree = "<group>"; };
 		24233D95971E5FB9DAA6E5DA /* BSShortcuts+KeyboardShortcuts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "BSShortcuts+KeyboardShortcuts.swift"; sourceTree = "<group>"; };
+		4E61A45C681C7B2C5EBE5B83 /* BeardedSpiceControllers-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BeardedSpiceControllers-Bridging-Header.h"; sourceTree = "<group>"; };
 		5E80769C1D58CE180002855D /* Downcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Downcast.h; sourceTree = "<group>"; };
 		5E80769D1D58CE180002855D /* DowncastTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DowncastTabAdapter.h; sourceTree = "<group>"; };
 		5E80769E1D58CE180002855D /* DowncastTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DowncastTabAdapter.m; sourceTree = "<group>"; };
 		5F54992BB9A44246BD8C516F /* BeardieUITestCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BeardieUITestCase.swift; sourceTree = "<group>"; };
+		5F925F5162624E0C489F85F8 /* BSCService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSCService.swift; sourceTree = "<group>"; };
 		65063FEA233DE94E0015F558 /* DeezerTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeezerTabAdapter.m; sourceTree = "<group>"; };
 		65063FEC233DE9660015F558 /* DeezerTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeezerTabAdapter.h; sourceTree = "<group>"; };
 		6506A714237604A800DAC132 /* Music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
@@ -496,12 +500,7 @@
 		656A003F1C8B037A00BD29F5 /* BeardedSpiceControllersProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeardedSpiceControllersProtocol.h; sourceTree = "<group>"; };
 		656A00401C8B037A00BD29F5 /* BeardedSpiceHostAppProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeardedSpiceHostAppProtocol.h; sourceTree = "<group>"; };
 		656AFFEA1C8ACDCF00BD29F5 /* BeardieControllers.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = BeardieControllers.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
-		656AFFED1C8ACDCF00BD29F5 /* BeardedSpiceControllers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BeardedSpiceControllers.h; sourceTree = "<group>"; };
-		656AFFEE1C8ACDCF00BD29F5 /* BeardedSpiceControllers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BeardedSpiceControllers.m; sourceTree = "<group>"; };
-		656AFFF01C8ACDCF00BD29F5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		656AFFF21C8ACDCF00BD29F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		656AFFFB1C8AD3B400BD29F5 /* BSHeadphoneStatusListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSHeadphoneStatusListener.h; sourceTree = "<group>"; };
-		656AFFFC1C8AD3B400BD29F5 /* BSHeadphoneStatusListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSHeadphoneStatusListener.m; sourceTree = "<group>"; };
 		656AFFFF1C8AD3C800BD29F5 /* DDHidAppleMikey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHidAppleMikey.h; sourceTree = "<group>"; };
 		6576179226BB1D2500731CEA /* extruct-pause-names.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "extruct-pause-names.sh"; sourceTree = "<group>"; };
 		6576179326BB283100731CEA /* Podcasts-Pause-Names.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Podcasts-Pause-Names.h"; sourceTree = "<group>"; };
@@ -546,8 +545,6 @@
 		659B52C2238460A2005B73AB /* TV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TV.h; sourceTree = "<group>"; };
 		65A27DB425FA9C0A007C0CB7 /* extruct-pause-names.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "extruct-pause-names.sh"; sourceTree = "<group>"; };
 		65A27DBB25FAA47A007C0CB7 /* Deezer-Pause-Names.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Deezer-Pause-Names.h"; sourceTree = "<group>"; };
-		65A850141C8B065000D54C77 /* BSCService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSCService.h; sourceTree = "<group>"; };
-		65A850151C8B065000D54C77 /* BSCService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BSCService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		65AA48F925F585A400D19C60 /* BeardieLaunchAtLogin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeardieLaunchAtLogin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65AA48FB25F585A400D19C60 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65AA490525F585A500D19C60 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -638,6 +635,8 @@
 		D09EFF201C8CD49E00B24DA9 /* VLCTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLCTabAdapter.h; sourceTree = "<group>"; };
 		D09EFF211C8CD49E00B24DA9 /* VLC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLC.h; sourceTree = "<group>"; };
 		DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		E9B9C7D8C114B178336D1BA8 /* main.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		F621822BDA09C91C224A4FE7 /* BeardedSpiceControllers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BeardedSpiceControllers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -922,13 +921,12 @@
 			isa = PBXGroup;
 			children = (
 				656AFFFA1C8AD37E00BD29F5 /* Controllers */,
-				656AFFED1C8ACDCF00BD29F5 /* BeardedSpiceControllers.h */,
-				656AFFEE1C8ACDCF00BD29F5 /* BeardedSpiceControllers.m */,
-				656AFFF01C8ACDCF00BD29F5 /* main.m */,
 				656AFFF21C8ACDCF00BD29F5 /* Info.plist */,
-				65A850141C8B065000D54C77 /* BSCService.h */,
-				65A850151C8B065000D54C77 /* BSCService.m */,
 				8A4CACA789483BA07FBD96DE /* BSShortcutEventTap.swift */,
+				5F925F5162624E0C489F85F8 /* BSCService.swift */,
+				F621822BDA09C91C224A4FE7 /* BeardedSpiceControllers.swift */,
+				E9B9C7D8C114B178336D1BA8 /* main.swift */,
+				4E61A45C681C7B2C5EBE5B83 /* BeardedSpiceControllers-Bridging-Header.h */,
 			);
 			path = BeardedSpiceControllers;
 			sourceTree = SOURCE_ROOT;
@@ -936,10 +934,9 @@
 		656AFFFA1C8AD37E00BD29F5 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				656AFFFB1C8AD3B400BD29F5 /* BSHeadphoneStatusListener.h */,
-				656AFFFC1C8AD3B400BD29F5 /* BSHeadphoneStatusListener.m */,
 				656A001D1C8AD3E200BD29F5 /* SPMediaKeyTap */,
 				656AFFFE1C8AD3C800BD29F5 /* DDHidLib */,
+				0534FF322142FE9988BEBF4F /* BSHeadphoneStatusListener.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1797,8 +1794,6 @@
 				656A00231C8AD3E200BD29F5 /* SPMediaKeyTap.m in Sources */,
 				656A00321C8AD41A00BD29F5 /* EHSystemUtils.m in Sources */,
 				656A00301C8AD41A00BD29F5 /* BSTimeout.m in Sources */,
-				65A850161C8B065000D54C77 /* BSCService.m in Sources */,
-				656AFFF11C8ACDCF00BD29F5 /* main.m in Sources */,
 				65E63AC721905A5F00C039B7 /* EHFileLocker.m in Sources */,
 				6566ABE12189071A008BEC2F /* BSSharedResources.m in Sources */,
 				65B39583265576B300DBD144 /* BeardedSpiceHostAppProtocol.m in Sources */,
@@ -1806,11 +1801,9 @@
 				656A001C1C8AD3C800BD29F5 /* NSXReturnThrowError.m in Sources */,
 				656A00161C8AD3C800BD29F5 /* DDHidElement.m in Sources */,
 				656A00341C8AD41A00BD29F5 /* NSException+Utils.m in Sources */,
-				656AFFEF1C8ACDCF00BD29F5 /* BeardedSpiceControllers.m in Sources */,
 				656A00181C8AD3C800BD29F5 /* DDHidQueue.m in Sources */,
 				656A00381C8AD41A00BD29F5 /* NSURL+Utils.m in Sources */,
 				656A00131C8AD3C800BD29F5 /* DDHidAppleMikey.m in Sources */,
-				656AFFFD1C8AD3B400BD29F5 /* BSHeadphoneStatusListener.m in Sources */,
 				656A001B1C8AD3C800BD29F5 /* NSDictionary+DDHidExtras.m in Sources */,
 				656A001A1C8AD3C800BD29F5 /* DDHidUsageTables.m in Sources */,
 				656A00191C8AD3C800BD29F5 /* DDHidUsage.m in Sources */,
@@ -1819,6 +1812,11 @@
 				656A00151C8AD3C800BD29F5 /* DDHidDevice.m in Sources */,
 				6AFD7B07359F9EF4FED6E13B /* BSShortcuts.swift in Sources */,
 				4C41A3726999086B9CCA45B1 /* BSShortcutEventTap.swift in Sources */,
+				695F6DB922B01546E3334899 /* BSCService.swift in Sources */,
+				1E9EBD1A0108A2BD12607853 /* BeardedSpiceControllers.swift in Sources */,
+				E80D5C4C62D762E848FC6EF4 /* main.swift in Sources */,
+				8FA60993CA8E55BF93DD88BA /* BSHeadphoneStatusListener.swift in Sources */,
+				C6F667AFC51C156AD3A5427C /* SharedResources.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2388,6 +2386,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_CONTROLLER_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceControllers/BeardedSpiceControllers-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -2412,6 +2411,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_CONTROLLER_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceControllers/BeardedSpiceControllers-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -2666,6 +2666,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_CONTROLLER_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "BeardedSpiceControllers/BeardedSpiceControllers-Bridging-Header.h";
 			};
 			name = Beta;
 		};
