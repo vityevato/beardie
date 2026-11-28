@@ -122,3 +122,23 @@ Known behavior inherited from the original Objective-C code: if XPC is killed
 know that the previous instance unloaded `com.apple.rcd`, so it does not load
 it back. This is not a migration regression; recovery after a kill belongs to
 Stage 4.
+
+## Stage 4 connection lifecycle
+
+`AppDelegate` now tracks a connection generation. When the controllers service
+is interrupted or the connection becomes invalid:
+
+1. the stale handlers are removed and the old connection is invalidated;
+2. after a short delay the app creates a new `NSXPCConnection`;
+3. settings (shortcuts, media key blacklist, headphone action) are sent again;
+4. `NowPlayingCoordinator` is rebound to the new connection, runs a reset and
+   fetches health/snapshot.
+
+`BSCService.removeConnection` runs `NowPlayingService.cancelActiveTransaction`
+when the last host connection disappears. That terminates a running adapter
+transaction and queues a `reset`, so an app crash cannot leave an election
+override behind while the service is still alive.
+
+The XPC startup reset still covers the case when both processes are gone; that
+residual risk is accepted and listed in the recovery matrix in
+`docs/nowplaying-election-watchdog.md`.

@@ -20,6 +20,13 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "MAIN",
+      "js": ["shared/mediasession-main.js"]
+    },
+    {
+      "matches": ["<all_urls>"],
       "run_at": "document_idle",
       "all_frames": true,
       "js": ["shared/utils.js", "shared/content.js"]

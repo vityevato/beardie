@@ -200,6 +200,7 @@ final class BSCService: NSObject, BSHeadphoneStatusListenerProtocol {
                     self.rcdControl()
                     self.refreshShortcutMonitor()
                     _ = self.refreshAllControllers(nil)
+                    self.nowPlayingService.cancelActiveTransaction()
                 }
             }
         }

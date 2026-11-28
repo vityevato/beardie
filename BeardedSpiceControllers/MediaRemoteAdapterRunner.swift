@@ -12,6 +12,7 @@ enum MediaRemoteAdapterError: LocalizedError {
     case resourcesMissing
     case launchFailed(String)
     case timedOut
+    case cancelled
     case failed(status: Int32, message: String)
 
     var errorDescription: String? {
@@ -22,6 +23,8 @@ enum MediaRemoteAdapterError: LocalizedError {
             return "Failed to launch MediaRemoteAdapter: \(message)"
         case .timedOut:
             return "MediaRemoteAdapter timed out"
+        case .cancelled:
+            return "MediaRemoteAdapter was cancelled"
         case .failed(let status, let message):
             return "MediaRemoteAdapter exited with status \(status): \(message)"
         }
@@ -34,6 +37,9 @@ protocol MediaRemoteAdapterRunning {
         timeout: TimeInterval,
         completion: @escaping (Result<Data, Error>) -> Void
     )
+
+    /// Terminates the adapter process that is running right now, if any.
+    func cancelCurrent()
 }
 
 /// Runs the vendored MediaRemote adapter through `/usr/bin/perl`.
@@ -45,6 +51,9 @@ final class MediaRemoteAdapterRunner: MediaRemoteAdapterRunning {
     private let scriptURL: URL
     private let frameworkURL: URL
     private let launchQueue = DispatchQueue(label: "com.calm-apps.mac.beardie.mediaremote-adapter")
+    private let stateLock = NSLock()
+    private var currentProcess: Process?
+    private var currentRunCancelled = false
 
     init?() {
         guard
@@ -63,6 +72,22 @@ final class MediaRemoteAdapterRunner: MediaRemoteAdapterRunning {
         self.frameworkURL = frameworkURL
     }
 
+    /// Terminates the adapter process that is running right now, if any.
+    ///
+    /// Queued runs are not affected. The service uses this when the app
+    /// connection disappears in the middle of a targeted transaction, then
+    /// queues a reset to clear a possible election override.
+    func cancelCurrent() {
+        stateLock.lock()
+        currentRunCancelled = true
+        let process = currentProcess
+        stateLock.unlock()
+
+        if let process, process.isRunning {
+            process.terminate()
+        }
+    }
+
     func run(
         arguments: [String],
         timeout: TimeInterval = 5,
@@ -71,6 +96,10 @@ final class MediaRemoteAdapterRunner: MediaRemoteAdapterRunning {
         // The launch queue is serial, so adapter processes never overlap. This
         // guarantees that the startup reset completes before the first read.
         launchQueue.async {
+            self.stateLock.lock()
+            self.currentRunCancelled = false
+            self.stateLock.unlock()
+
             let process = Process()
             process.executableURL = URL(fileURLWithPath: "/usr/bin/perl")
             process.arguments = [self.scriptURL.path, self.frameworkURL.path] + arguments
@@ -101,13 +130,36 @@ final class MediaRemoteAdapterRunner: MediaRemoteAdapterRunning {
                 return
             }
 
+            self.stateLock.lock()
+            self.currentProcess = process
+            self.stateLock.unlock()
+
+            defer {
+                self.stateLock.lock()
+                if self.currentProcess === process {
+                    self.currentProcess = nil
+                }
+                self.stateLock.unlock()
+            }
+
             if finished.wait(timeout: .now() + timeout) == .timedOut {
                 process.terminate()
                 if finished.wait(timeout: .now() + 1) == .timedOut {
                     kill(process.processIdentifier, SIGKILL)
                     finished.wait()
                 }
-                completion(.failure(MediaRemoteAdapterError.timedOut))
+                self.stateLock.lock()
+                let cancelled = self.currentRunCancelled
+                self.stateLock.unlock()
+                completion(.failure(cancelled ? MediaRemoteAdapterError.cancelled : MediaRemoteAdapterError.timedOut))
+                return
+            }
+
+            self.stateLock.lock()
+            let cancelled = self.currentRunCancelled
+            self.stateLock.unlock()
+            if cancelled {
+                completion(.failure(MediaRemoteAdapterError.cancelled))
                 return
             }
 

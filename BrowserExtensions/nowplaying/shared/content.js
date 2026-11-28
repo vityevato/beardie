@@ -9,7 +9,6 @@
 
   const api = NP.api;
   let sendTimer = null;
-  let mediaPollTimer = null;
 
   function mediaElements() {
     return Array.from(document.querySelectorAll("audio, video"));
@@ -68,10 +67,16 @@
 
   function sendState() {
     const state = collectState();
+    let topFrame = false;
     try {
-      api.runtime.sendMessage({ type: "mediaState", state: state });
+      topFrame = window.top === window;
     } catch (_) {
-      // The background may be restarting; the next poll will retry.
+      // Cross-origin frames still compare by identity; this is only a fallback.
+    }
+    try {
+      api.runtime.sendMessage({ type: "mediaState", state: state, topFrame: topFrame });
+    } catch (_) {
+      // The background may be restarting; the next event or getState retries.
     }
   }
 
@@ -82,32 +87,86 @@
     sendTimer = setTimeout(sendState, 200);
   }
 
-  function ensurePolling() {
-    if (mediaPollTimer) {
-      return;
-    }
-    mediaPollTimer = setInterval(sendState, 1000);
-  }
-
   ["play", "pause", "ended", "loadedmetadata", "durationchange", "seeked", "ratechange", "volumechange"].forEach(
     (eventName) => document.addEventListener(eventName, scheduleState, true)
   );
   document.addEventListener("visibilitychange", scheduleState, true);
-  ensurePolling();
+
+  function commandViaMediaSession(command, position) {
+    return new Promise((resolve) => {
+      const requestId = NP.uuid();
+      const resultEvent = "beardie-nowplaying-command-result";
+      let timer = setTimeout(function () {
+        cleanup();
+        resolve({ success: false, error: "media-session-timeout" });
+      }, 1500);
+
+      function cleanup() {
+        clearTimeout(timer);
+        document.removeEventListener(resultEvent, onResult, true);
+      }
+
+      function onResult(event) {
+        const detail = event && event.detail;
+        if (!detail || detail.requestId !== requestId) {
+          return;
+        }
+        cleanup();
+        resolve({ success: Boolean(detail.success), error: detail.error });
+      }
+
+      document.addEventListener(resultEvent, onResult, true);
+      try {
+        document.dispatchEvent(
+          new CustomEvent("beardie-nowplaying-command", {
+            detail: { requestId: requestId, command: command, position: position }
+          })
+        );
+      } catch (error) {
+        cleanup();
+        resolve({ success: false, error: String(error) });
+      }
+    });
+  }
 
   api.runtime.onMessage.addListener(function (message, _sender, sendResponse) {
-    if (!message || message.type !== "command") {
+    if (!message || !message.type) {
       return false;
     }
 
+    if (message.type === "requestState") {
+      // Publish through the normal mediaState path so the background can
+      // attribute the state to this frame. The direct response only confirms
+      // that a content script is present.
+      sendState();
+      sendResponse({ success: true });
+      return false;
+    }
+
+    if (message.type !== "command") {
+      return false;
+    }
+
+    const command = message.command;
     const element = primaryMediaElement();
+
+    if (command === "next" || command === "previous") {
+      const action = command === "next" ? "nexttrack" : "previoustrack";
+      commandViaMediaSession(action).then(sendResponse);
+      return true;
+    }
+
     if (!element) {
+      if (command === "play" || command === "pause") {
+        commandViaMediaSession(command).then(sendResponse);
+        return true;
+      }
       sendResponse({ success: false, error: "no-media-element" });
       return false;
     }
 
     try {
-      switch (message.command) {
+      switch (command) {
         case "play":
           element.play();
           break;

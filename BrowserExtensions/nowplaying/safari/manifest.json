@@ -13,7 +13,7 @@
   },
   "background": {
     "scripts": ["shared/utils.js", "shared/background.js"],
-    "persistent": false
+    "persistent": true
   },
   "content_scripts": [
     {
@@ -23,5 +23,5 @@
       "js": ["shared/utils.js", "shared/content.js"]
     }
   ],
-  "permissions": ["tabs", "nativeMessaging", "storage", "alarms", "<all_urls>"]
+  "permissions": ["tabs", "nativeMessaging", "storage", "scripting", "<all_urls>"]
 }

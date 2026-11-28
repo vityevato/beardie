@@ -79,4 +79,51 @@ final class NowPlayingXPCClient {
             completion(success)
         }
     }
+
+    /// Runs a targeted MediaRemote command transaction in the XPC service.
+    func sendCommand(
+        _ command: Int,
+        to bundleIdentifier: String,
+        hold: TimeInterval,
+        completion: @escaping (Result<NowPlayingCommandResult, Error>) -> Void
+    ) {
+        guard let proxy else {
+            completion(.failure(NowPlayingXPCError.proxyUnavailable))
+            return
+        }
+
+        proxy.sendNowPlayingCommand(command, toBundle: bundleIdentifier, hold: hold) { data in
+            guard
+                let data,
+                let result = try? JSONDecoder().decode(NowPlayingCommandResult.self, from: data)
+            else {
+                completion(.failure(NowPlayingXPCError.invalidPayload))
+                return
+            }
+            completion(.success(result))
+        }
+    }
+
+    /// Pauses every other playing MediaRemote client through separate XPC
+    /// transactions.
+    func pauseOthers(
+        exceptBundleIdentifier: String?,
+        completion: @escaping (Result<NowPlayingPauseOthersResult, Error>) -> Void
+    ) {
+        guard let proxy else {
+            completion(.failure(NowPlayingXPCError.proxyUnavailable))
+            return
+        }
+
+        proxy.pauseOtherNowPlayingClientsExceptBundle(exceptBundleIdentifier) { data in
+            guard
+                !data.isEmpty,
+                let result = try? JSONDecoder().decode(NowPlayingPauseOthersResult.self, from: data)
+            else {
+                completion(.failure(NowPlayingXPCError.invalidPayload))
+                return
+            }
+            completion(.success(result))
+        }
+    }
 }

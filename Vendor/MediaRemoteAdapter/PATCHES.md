@@ -22,22 +22,43 @@
 
 ### `reset` command
 
-- `src/adapter/reset.{h,m}`: added `adapter_reset()`, which enables and then
-  disables the MediaRemote election override. A fresh process cannot clear the
-  override with a plain `false`, because MediaRemote skips a value equal to the
-  last value set by that process.
+- `src/adapter/reset.{h,m}`: added `adapter_reset()`, which takes the
+  MediaRemote election override over, clears the overridden application and
+  disables the override. A fresh process cannot clear the target with a plain
+  `false`; it must enable the override first and give the daemon a moment
+  between clearing the target and disabling the override.
 - `src/private/MediaRemote.{h,m}`: added the private
-  `MRMediaRemoteSetNowPlayingApplicationOverrideEnabled` symbol.
+  `MRMediaRemoteSetNowPlayingApplicationOverrideEnabled` and
+  `MRMediaRemoteSetOverriddenNowPlayingApplication` symbols.
 - `include/MediaRemoteAdapter.h`, `bin/mediaremote-adapter.pl`, and
   `CMakeLists.txt`: exposed the command.
-- The XPC service runs `reset` once at startup before the first read.
+- The XPC service runs `reset` once at startup, after a failed transaction and
+  when the host app disappears.
+
+### `transaction` command (Stage 4)
+
+- `src/private/MediaRemote.{h,m}`: added the private
+  `MRMediaRemoteSetOverriddenNowPlayingApplication` symbol.
+- `src/adapter/send.m`: added `adapter_transaction`/`adapter_transaction_env`.
+  One process performs the whole transaction: point the election override at
+  the target bundle, poll `MRMediaRemoteGetNowPlayingClient` until MediaRemote
+  elected that application (timeout, fail-closed), send the command, hold the
+  override, clear it, and print a JSON result. Every failure path clears the
+  override before exiting non-zero.
+- `include/MediaRemoteAdapter.h` and `bin/mediaremote-adapter.pl`: exposed
+  `transaction --bundle-id=ID --command=N [--election-timeout=MS]
+  [--hold=MS]`.
+- `src/adapter/send.m`: added `capabilities`, a JSON self-test reporting
+  whether targeted transactions, per-client reads, and supported-command
+  enumeration are available. The XPC health payload uses it.
+- No new source file is needed; both additions live in `send.m`.
 
 ## Deliberately not patched in Stage 1
 
 Targeted `send`/transaction commands are not added in this stage. Stage 1 is
 read-only and does not send commands; Stage 4 adds the election/transaction
-layer together with the external health/watchdog model. Keeping the patch
-read-only avoids shipping an untested override path.
+layer described above. Keeping the Stage 1 patch read-only avoided shipping an
+untested override path.
 
 ## Upstream compatibility
 

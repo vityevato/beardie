@@ -5,6 +5,7 @@
 //  Copyright © 2026 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 
+import AppKit
 import CocoaLumberjackSwift
 import Foundation
 
@@ -30,6 +31,9 @@ final class BrowserBridgeTabAdapter: TabAdapter {
     private static let stateLock = NSLock()
     private static var raisedKeys = Set<String>()
     private static var pendingKeys = Set<String>()
+    /// Keyed by browser bundle identifier, matching the old per-application
+    /// `_frontmostApp` behavior across tabs of the same browser.
+    private static var previousApps: [String: String] = [:]
 
     private let snapshotLock = NSLock()
     private var snapshot: Snapshot
@@ -105,9 +109,10 @@ final class BrowserBridgeTabAdapter: TabAdapter {
         }
     }
 
-    /// Raise on the first call, restore the previously active tab on the next
-    /// call. Commands are best effort: a failed restore still clears the
-    /// remembered state.
+    /// Raise when the tab is not the active frontmost tab. When it is already
+    /// raised, restore the target tab/window and the application that was
+    /// frontmost before Raise. A failed restore keeps the raised state so the
+    /// next invocation can retry.
     override func toggleTab() {
         let current = withSnapshot { $0 }
         let key = "\(current.instanceId)#\(current.tab.tabId)"
@@ -118,42 +123,191 @@ final class BrowserBridgeTabAdapter: TabAdapter {
             return
         }
         let isRaised = Self.raisedKeys.contains(key)
-        if isRaised {
-            Self.raisedKeys.remove(key)
-        }
         Self.pendingKeys.insert(key)
         Self.stateLock.unlock()
 
-        let completion: (Bool) -> Void = { success in
-            Self.stateLock.lock()
-            Self.pendingKeys.remove(key)
-            if !isRaised && success {
-                Self.raisedKeys.insert(key)
+        if isRaised && liveFrontmost(current) {
+            restore(current: current, key: key)
+        } else {
+            raise(current: current, key: key)
+        }
+    }
+
+    private func raise(current: Snapshot, key: String) {
+        let browserBundle = current.browserBundleIdentifier
+        let frontmostBundle = NSWorkspace.shared.frontmostApplication?.bundleIdentifier
+
+        // Record the frontmost application at every Raise, including the
+        // browser itself. A later Hide restores only a different app; a value
+        // equal to the browser means "no app switch".
+        Self.stateLock.lock()
+        Self.previousApps[browserBundle] = frontmostBundle ?? browserBundle
+        Self.stateLock.unlock()
+
+        // Activate the browser before switching tabs. Safari may restore its
+        // last active tab/window when it becomes active, which would undo a
+        // tab switch performed while it was in the background.
+        Self.activateBrowserAndWait(bundleIdentifier: browserBundle)
+
+        DDLogInfo(
+            "BrowserBridgeTabAdapter: raise tab \(current.tab.tabId) in \(current.instanceId) "
+                + "previousApp=\(frontmostBundle ?? "none")"
+        )
+        BrowserBridgeService.shared.activateTab(
+            instanceId: current.instanceId,
+            tabId: current.tab.tabId,
+            windowId: current.tab.windowId
+        ) { success in
+            Self.complete(key: key, action: "raise", current: current, success: success)
+        }
+    }
+
+    private func restore(current: Snapshot, key: String) {
+        DDLogInfo(
+            "BrowserBridgeTabAdapter: restore tab \(current.tab.tabId) in \(current.instanceId)"
+        )
+        BrowserBridgeService.shared.restoreTab(
+            instanceId: current.instanceId,
+            tabId: current.tab.tabId,
+            windowId: current.tab.windowId
+        ) { success in
+            if success {
+                Self.stateLock.lock()
+                let previousApp = Self.previousApps.removeValue(
+                    forKey: current.browserBundleIdentifier
+                )
+                Self.stateLock.unlock()
+                if let previousApp {
+                    DDLogInfo(
+                        "BrowserBridgeTabAdapter: restore previous app \(previousApp)"
+                    )
+                    if previousApp != current.browserBundleIdentifier {
+                        Self.activateApplication(bundleIdentifier: previousApp)
+                    }
+                }
             }
-            Self.stateLock.unlock()
+            Self.complete(key: key, action: "restore", current: current, success: success)
+        }
+    }
+
+    /// Live check: the browser must be frontmost and the tab must be the
+    /// active tab of the last focused browser window. The cached `tab.active`
+    /// can lag behind an actual window/tab switch.
+    private func liveFrontmost(_ current: Snapshot) -> Bool {
+        guard NSWorkspace.shared.frontmostApplication?.bundleIdentifier
+            == current.browserBundleIdentifier
+        else {
+            return false
+        }
+        if Thread.isMainThread {
+            return current.tab.active
         }
 
-        if isRaised {
-            DDLogInfo("BrowserBridgeTabAdapter: restore tab \(current.tab.tabId) in \(current.instanceId)")
-            BrowserBridgeService.shared.restoreTab(
-                instanceId: current.instanceId,
-                tabId: current.tab.tabId,
-                windowId: current.tab.windowId,
-                completion: completion
-            )
-        } else {
-            DDLogInfo("BrowserBridgeTabAdapter: raise tab \(current.tab.tabId) in \(current.instanceId)")
-            BrowserBridgeService.shared.activateTab(
-                instanceId: current.instanceId,
-                tabId: current.tab.tabId,
-                windowId: current.tab.windowId,
-                completion: completion
-            )
+        let semaphore = DispatchSemaphore(value: 0)
+        var active = false
+        BrowserBridgeService.shared.isActive(
+            instanceId: current.instanceId,
+            tabId: current.tab.tabId,
+            windowId: current.tab.windowId
+        ) { result in
+            active = result
+            semaphore.signal()
         }
+        _ = semaphore.wait(timeout: .now() + 1.0)
+        return active
+    }
+
+    private static func complete(
+        key: String,
+        action: String,
+        current: Snapshot,
+        success: Bool
+    ) {
+        DDLogInfo(
+            "BrowserBridgeTabAdapter: \(action) result=\(success) "
+                + "tab \(current.tab.tabId) in \(current.instanceId)"
+        )
+        Self.stateLock.lock()
+        Self.pendingKeys.remove(key)
+        if success {
+            if action == "raise" {
+                Self.raisedKeys.insert(key)
+            } else {
+                Self.raisedKeys.remove(key)
+            }
+        }
+        Self.stateLock.unlock()
+    }
+
+    private static func activateBrowserAndWait(bundleIdentifier: String) {
+        guard let application = NSRunningApplication
+            .runningApplications(withBundleIdentifier: bundleIdentifier)
+            .first
+        else {
+            DDLogInfo("BrowserBridgeTabAdapter: no running browser for \(bundleIdentifier)")
+            return
+        }
+        if NSWorkspace.shared.frontmostApplication?.bundleIdentifier == bundleIdentifier {
+            return
+        }
+
+        DispatchQueue.main.async {
+            _ = application.activate(options: [.activateAllWindows])
+        }
+        let deadline = Date().addingTimeInterval(0.6)
+        while NSWorkspace.shared.frontmostApplication?.bundleIdentifier != bundleIdentifier,
+              Date() < deadline {
+            usleep(15_000)
+        }
+        DDLogInfo(
+            "BrowserBridgeTabAdapter: activate \(bundleIdentifier) "
+                + "frontmost=\(NSWorkspace.shared.frontmostApplication?.bundleIdentifier ?? "none")"
+        )
+    }
+
+    private static func activateApplication(bundleIdentifier: String) {
+        guard let application = NSRunningApplication
+            .runningApplications(withBundleIdentifier: bundleIdentifier)
+            .first
+        else {
+            DDLogInfo("BrowserBridgeTabAdapter: no running app for \(bundleIdentifier)")
+            return
+        }
+        DispatchQueue.main.async {
+            _ = application.activate(options: [.activateAllWindows])
+        }
+        DDLogInfo("BrowserBridgeTabAdapter: restore previous app \(bundleIdentifier)")
     }
 
     @objc var browserDisplayName: String {
         withSnapshot { $0.browserDisplayName }
+    }
+
+    @objc var bridgeInstanceId: String {
+        withSnapshot { $0.instanceId }
+    }
+
+    @objc var bridgeTabId: Int {
+        withSnapshot { $0.tab.tabId }
+    }
+
+    @objc var bridgeWindowId: Int {
+        withSnapshot { $0.tab.windowId }
+    }
+
+    @objc var bridgeBrowserBundleIdentifier: String {
+        withSnapshot { $0.browserBundleIdentifier }
+    }
+
+    /// True when the bridge service still has media for this exact tab. The
+    /// cached adapter snapshot can be stale after a state gap, so selection
+    /// must ask the service, not the adapter.
+    @objc var hasCurrentMedia: Bool {
+        let current = withSnapshot { $0 }
+        return BrowserBridgeService.shared.hasMedia(
+            instanceId: current.instanceId,
+            tabId: current.tab.tabId
+        )
     }
 
     static func pruneRaisedTabs(keeping keys: Set<String>) {

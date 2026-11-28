@@ -43,12 +43,15 @@ Local additions:
 
 - `clients` command: one JSON array with every registered MediaRemote client,
   including clients without a title or a readable player path.
-- `reset` command: `MRMediaRemoteSetNowPlayingApplicationOverrideEnabled(true)`
-  followed by `false`; this is the only reliable way to clear a stale override
-  from a fresh process.
-- Targeted `send`/transaction commands are deliberately not added in Stage 1.
-  The read-only stage does not send commands; Stage 4 adds election and
-  transactions together with the health/watchdog model.
+- `reset` command: takes the override over, clears the overridden application,
+  waits for the daemon and disables the override. A plain `enabled(false)` from
+  a fresh process does not clear a target left behind by a dead helper.
+- `transaction` command (Stage 4): points the election override at one bundle,
+  waits for the election, sends one command, holds the override and clears it.
+  See `docs/nowplaying-election-watchdog.md`.
+- `capabilities` command (Stage 4): JSON self-test used by the XPC health gate.
+- Targeted `MRMediaRemoteSetOverriddenNowPlayingApplication` is loaded only by
+  the Perl process, like the rest of MediaRemote.
 
 Existing upstream commands and payloads are unchanged.
 
@@ -63,7 +66,7 @@ Existing upstream commands and payloads are unchanged.
 - `mediaremote-adapter.pl` is copied to the XPC service resources.
 - `MediaRemoteAdapterRunner` resolves both paths from `Bundle.main` at runtime.
 
-## Read-only XPC API
+## XPC API
 
 Added to `BeardedSpiceControllersProtocol`:
 
@@ -71,7 +74,9 @@ Added to `BeardedSpiceControllersProtocol`:
 |---|---|
 | `getNowPlayingSnapshotWithCompletion:` | JSON `NowPlayingSnapshot` or nil |
 | `getNowPlayingHealthWithCompletion:` | JSON `NowPlayingHealth`, always returned |
-| `resetNowPlayingWithCompletion:` | `BOOL` success |
+| `resetNowPlayingWithCompletion:` | `BOOL` success; refreshes capabilities first |
+| `sendNowPlayingCommand:toBundle:hold:completion:` | JSON `NowPlayingCommandResult` or nil |
+| `pauseOtherNowPlayingClientsExceptBundle:completion:` | JSON `NowPlayingPauseOthersResult` |
 
 `NowPlayingSnapshot` contains every normalized client:
 
@@ -97,18 +102,50 @@ Added to `BeardedSpiceControllersProtocol`:
 The XPC service caches snapshots for 1 second and artwork in a small LRU cache
 (capacity 8). Missing artwork is not an error.
 
+## Targeted commands (Stage 4)
+
+`ElectionController` turns the `transaction` command into the only override
+writer in the process. A transaction is one Perl process:
+
+```text
+setOverriddenNowPlayingApplication(bundle)
+  → poll getNowPlayingClient until the effective bundle matches (timeout, fail closed)
+  → sendCommand(command)
+  → hold
+  → setOverriddenNowPlayingApplication(NULL)
+```
+
+The XPC service serializes transactions, gates them on `capabilities`, and runs
+a `reset` after a failed or killed helper. `pauseOthers` sends `kMRPause` to
+every playing client except the selected one, one transaction per client. The
+app-side `CommandRouter` uses this only for native players that have a matching
+Now Playing client and report the command as supported. Volume stays on the
+existing adapter protocol because MediaRemote has no per-application volume
+command.
+
+## Health gate
+
+`NowPlayingHealth` now includes `targetedCommandsAvailable`. It is true only
+after `capabilities` reports the targeted symbols, per-client reads and
+supported-command enumeration. When it is false, `CommandRouter` falls back to
+the legacy adapter path and the UI disables commands that have no legacy
+transport.
+
 ## Feature flag
 
 `UseSystemNowPlaying` is registered as `NO` in `BeardedSpice/Defaults.plist`.
-When enabled, `NowPlayingCoordinator` fetches one snapshot and the health
-payload after the XPC connection is created and writes the sources to the log.
-There is no UI change.
+When enabled, `NowPlayingCoordinator` fetches a snapshot and the health payload
+after the XPC connection is created, logs the sources, and serves the router's
+targeted command path.
 
 For local testing, the flag can be passed without changing preferences:
 
 ```sh
 open -n Beardie.app --args -UseSystemNowPlaying YES
 ```
+
+The browser bridge commands are gated separately by `UseBrowserBridge` and do
+not require `UseSystemNowPlaying`.
 
 ## Startup reset
 
@@ -145,17 +182,31 @@ compatibility fallbacks for macOS 13–26.
   reports an invalid payload instead of crashing.
 - Unit tests: `NowPlayingTests` covers JSON parsing, Safari parent-bundle
   normalization, metadata-less clients, artwork fingerprint/cache, snapshot
-  TTL and invalid JSON; the existing suite still passes.
+  TTL, command lookup by reported name and invalid JSON; `CommandRouterTests`
+  covers the transport matrix and capability gating; the existing suite still
+  passes (52 tests).
+
+Stage 4 additions:
+
+- `capabilities` reports `targetedCommands=true` on macOS 27.2.1.
+- Transaction E2E with two stand-in Now Playing clients: command to a
+  non-elected paused client reaches only that client; the elected application
+  is restored afterwards; a missing target fails closed.
+- `pauseOthers` paused the one playing client through its own transaction.
+- App/XPC/Perl kill recovery is documented and verified in
+  `docs/nowplaying-election-watchdog.md`.
 
 ## Known limitations
 
-- Commands are not routed through the new service yet; the existing media key
-  and shortcut paths are unchanged.
-- Artwork reads are disabled in the Stage 1 runner (`--no-artwork`); the
-  parser and cache are ready and unit-tested, but no UI consumes artwork yet.
-  Enabling artwork also needs concurrent pipe reads in the adapter runner.
+- Artwork reads are disabled in the server runner (`--no-artwork`); the parser
+  and cache are ready and unit-tested, but no UI consumes artwork yet. Enabling
+  artwork also needs concurrent pipe reads in the adapter runner.
 - The current snapshot method spawns one Perl process per read; the 1-second
-  cache keeps debug usage cheap, but a streaming adapter is a possible later
+  cache keeps usage cheap, but a streaming adapter is a possible later
   optimization.
-- Election/targeted commands, health gating and the transaction lifecycle are
-  Stage 4 work.
+- Targeted commands are limited to commands MediaRemote exposes: play, pause,
+  toggle, next, previous and like. Volume and site-specific actions stay on the
+  adapter protocols.
+- MediaRemote command numbers differ between releases. The router prefers the
+  identifier reported by the client (for example `LikeTrack` is 21 on macOS
+  27.2.1, not the legacy 0x6A).

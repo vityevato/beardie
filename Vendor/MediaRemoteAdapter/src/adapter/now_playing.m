@@ -23,6 +23,37 @@ void waitForCommandCompletion() {
     dispatch_semaphore_wait(semaphore, timeout);
 }
 
+NSString *mediaRemoteCurrentElectedBundleIdentifier(void) {
+    if (g_mediaRemote.getNowPlayingClient == NULL ||
+        g_mediaRemote.nowPlayingClientGetBundleIdentifier == NULL) {
+        return nil;
+    }
+
+    __block NSString *ownBundle = nil;
+    __block NSString *parentBundle = nil;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    g_mediaRemote.getNowPlayingClient(g_serialdispatchQueue, ^(id client) {
+      if (client != nil) {
+          ownBundle = (__bridge NSString *)g_mediaRemote
+              .nowPlayingClientGetBundleIdentifier(client);
+          if ([client respondsToSelector:@selector(
+                                         parentApplicationBundleIdentifier)]) {
+              parentBundle = [client
+                  performSelector:@selector(
+                                       parentApplicationBundleIdentifier)];
+          }
+      }
+      dispatch_semaphore_signal(semaphore);
+    });
+
+    dispatch_time_t timeout =
+        dispatch_time(DISPATCH_TIME_NOW, 250 * NSEC_PER_MSEC);
+    if (dispatch_semaphore_wait(semaphore, timeout) != 0) {
+        return nil;
+    }
+    return parentBundle.length ? parentBundle : ownBundle;
+}
+
 NSNumber *getElapsedTimeNow(NSDictionary *information) {
     id elapsed = information[kMRMediaRemoteNowPlayingInfoElapsedTime];
     if (![elapsed isKindOfClass:[NSNumber class]]) {

@@ -34,6 +34,20 @@
 /// Clears a stale MediaRemote election override and invalidates the cache.
 - (void)resetNowPlayingWithCompletion:(void (^)(BOOL success))completion;
 
+/// Sends a MediaRemote command to one application through a short-lived
+/// election override transaction. Returns a JSON-encoded
+/// `NowPlayingCommandResult`, or nil when the transaction failed.
+- (void)sendNowPlayingCommand:(NSInteger)command
+                    toBundle:(NSString *)bundleIdentifier
+                        hold:(double)holdSeconds
+                  completion:(void (^)(NSData * _Nullable resultJSON))completion;
+
+/// Pauses every playing MediaRemote client except the given bundle, one
+/// transaction per client. Returns a JSON-encoded
+/// `NowPlayingPauseOthersResult`.
+- (void)pauseOtherNowPlayingClientsExceptBundle:(NSString * _Nullable)bundleIdentifier
+                                    completion:(void (^)(NSData * _Nonnull resultJSON))completion;
+
 - (void)prepareForClosingConnectionWithCompletion:(void (^)(void))completion;
 
 @end

@@ -19,6 +19,7 @@ final class NowPlayingService {
     private let runner: MediaRemoteAdapterRunning?
     private let snapshotCache = NowPlayingSnapshotCache(ttl: 1.0)
     private let artworkCache = ArtworkCache()
+    private let electionController: ElectionController
 
     private var lastError: String?
     private var lastRefreshAt: Date?
@@ -26,6 +27,7 @@ final class NowPlayingService {
 
     init(runner: MediaRemoteAdapterRunning? = MediaRemoteAdapterRunner()) {
         self.runner = runner
+        self.electionController = ElectionController(runner: runner)
         if runner == nil {
             lastError = MediaRemoteAdapterError.resourcesMissing.localizedDescription
         }
@@ -47,6 +49,7 @@ final class NowPlayingService {
                     self.lastError = error.localizedDescription
                     DDLogError("NowPlaying startup reset failed: \(error.localizedDescription)")
                 }
+                self.electionController.refreshCapabilities()
             }
         }
     }
@@ -100,15 +103,73 @@ final class NowPlayingService {
 
     func health(completion: @escaping (NowPlayingHealth) -> Void) {
         queue.async {
+            let capabilities = self.electionController.capabilities
             let health = NowPlayingHealth(
                 adapterAvailable: self.runner != nil,
                 lastRefreshAt: self.lastRefreshAt,
-                lastError: self.lastError,
+                lastError: self.lastError ?? self.electionController.lastError,
                 clientCount: self.lastSnapshot?.clients.count ?? 0,
-                resetSupported: self.runner != nil
+                resetSupported: self.runner != nil,
+                targetedCommandsAvailable: capabilities.targetedCommands
             )
             completion(health)
         }
+    }
+
+    // MARK: - Targeted commands
+
+    func sendCommand(
+        _ command: Int,
+        to bundleIdentifier: String,
+        hold: TimeInterval,
+        completion: @escaping (Result<NowPlayingCommandResult, Error>) -> Void
+    ) {
+        electionController.send(command: command, to: bundleIdentifier, hold: hold, completion: completion)
+    }
+
+    /// Pauses every playing MediaRemote client except the given bundle through
+    /// separate transactions.
+    func pauseOthers(
+        exceptBundleIdentifier excludedBundleIdentifier: String?,
+        completion: @escaping (NowPlayingPauseOthersResult) -> Void
+    ) {
+        snapshot(force: true) { result in
+            switch result {
+            case .success(let snapshot):
+                let excluded = excludedBundleIdentifier?.lowercased()
+                var targets: [String] = []
+                var seen = Set<String>()
+
+                for client in snapshot.clients where client.isPlaying {
+                    guard let bundleIdentifier = client.effectiveBundleIdentifier else {
+                        continue
+                    }
+                    let key = bundleIdentifier.lowercased()
+                    if key == excluded {
+                        continue
+                    }
+                    guard seen.insert(key).inserted else {
+                        continue
+                    }
+                    targets.append(bundleIdentifier)
+                }
+
+                if targets.isEmpty {
+                    completion(NowPlayingPauseOthersResult(paused: [], failed: []))
+                    return
+                }
+                self.electionController.pauseOthers(targets: targets, completion: completion)
+            case .failure(let error):
+                DDLogError("NowPlaying pauseOthers snapshot failed: \(error.localizedDescription)")
+                completion(NowPlayingPauseOthersResult(paused: [], failed: []))
+            }
+        }
+    }
+
+    /// Cancels a running transaction and clears a possible election override.
+    /// Called when the last host connection goes away.
+    func cancelActiveTransaction(completion: (() -> Void)? = nil) {
+        electionController.cancelActiveTransaction(completion: completion)
     }
 
     func reset(completion: @escaping (Bool) -> Void) {
@@ -124,7 +185,9 @@ final class NowPlayingService {
                     case .success:
                         self.snapshotCache.invalidate()
                         self.lastError = nil
-                        completion(true)
+                        self.electionController.refreshCapabilities {
+                            completion(true)
+                        }
                     case .failure(let error):
                         self.lastError = error.localizedDescription
                         DDLogError("NowPlaying reset failed: \(error.localizedDescription)")

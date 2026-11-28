@@ -13,4 +13,6 @@
 #import "PSWebSocketServer.h"
 #import "PSWebSocket.h"
 #import "BSVolumeControlProtocol.h"
+#import "BSActiveTab.h"
+#import "NSException+Utils.h"
 #import "GeneralPreferencesViewController.h"
