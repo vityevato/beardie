@@ -32,6 +32,7 @@
   let statePending = false;
   let refreshPromise = null;
   let previousContext = null;
+  let debugEnabled = false;
   const tabMedia = new Map();
   const tabMediaFrames = new Map();
 
@@ -300,44 +301,113 @@
     }
   }
 
-  async function activateTab(message) {
-    if (previousContext === null) {
-      const current = await activeTab(message.windowId);
-      if (current && current.id !== message.tabId) {
-        previousContext = { tabId: current.id, windowId: current.windowId };
+  async function lastFocusedWindow() {
+    if (api.windows && typeof api.windows.getLastFocused === "function") {
+      try {
+        const window = await api.windows.getLastFocused({ populate: false });
+        if (window && typeof window.id === "number") {
+          return window;
+        }
+      } catch (_) {
+        // Fall through to the last focused tab.
       }
     }
+    const tab = await activeTab(null);
+    return tab ? { id: tab.windowId } : null;
+  }
 
+  async function updateTabActive(tabId) {
+    const result = api.tabs.update(tabId, { active: true });
+    if (result && typeof result.then === "function") {
+      await result;
+    }
+  }
+
+  function sendDiagnostic(event, details) {
+    if (!debugEnabled) {
+      return;
+    }
+    sendJSON({
+      type: "diagnostic",
+      event: event,
+      message: JSON.stringify(details)
+    });
+  }
+
+  async function activateTab(message) {
+    // Capture the browser state on every Raise. A previous Raise may have
+    // been left by other means (Cmd+Tab, manual tab/window switch), so an
+    // older context must not survive into the next Hide.
+    const lastWindow = await lastFocusedWindow();
+    const targetActive = await activeTab(message.windowId);
+    const context = {
+      previousWindowId: lastWindow ? lastWindow.id : null,
+      targetWindowId: message.windowId,
+      targetPreviousTabId:
+        targetActive && targetActive.id !== message.tabId ? targetActive.id : null
+    };
+    previousContext = context;
+
+    let focused = false;
     try {
-      const updateResult = api.tabs.update(message.tabId, { active: true });
-      if (updateResult && typeof updateResult.catch === "function") {
-        await updateResult;
-      }
+      await updateTabActive(message.tabId);
+      focused = await focusWindow(message.windowId);
     } catch (error) {
+      sendDiagnostic("activate-error", { context, error: String(error) });
       sendAck(message.requestId, false, String(error));
       return;
     }
-    await focusWindow(message.windowId);
+    sendDiagnostic("activate", {
+      context: context,
+      tabId: message.tabId,
+      windowId: message.windowId,
+      focused: focused
+    });
     sendAck(message.requestId, true);
   }
 
   async function restoreTab(message) {
-    const target = previousContext || {
-      tabId: message.tabId,
-      windowId: message.windowId
+    const context = previousContext || {
+      previousWindowId: null,
+      targetWindowId: message.windowId,
+      targetPreviousTabId: null
     };
     previousContext = null;
+
+    let tabRestored = false;
+    let windowFocused = false;
     try {
-      const updateResult = api.tabs.update(target.tabId, { active: true });
-      if (updateResult && typeof updateResult.catch === "function") {
-        await updateResult;
+      if (context.targetPreviousTabId) {
+        await updateTabActive(context.targetPreviousTabId);
+        tabRestored = true;
+      }
+      if (
+        context.previousWindowId &&
+        context.previousWindowId !== context.targetWindowId
+      ) {
+        windowFocused = await focusWindow(context.previousWindowId);
       }
     } catch (error) {
+      sendDiagnostic("restore-error", { context, error: String(error) });
       sendAck(message.requestId, false, String(error));
       return;
     }
-    await focusWindow(target.windowId);
+    sendDiagnostic("restore", {
+      context: context,
+      tabRestored: tabRestored,
+      windowFocused: windowFocused
+    });
     sendAck(message.requestId, true);
+  }
+
+  async function isTabActive(message) {
+    try {
+      const lastWindow = await lastFocusedWindow();
+      const active = await activeTab(lastWindow ? lastWindow.id : null);
+      sendAck(message.requestId, Boolean(active && active.id === message.tabId));
+    } catch (error) {
+      sendAck(message.requestId, false, String(error));
+    }
   }
 
   function tabMessage(tabId, message) {
@@ -426,6 +496,12 @@
     switch (message.type) {
       case "getState":
         refreshAndSendState();
+        break;
+      case "configure":
+        debugEnabled = Boolean(message.debug);
+        break;
+      case "isActive":
+        isTabActive(message);
         break;
       case "activateTab":
         activateTab(message);

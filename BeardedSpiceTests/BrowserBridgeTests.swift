@@ -76,6 +76,35 @@ final class BrowserBridgeTests: XCTestCase {
         XCTAssertEqual(ack.error, "no-tab")
     }
 
+    func testParsesDiagnostic() {
+        let data = Data(#"{"type":"diagnostic","event":"activate","message":"{\"focused\":true}"}"#.utf8)
+        guard case .diagnostic(let diagnostic) = BrowserBridgeIncomingMessage.parse(data) else {
+            return XCTFail("Expected diagnostic")
+        }
+        XCTAssertEqual(diagnostic.event, "activate")
+        XCTAssertEqual(diagnostic.message, #"{"focused":true}"#)
+    }
+
+    func testIsActiveAndConfigureMessageEncoding() throws {
+        let isActive = try XCTUnwrap(
+            BrowserBridgeOutgoingMessage.isActive(requestId: "req", tabId: 5, windowId: 2)
+        )
+        let isActiveObject = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: isActive) as? [String: Any]
+        )
+        XCTAssertEqual(isActiveObject["type"] as? String, "isActive")
+        XCTAssertEqual(isActiveObject["requestId"] as? String, "req")
+        XCTAssertEqual(isActiveObject["tabId"] as? Int, 5)
+        XCTAssertEqual(isActiveObject["windowId"] as? Int, 2)
+
+        let configure = try XCTUnwrap(BrowserBridgeOutgoingMessage.configure(debug: true))
+        let configureObject = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: configure) as? [String: Any]
+        )
+        XCTAssertEqual(configureObject["type"] as? String, "configure")
+        XCTAssertEqual(configureObject["debug"] as? Bool, true)
+    }
+
     func testUnknownMessagesAreIgnored() {
         if case .unknown = BrowserBridgeIncomingMessage.parse(Data("not json".utf8)) {
             // Expected.

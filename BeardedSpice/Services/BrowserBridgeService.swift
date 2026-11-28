@@ -229,6 +229,28 @@ final class BrowserBridgeService: NSObject {
         )
     }
 
+    /// Asks the extension whether this tab is the active tab of the last
+    /// focused browser window. The app combines the result with its own
+    /// frontmost-application check.
+    func isActive(
+        instanceId: String,
+        tabId: Int,
+        windowId: Int,
+        completion: @escaping (Bool) -> Void
+    ) {
+        sendTabCommand(
+            instanceId: instanceId,
+            builder: { requestId in
+                BrowserBridgeOutgoingMessage.isActive(
+                    requestId: requestId,
+                    tabId: tabId,
+                    windowId: windowId
+                )
+            },
+            completion: completion
+        )
+    }
+
     /// Sends a media command to the content script of one tab. Supported
     /// commands are `play`, `pause`, `toggle`, `next`, `previous` and `seek`.
     func sendCommand(
@@ -458,6 +480,11 @@ final class BrowserBridgeService: NSObject {
         if let ack = BrowserBridgeOutgoingMessage.helloAck(instanceId: hello.instanceId) {
             send(ack, to: socket)
         }
+        if let configure = BrowserBridgeOutgoingMessage.configure(
+            debug: UserDefaults.standard.bool(forKey: "DebugLogLevel")
+        ) {
+            send(configure, to: socket)
+        }
         if let request = BrowserBridgeOutgoingMessage.getState(requestId: UUID().uuidString) {
             send(request, to: socket)
         }
@@ -538,6 +565,10 @@ extension BrowserBridgeService: PSWebSocketServerDelegate {
             handleState(state)
         case .ack(let ack):
             handleAck(ack, socket: webSocket)
+        case .diagnostic(let diagnostic):
+            DDLogDebug(
+                "BrowserBridgeService: diagnostic \(diagnostic.event): \(diagnostic.message)"
+            )
         case .unknown:
             DDLogError("BrowserBridgeService: unknown WebSocket message")
         }

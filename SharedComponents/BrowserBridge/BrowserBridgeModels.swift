@@ -62,10 +62,16 @@ struct BrowserBridgeAck: Decodable {
     let error: String?
 }
 
+struct BrowserBridgeDiagnostic: Decodable {
+    let event: String
+    let message: String
+}
+
 enum BrowserBridgeIncomingMessage {
     case hello(BrowserBridgeHello)
     case state(BrowserBridgeStateMessage)
     case ack(BrowserBridgeAck)
+    case diagnostic(BrowserBridgeDiagnostic)
     case unknown
 
     static func parse(_ data: Data) -> BrowserBridgeIncomingMessage {
@@ -86,6 +92,8 @@ enum BrowserBridgeIncomingMessage {
             return (try? decoder.decode(BrowserBridgeStateMessage.self, from: data)).map(BrowserBridgeIncomingMessage.state) ?? .unknown
         case "ack":
             return (try? decoder.decode(BrowserBridgeAck.self, from: data)).map(BrowserBridgeIncomingMessage.ack) ?? .unknown
+        case "diagnostic":
+            return (try? decoder.decode(BrowserBridgeDiagnostic.self, from: data)).map(BrowserBridgeIncomingMessage.diagnostic) ?? .unknown
         default:
             return .unknown
         }
@@ -99,6 +107,19 @@ enum BrowserBridgeOutgoingMessage {
 
     static func getState(requestId: String) -> Data? {
         encode(["type": "getState", "requestId": requestId])
+    }
+
+    static func configure(debug: Bool) -> Data? {
+        encode(["type": "configure", "debug": debug])
+    }
+
+    static func isActive(requestId: String, tabId: Int, windowId: Int) -> Data? {
+        encode([
+            "type": "isActive",
+            "requestId": requestId,
+            "tabId": tabId,
+            "windowId": windowId
+        ])
     }
 
     static func activateTab(requestId: String, tabId: Int, windowId: Int) -> Data? {
