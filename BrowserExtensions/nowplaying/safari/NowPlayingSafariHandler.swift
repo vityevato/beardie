@@ -35,15 +35,19 @@ final class NowPlayingSafariHandler: NSObject, NSExtensionRequestHandling {
         let port = defaults?.integer(forKey: "BrowserBridgePort") ?? 0
         let token = defaults?.string(forKey: "BrowserBridgeToken") ?? ""
         let protocolVersion = defaults?.integer(forKey: "BrowserBridgeProtocolVersion") ?? 0
-        let currentApplication = NSRunningApplication.current
+
+        // The app extension runs in its own process, so NSRunningApplication.current
+        // is not Safari. Resolve the browser application explicitly.
+        let safari = NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.Safari").first
+            ?? NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.SafariTechnologyPreview").first
 
         return [
             "port": port,
             "token": token,
             "protocolVersion": protocolVersion,
             "browser": "safari",
-            "bundleId": currentApplication.bundleIdentifier ?? "com.apple.Safari",
-            "pid": currentApplication.processIdentifier
+            "bundleId": safari?.bundleIdentifier ?? "com.apple.Safari",
+            "pid": safari?.processIdentifier ?? -1
         ]
     }
 }

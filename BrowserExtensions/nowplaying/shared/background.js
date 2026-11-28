@@ -94,6 +94,16 @@
   async function discoverBridge() {
     const response = await nativeRequest({ msg: "bridge", id: NP.uuid() });
     const body = response.body || response;
+    storageSet(
+      "BeardieNowPlayingBridgeResponse",
+      JSON.stringify({
+        responseKeys: response && typeof response === "object" ? Object.keys(response) : [],
+        bodyKeys: body && typeof body === "object" ? Object.keys(body) : [],
+        port: body && body.port,
+        protocolVersion: body && body.protocolVersion,
+        error: body && body.error
+      })
+    );
     if (!body || !body.port || !body.token || body.protocolVersion !== PROTOCOL_VERSION) {
       throw new Error("bridge endpoint is not available");
     }
