@@ -308,6 +308,7 @@
       bridgeInfo = await discoverBridge();
     } catch (error) {
       log("bridge discovery failed", error);
+      storageSet("BeardieNowPlayingLastError", String(error));
       if (connectTimer) {
         clearTimeout(connectTimer);
       }
@@ -317,6 +318,9 @@
       }, NATIVE_RETRY_DELAY);
       return;
     }
+
+    storageSet("BeardieNowPlayingLastError", "");
+    storageSet("BeardieNowPlayingBridgePort", bridgeInfo.port);
 
     const url = `ws://${HOST}:${bridgeInfo.port}${PATH}?token=${encodeURIComponent(bridgeInfo.token)}`;
     try {
@@ -329,6 +333,7 @@
 
     socket.onopen = function () {
       log("bridge connected");
+      storageSet("BeardieNowPlayingStatus", "connected");
       sendJSON({
         type: "hello",
         protocolVersion: PROTOCOL_VERSION,
@@ -344,10 +349,12 @@
 
     socket.onerror = function () {
       log("bridge socket error");
+      storageSet("BeardieNowPlayingStatus", "error");
     };
 
     socket.onclose = function () {
       socket = null;
+      storageSet("BeardieNowPlayingStatus", "closed");
       scheduleReconnect();
     };
   }
