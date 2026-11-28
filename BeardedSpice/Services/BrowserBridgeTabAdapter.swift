@@ -193,6 +193,7 @@ final class BrowserBridgeTabAdapter: TabAdapter {
 final class NowPlayingBrowserTabs: NSObject {
 
     private static let cacheLock = NSLock()
+    private static let maximumInstanceAge: TimeInterval = 120
     private static var cache: [String: BrowserBridgeTabAdapter] = [:]
 
     @objc static func tabs() -> [BrowserBridgeTabAdapter] {
@@ -201,7 +202,7 @@ final class NowPlayingBrowserTabs: NSObject {
         var current: [String: BrowserBridgeTabAdapter] = [:]
 
         cacheLock.lock()
-        for instance in instances where now.timeIntervalSince(instance.lastUpdatedAt) <= 15 {
+        for instance in instances where now.timeIntervalSince(instance.lastUpdatedAt) <= maximumInstanceAge {
             for tab in instance.tabs where tab.mediaTitle != nil {
                 let key = "\(instance.instanceId)#\(tab.tabId)"
                 let adapter: BrowserBridgeTabAdapter
