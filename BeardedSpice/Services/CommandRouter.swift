@@ -74,6 +74,8 @@ final class CommandRouter: NSObject {
         static let pause = 1
         static let nextTrack = 4
         static let previousTrack = 5
+        static let goBackFifteenSeconds = 12
+        static let skipFifteenSeconds = 13
     }
 
     private enum RoutedCommand {
@@ -158,6 +160,10 @@ final class CommandRouter: NSObject {
             // The page may not expose a media element or a Media Session
             // handler. MediaRemote can still deliver the command to the
             // browser's elected media session.
+            DDLogInfo(
+                "CommandRouter: bridge \(routedCommandName(for: command)) "
+                    + "unavailable, trying MediaRemote"
+            )
             return sendMediaRemoteCommand(for: command, bridge: bridge)
         }
 
@@ -207,14 +213,33 @@ final class CommandRouter: NSObject {
         }
     }
 
+    private func routedCommandName(for command: RoutedCommand) -> String {
+        switch command {
+        case .toggle:
+            return "toggle"
+        case .next:
+            return "next"
+        case .previous:
+            return "previous"
+        case .favorite:
+            return "favorite"
+        }
+    }
+
     private func sendMediaRemoteCommand(for command: RoutedCommand, bridge: BrowserBridgeTabAdapter) -> Bool {
-        guard let bundleIdentifier = mediaRemoteBundleIdentifier(for: bridge),
-              let client = routing.client(matching: bundleIdentifier),
-              let commandIdentifier = mediaRemoteCommand(for: command, client: client)
-        else {
+        guard let bundleIdentifier = mediaRemoteBundleIdentifier(for: bridge) else {
+            DDLogInfo("CommandRouter: bridge tab has no browser bundle identifier")
             return false
         }
-        return sendMediaRemoteCommand(commandIdentifier, to: bundleIdentifier)
+        guard let client = routing.client(matching: bundleIdentifier) else {
+            DDLogInfo("CommandRouter: no MediaRemote client for \(bundleIdentifier)")
+            return false
+        }
+        return sendMediaRemoteCommand(
+            for: command,
+            client: client,
+            bundleIdentifier: bundleIdentifier
+        )
     }
 
     private func sendMediaRemoteCommand(for command: RoutedCommand, native: BSNativeAppTabAdapter) -> Bool {
@@ -224,12 +249,48 @@ final class CommandRouter: NSObject {
         guard let bundleIdentifier = native.application?.bundleIdentifier else {
             return false
         }
-        guard let client = routing.client(matching: bundleIdentifier),
-              let commandIdentifier = mediaRemoteCommand(for: command, client: client)
-        else {
+        guard let client = routing.client(matching: bundleIdentifier) else {
+            DDLogInfo("CommandRouter: no MediaRemote client for \(bundleIdentifier)")
             return false
         }
+        return sendMediaRemoteCommand(
+            for: command,
+            client: client,
+            bundleIdentifier: bundleIdentifier
+        )
+    }
+
+    private func sendMediaRemoteCommand(
+        for command: RoutedCommand,
+        client: NowPlayingClient,
+        bundleIdentifier: String
+    ) -> Bool {
+        guard routing.targetedCommandsAvailable else {
+            return false
+        }
+        guard let commandIdentifier = mediaRemoteCommand(for: command, client: client) else {
+            DDLogInfo(
+                "CommandRouter: no supported MediaRemote command for "
+                    + "\(routedCommandName(for: command)) on \(bundleIdentifier); "
+                    + "available: \(availableCommands(client))"
+            )
+            return false
+        }
+        let commandName = client.supportedCommands
+            .first { $0.identifier == commandIdentifier }?
+            .name ?? "unnamed"
+        DDLogInfo(
+            "CommandRouter: \(routedCommandName(for: command)) -> MediaRemote "
+                + "\(commandIdentifier) (\(commandName)) on \(bundleIdentifier)"
+        )
         return sendMediaRemoteCommand(commandIdentifier, to: bundleIdentifier)
+    }
+
+    private func availableCommands(_ client: NowPlayingClient) -> String {
+        let commands = client.supportedCommands
+            .filter { $0.enabled }
+            .map { "\($0.identifier):\($0.name ?? "unnamed")" }
+        return commands.isEmpty ? "none" : commands.joined(separator: ", ")
     }
 
     private func sendMediaRemoteCommand(
@@ -272,17 +333,62 @@ final class CommandRouter: NSObject {
             }
             return nil
         case .next:
-            let identifier = client.commandIdentifier(named: "NextTrack") ?? MediaCommand.nextTrack
-            return client.supportsCommand(identifier: identifier) == false ? nil : identifier
+            if let identifier = reportedCommand(
+                client,
+                names: ["NextTrack"],
+                fallback: MediaCommand.nextTrack
+            ) {
+                return identifier
+            }
+            return reportedCommand(
+                client,
+                names: [
+                    "SkipFifteenSeconds",
+                    "SkipForward15Seconds",
+                    "SkipForward"
+                ],
+                fallback: MediaCommand.skipFifteenSeconds
+            )
         case .previous:
-            let identifier = client.commandIdentifier(named: "PreviousTrack") ?? MediaCommand.previousTrack
-            return client.supportsCommand(identifier: identifier) == false ? nil : identifier
+            if let identifier = reportedCommand(
+                client,
+                names: ["PreviousTrack"],
+                fallback: MediaCommand.previousTrack
+            ) {
+                return identifier
+            }
+            return reportedCommand(
+                client,
+                names: [
+                    "GoBackFifteenSeconds",
+                    "SkipBackward15Seconds",
+                    "SkipBackward"
+                ],
+                fallback: MediaCommand.goBackFifteenSeconds
+            )
         case .favorite:
             guard let identifier = client.commandIdentifier(named: "LikeTrack") else {
                 return nil
             }
             return client.supportsCommand(identifier: identifier) == false ? nil : identifier
         }
+    }
+
+    /// Prefers a command identifier reported by name and falls back to the
+    /// stable MediaRemote number when the client does not enumerate commands.
+    /// `nil` means the client positively reported that the command is disabled.
+    private func reportedCommand(
+        _ client: NowPlayingClient,
+        names: [String],
+        fallback: Int
+    ) -> Int? {
+        for name in names {
+            if let identifier = client.commandIdentifier(named: name),
+               client.supportsCommand(identifier: identifier) != false {
+                return identifier
+            }
+        }
+        return client.supportsCommand(identifier: fallback) == false ? nil : fallback
     }
 
     private func mediaRemoteBundleIdentifier(for tab: TabAdapter) -> String? {

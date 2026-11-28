@@ -110,6 +110,80 @@ final class CommandRouterTests: XCTestCase {
         XCTAssertEqual(routing.commands.first?.bundle, "test.player")
     }
 
+    func testNextFallsBackToFifteenSecondSkipWhenNextTrackIsUnsupported() {
+        let routing = FakeRouting()
+        routing.client = makeClient(supportedCommands: [
+            NowPlayingCommand(identifier: 13, name: "SkipFifteenSeconds", enabled: true)
+        ])
+        let router = CommandRouter(routing: routing)
+        let selection = makeSelection()
+
+        XCTAssertTrue(router.performNext(with: selection))
+        XCTAssertEqual(routing.commands.first?.identifier, 13)
+    }
+
+    func testPreviousFallsBackToFifteenSecondRewindWhenPreviousTrackIsUnsupported() {
+        let routing = FakeRouting()
+        routing.client = makeClient(supportedCommands: [
+            NowPlayingCommand(identifier: 12, name: "GoBackFifteenSeconds", enabled: true)
+        ])
+        let router = CommandRouter(routing: routing)
+        let selection = makeSelection()
+
+        XCTAssertTrue(router.performPrevious(with: selection))
+        XCTAssertEqual(routing.commands.first?.identifier, 12)
+    }
+
+    func testNextPrefersNextTrackOverFifteenSecondSkip() {
+        let routing = FakeRouting()
+        routing.client = makeClient(supportedCommands: [
+            NowPlayingCommand(identifier: 4, name: "NextTrack", enabled: true),
+            NowPlayingCommand(identifier: 13, name: "SkipFifteenSeconds", enabled: true)
+        ])
+        let router = CommandRouter(routing: routing)
+        let selection = makeSelection()
+
+        XCTAssertTrue(router.performNext(with: selection))
+        XCTAssertEqual(routing.commands.first?.identifier, 4)
+    }
+
+    func testNextUsesReportedSkipForwardIdentifier() {
+        let routing = FakeRouting()
+        routing.client = makeClient(supportedCommands: [
+            NowPlayingCommand(identifier: 113, name: "SkipForward", enabled: true)
+        ])
+        let router = CommandRouter(routing: routing)
+        let selection = makeSelection()
+
+        XCTAssertTrue(router.performNext(with: selection))
+        XCTAssertEqual(routing.commands.first?.identifier, 113)
+    }
+
+    func testPreviousUsesReportedSkipBackwardIdentifier() {
+        let routing = FakeRouting()
+        routing.client = makeClient(supportedCommands: [
+            NowPlayingCommand(identifier: 112, name: "SkipBackward", enabled: true)
+        ])
+        let router = CommandRouter(routing: routing)
+        let selection = makeSelection()
+
+        XCTAssertTrue(router.performPrevious(with: selection))
+        XCTAssertEqual(routing.commands.first?.identifier, 112)
+    }
+
+    func testDisabledSkipCommandsFallBackToLegacyPath() {
+        let routing = FakeRouting()
+        routing.client = makeClient(supportedCommands: [
+            NowPlayingCommand(identifier: 4, name: "NextTrack", enabled: false),
+            NowPlayingCommand(identifier: 13, name: "SkipFifteenSeconds", enabled: false)
+        ])
+        let router = CommandRouter(routing: routing)
+        let selection = makeSelection()
+
+        XCTAssertFalse(router.performNext(with: selection))
+        XCTAssertTrue(routing.commands.isEmpty)
+    }
+
     func testTogglePrefersReportedCommandName() {
         let routing = FakeRouting()
         routing.client = makeClient(supportedCommands: [
