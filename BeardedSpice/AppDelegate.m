@@ -382,11 +382,20 @@ BOOL accessibilityApiEnabled = NO;
 
 - (void)activatePlayingTab{
     __weak typeof(self) wself = self;
-    dispatch_async(_workingQueue, ^{
-        __strong typeof(wself) sself = self;
-        [sself autoSelectTabWithForceFocused:NO];
-        [sself.activeApp activatePlayingTab];
-    });
+    [NowPlayingBrowserTargets toggleWithCompletion:^(BOOL handled) {
+        if (handled) {
+            return;
+        }
+        __strong typeof(wself) sself = wself;
+        if (!sself) {
+            return;
+        }
+        dispatch_async(sself->_workingQueue, ^{
+            __strong typeof(wself) strongSelf = wself;
+            [strongSelf autoSelectTabWithForceFocused:NO];
+            [strongSelf.activeApp activatePlayingTab];
+        });
+    }];
 }
 
 - (void)playerNext{

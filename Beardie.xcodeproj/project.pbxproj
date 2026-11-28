@@ -205,6 +205,7 @@
 		A0C7A2090BD23B17ACD65B8D /* seek.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB71A2D1F1E0DF6ED19211 /* seek.m */; };
 		A2008FB2B471C0AD7B843C5D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */; };
 		A896ABBFCEC1DE0318E552F6 /* BrowserBridgeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DCE4EA841D2A64B14FFA5 /* BrowserBridgeService.swift */; };
+		F1A2B3C4D5E6F708192A3B4D /* BrowserTargetResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A2B3C4D5E6F708192A3B4C /* BrowserTargetResolver.swift */; };
 		A9F52E1EF622FD0AA8E8EF54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */; };
 		AB2DDA43B6C290C4C07E180D /* ArtworkCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB956F319B9BCB7A8430C901 /* ArtworkCache.swift */; };
 		B0094B5BF82D6F445CFE7378 /* shuffle.m in Sources */ = {isa = PBXBuildFile; fileRef = C6CB680A38E914DD0538209A /* shuffle.m */; };
@@ -750,6 +751,7 @@
 		D6BCCF66AE8D9C54CB3C3CE3 /* Debounce.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Debounce.h; sourceTree = "<group>"; };
 		D7C7CFF99A4BEC9F7B0D0222 /* PATCHES.md */ = {isa = PBXFileReference; includeInIndex = 1; path = PATCHES.md; sourceTree = "<group>"; };
 		DB3DCE4EA841D2A64B14FFA5 /* BrowserBridgeService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BrowserBridgeService.swift; sourceTree = "<group>"; };
+		E1A2B3C4D5E6F708192A3B4C /* BrowserTargetResolver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BrowserTargetResolver.swift; sourceTree = "<group>"; };
 		DB956F319B9BCB7A8430C901 /* ArtworkCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ArtworkCache.swift; sourceTree = "<group>"; };
 		DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		E1D8E1F9C30DD053CF6C5055 /* Icon-64.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "Icon-64.png"; sourceTree = "<group>"; };
@@ -1314,6 +1316,7 @@
 				F9A1EF6391D992FBC23E547D /* NowPlayingXPCClient.swift */,
 				1D2F69C18F2CD9535449C4D8 /* NowPlayingCoordinator.swift */,
 				DB3DCE4EA841D2A64B14FFA5 /* BrowserBridgeService.swift */,
+				E1A2B3C4D5E6F708192A3B4C /* BrowserTargetResolver.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -2399,6 +2402,7 @@
 				EC3957AF105033014AF68216 /* NowPlayingCoordinator.swift in Sources */,
 				4F8DFF9C94F3C6CCD5514E34 /* BrowserBridgeModels.swift in Sources */,
 				A896ABBFCEC1DE0318E552F6 /* BrowserBridgeService.swift in Sources */,
+				F1A2B3C4D5E6F708192A3B4D /* BrowserTargetResolver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

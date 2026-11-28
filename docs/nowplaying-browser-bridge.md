@@ -51,7 +51,8 @@ manifest now also allows the new extension ID.
 - tracks instances by `instanceId`, closes the previous connection when a new
   one arrives, and removes the instance on disconnect;
 - handles `hello`, `state` and `ack`;
-- exposes `activeInstances` for Stage 3;
+- exposes `activeInstances` and the Stage 3 `activateTab` / `restoreTab`
+  request/ack API;
 - clears the published endpoint on stop and on app termination;
 - runs only when `UseBrowserBridge` is enabled (default `NO`).
 
@@ -81,7 +82,8 @@ Server to client:
 
 - `helloAck`;
 - `getState` with a request id;
-- `activateTab` / `restoreTab` with tab/window ids (Stage 3 uses these);
+- `activateTab` / `restoreTab` with tab/window ids (used by the Stage 3
+  Raise/Hide flow; see `docs/nowplaying-target-resolver.md`);
 - `command` for play/pause/seek in the content script.
 
 Timestamps in tab state are JavaScript epoch milliseconds; the Swift decoder
@@ -167,10 +169,11 @@ for each dev session.
 
 ## Known limitations
 
-- Stage 2 only collects state. `TargetResolver`, confidence scoring and the
-  full Raise/Hide flow are Stage 3.
+- Stage 2 collected state only. Stage 3 adds `BrowserTargetResolver` and the
+  Raise/Hide flow; see `docs/nowplaying-target-resolver.md`.
 - Content-script commands are limited to play/pause/toggle/seek on the media
-  element; site-specific next/previous is Stage 3/4 work.
+  element; site-specific next/previous is Stage 4 work.
 - Artwork URLs are published, but artwork bytes are not downloaded yet.
-- Same-track ambiguity and background-tab refresh need the Stage 3 resolver.
+- Same-track ambiguity and background-tab refresh are handled by the Stage 3
+  resolver; ambiguous matches intentionally fail closed.
 - The legacy web-strategy bridge and extensions are intentionally unchanged.

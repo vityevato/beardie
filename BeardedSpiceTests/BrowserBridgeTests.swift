@@ -96,4 +96,379 @@ final class BrowserBridgeTests: XCTestCase {
         XCTAssertEqual(object["type"] as? String, "getState")
         XCTAssertEqual(object["requestId"] as? String, "req")
     }
+
+    func testActivateAndRestoreMessageEncoding() throws {
+        let activate = try XCTUnwrap(
+            BrowserBridgeOutgoingMessage.activateTab(requestId: "req", tabId: 5, windowId: 2)
+        )
+        let activateObject = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: activate) as? [String: Any]
+        )
+        XCTAssertEqual(activateObject["type"] as? String, "activateTab")
+        XCTAssertEqual(activateObject["requestId"] as? String, "req")
+        XCTAssertEqual(activateObject["tabId"] as? Int, 5)
+        XCTAssertEqual(activateObject["windowId"] as? Int, 2)
+
+        let restore = try XCTUnwrap(
+            BrowserBridgeOutgoingMessage.restoreTab(requestId: "req2", tabId: 5, windowId: 2)
+        )
+        let restoreObject = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: restore) as? [String: Any]
+        )
+        XCTAssertEqual(restoreObject["type"] as? String, "restoreTab")
+        XCTAssertEqual(restoreObject["requestId"] as? String, "req2")
+    }
+}
+
+final class BrowserTargetResolverTests: XCTestCase {
+
+    func testResolvesExactBrowserTrack() {
+        let now = Date()
+        let target = BrowserTargetResolver.resolve(
+            clients: [
+                makeClient(
+                    title: "Song",
+                    artist: "Artist",
+                    bundleIdentifier: "com.google.Chrome.helper",
+                    parentBundleIdentifier: "com.google.Chrome",
+                    duration: 200,
+                    elapsedTime: 30
+                )
+            ],
+            instances: [
+                makeInstance(
+                    bundleIdentifier: "com.google.Chrome",
+                    tabs: [
+                        makeTab(
+                            tabId: 7,
+                            mediaTitle: "Song",
+                            artist: "Artist",
+                            playbackState: "playing",
+                            position: 30,
+                            duration: 200,
+                            updatedAt: now
+                        )
+                    ],
+                    updatedAt: now
+                )
+            ],
+            now: now
+        )
+
+        XCTAssertEqual(target?.tabId, 7)
+        XCTAssertEqual(target?.instanceId, "instance")
+        XCTAssertEqual(target?.browserBundleIdentifier, "com.google.Chrome")
+    }
+
+    func testRejectsDifferentBrowserBundle() {
+        let now = Date()
+        let target = BrowserTargetResolver.resolve(
+            clients: [
+                makeClient(
+                    title: "Song",
+                    artist: "Artist",
+                    bundleIdentifier: "com.apple.Safari"
+                )
+            ],
+            instances: [
+                makeInstance(
+                    bundleIdentifier: "com.google.Chrome",
+                    tabs: [
+                        makeTab(mediaTitle: "Song", artist: "Artist", playbackState: "playing", updatedAt: now)
+                    ],
+                    updatedAt: now
+                )
+            ],
+            now: now
+        )
+
+        XCTAssertNil(target)
+    }
+
+    func testMatchesChromeHelperBundle() {
+        let now = Date()
+        let target = BrowserTargetResolver.resolve(
+            clients: [
+                makeClient(
+                    title: "Song",
+                    artist: "Artist",
+                    bundleIdentifier: "com.google.Chrome.helper"
+                )
+            ],
+            instances: [
+                makeInstance(
+                    bundleIdentifier: "com.google.Chrome",
+                    tabs: [makeTab(mediaTitle: "Song", artist: "Artist", playbackState: "playing", updatedAt: now)],
+                    updatedAt: now
+                )
+            ],
+            now: now
+        )
+
+        XCTAssertNotNil(target)
+    }
+
+    func testRejectsAmbiguousTabs() {
+        let now = Date()
+        let tabs = [
+            makeTab(tabId: 1, mediaTitle: "Song", artist: "Artist", playbackState: "playing", updatedAt: now),
+            makeTab(tabId: 2, mediaTitle: "Song", artist: "Artist", playbackState: "playing", updatedAt: now)
+        ]
+        let target = BrowserTargetResolver.resolve(
+            clients: [makeClient(title: "Song", artist: "Artist", bundleIdentifier: "com.google.Chrome")],
+            instances: [makeInstance(bundleIdentifier: "com.google.Chrome", tabs: tabs, updatedAt: now)],
+            now: now
+        )
+
+        XCTAssertNil(target)
+    }
+
+    func testPrefersPlayingTab() {
+        let now = Date()
+        let tabs = [
+            makeTab(tabId: 1, active: true, mediaTitle: "Song", artist: "Artist", playbackState: "paused", updatedAt: now),
+            makeTab(tabId: 2, mediaTitle: "Song", artist: "Artist", playbackState: "playing", updatedAt: now)
+        ]
+        let target = BrowserTargetResolver.resolve(
+            clients: [makeClient(title: "Song", artist: "Artist", bundleIdentifier: "com.google.Chrome")],
+            instances: [makeInstance(bundleIdentifier: "com.google.Chrome", tabs: tabs, updatedAt: now)],
+            now: now
+        )
+
+        XCTAssertEqual(target?.tabId, 2)
+    }
+
+    func testRejectsStaleInstance() {
+        let now = Date()
+        let stale = now.addingTimeInterval(-60)
+        let target = BrowserTargetResolver.resolve(
+            clients: [makeClient(title: "Song", artist: "Artist", bundleIdentifier: "com.google.Chrome")],
+            instances: [
+                makeInstance(
+                    bundleIdentifier: "com.google.Chrome",
+                    tabs: [makeTab(mediaTitle: "Song", artist: "Artist", playbackState: "playing", updatedAt: stale)],
+                    updatedAt: stale
+                )
+            ],
+            now: now
+        )
+
+        XCTAssertNil(target)
+    }
+
+    func testRejectsConflictingArtist() {
+        let now = Date()
+        let target = BrowserTargetResolver.resolve(
+            clients: [
+                makeClient(
+                    title: "Song",
+                    artist: "Artist",
+                    bundleIdentifier: "com.google.Chrome",
+                    duration: 200,
+                    elapsedTime: 30
+                )
+            ],
+            instances: [
+                makeInstance(
+                    bundleIdentifier: "com.google.Chrome",
+                    tabs: [
+                        makeTab(
+                            mediaTitle: "Song",
+                            artist: "Different Artist",
+                            playbackState: "playing",
+                            position: 30,
+                            duration: 200,
+                            updatedAt: now
+                        )
+                    ],
+                    updatedAt: now
+                )
+            ],
+            now: now
+        )
+
+        XCTAssertNil(target)
+    }
+
+    func testPicksTheInstanceWithMatchingTrack() {
+        let now = Date()
+        let instances = [
+            makeInstance(
+                instanceId: "first",
+                bundleIdentifier: "com.google.Chrome",
+                tabs: [makeTab(mediaTitle: "Other Song", artist: "Other Artist", playbackState: "playing", updatedAt: now)],
+                updatedAt: now
+            ),
+            makeInstance(
+                instanceId: "second",
+                bundleIdentifier: "com.google.Chrome",
+                tabs: [makeTab(mediaTitle: "Song", artist: "Artist", playbackState: "playing", updatedAt: now)],
+                updatedAt: now
+            )
+        ]
+        let target = BrowserTargetResolver.resolve(
+            clients: [makeClient(title: "Song", artist: "Artist", bundleIdentifier: "com.google.Chrome")],
+            instances: instances,
+            now: now
+        )
+
+        XCTAssertEqual(target?.instanceId, "second")
+    }
+
+    func testIgnoresPausedClient() {
+        let now = Date()
+        let target = BrowserTargetResolver.resolve(
+            clients: [
+                makeClient(
+                    title: "Song",
+                    artist: "Artist",
+                    bundleIdentifier: "com.google.Chrome",
+                    isPlaying: false
+                )
+            ],
+            instances: [
+                makeInstance(
+                    bundleIdentifier: "com.google.Chrome",
+                    tabs: [makeTab(mediaTitle: "Song", artist: "Artist", playbackState: "playing", updatedAt: now)],
+                    updatedAt: now
+                )
+            ],
+            now: now
+        )
+
+        XCTAssertNil(target)
+    }
+
+    func testDeduplicatesClientsThatPointToTheSameTab() {
+        let now = Date()
+        let target = BrowserTargetResolver.resolve(
+            clients: [
+                makeClient(title: "Song", artist: "Artist", bundleIdentifier: "com.google.Chrome"),
+                makeClient(title: "Song", artist: "Artist", bundleIdentifier: "com.google.Chrome")
+            ],
+            instances: [
+                makeInstance(
+                    bundleIdentifier: "com.google.Chrome",
+                    tabs: [makeTab(mediaTitle: "Song", artist: "Artist", playbackState: "playing", updatedAt: now)],
+                    updatedAt: now
+                )
+            ],
+            now: now
+        )
+
+        XCTAssertEqual(target?.tabId, 7)
+    }
+
+    func testRejectsStaleTab() {
+        let now = Date()
+        let stale = now.addingTimeInterval(-60)
+        let target = BrowserTargetResolver.resolve(
+            clients: [makeClient(title: "Song", artist: "Artist", bundleIdentifier: "com.google.Chrome")],
+            instances: [
+                makeInstance(
+                    bundleIdentifier: "com.google.Chrome",
+                    tabs: [makeTab(mediaTitle: "Song", artist: "Artist", playbackState: "playing", updatedAt: stale)],
+                    updatedAt: now
+                )
+            ],
+            now: now
+        )
+
+        XCTAssertNil(target)
+    }
+
+    func testRejectsUnrelatedTitle() {
+        let now = Date()
+        let target = BrowserTargetResolver.resolve(
+            clients: [makeClient(title: "Song", artist: "Artist", bundleIdentifier: "com.google.Chrome")],
+            instances: [
+                makeInstance(
+                    bundleIdentifier: "com.google.Chrome",
+                    tabs: [makeTab(mediaTitle: "Completely Different", artist: "Artist", playbackState: "playing", updatedAt: now)],
+                    updatedAt: now
+                )
+            ],
+            now: now
+        )
+
+        XCTAssertNil(target)
+    }
+
+    // MARK: - Fixtures
+
+    private func makeClient(
+        title: String?,
+        artist: String?,
+        album: String? = nil,
+        bundleIdentifier: String?,
+        parentBundleIdentifier: String? = nil,
+        isPlaying: Bool = true,
+        duration: Double? = nil,
+        elapsedTime: Double? = nil
+    ) -> NowPlayingClient {
+        NowPlayingClient(
+            sourceIdentifier: "\(bundleIdentifier ?? "unknown")-\(title ?? "untitled")",
+            bundleIdentifier: bundleIdentifier,
+            parentBundleIdentifier: parentBundleIdentifier,
+            processIdentifier: 100,
+            displayName: "Browser",
+            title: title,
+            artist: artist,
+            album: album,
+            isPlaying: isPlaying,
+            playbackRate: isPlaying ? 1 : 0,
+            duration: duration,
+            elapsedTime: elapsedTime,
+            timestamp: nil,
+            supportedCommands: [],
+            artworkMimeType: nil,
+            artworkFingerprint: nil
+        )
+    }
+
+    private func makeInstance(
+        instanceId: String = "instance",
+        bundleIdentifier: String,
+        tabs: [BrowserBridgeTab],
+        updatedAt: Date
+    ) -> BrowserBridgeInstance {
+        BrowserBridgeInstance(
+            instanceId: instanceId,
+            browser: bundleIdentifier,
+            bundleIdentifier: bundleIdentifier,
+            processIdentifier: 200,
+            protocolVersion: BrowserBridgeProtocol.version,
+            tabs: tabs,
+            lastUpdatedAt: updatedAt
+        )
+    }
+
+    private func makeTab(
+        tabId: Int = 7,
+        windowId: Int = 1,
+        active: Bool = false,
+        mediaTitle: String?,
+        artist: String?,
+        album: String? = nil,
+        playbackState: String?,
+        position: Double? = nil,
+        duration: Double? = nil,
+        updatedAt: Date
+    ) -> BrowserBridgeTab {
+        BrowserBridgeTab(
+            tabId: tabId,
+            windowId: windowId,
+            active: active,
+            title: mediaTitle,
+            url: "https://example.com",
+            mediaTitle: mediaTitle,
+            artist: artist,
+            album: album,
+            playbackState: playbackState,
+            position: position,
+            duration: duration,
+            artworkURLs: [],
+            updatedAt: updatedAt
+        )
+    }
 }

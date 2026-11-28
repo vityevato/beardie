@@ -22,12 +22,20 @@ final class BrowserBridgeService: NSObject {
         var instanceId: String?
     }
 
+    private struct PendingRequest {
+        let instanceId: String
+        let completion: (Bool) -> Void
+        let timeout: DispatchWorkItem
+    }
+
     private let queue = DispatchQueue(label: "com.calm-apps.mac.beardie.browser-bridge")
+    private let requestTimeout: TimeInterval = 3
     private var server: PSWebSocketServer?
     private var port: UInt16 = 0
     private var token = ""
     private var connections: [ObjectIdentifier: Connection] = [:]
     private var instances: [String: BrowserBridgeInstance] = [:]
+    private var pendingRequests: [String: PendingRequest] = [:]
     private var started = false
 
     static let shared = BrowserBridgeService()
@@ -93,6 +101,7 @@ final class BrowserBridgeService: NSObject {
 
     func stop() {
         queue.async {
+            self.failAllPendingRequests(reason: "service stopped")
             self.server?.stop()
             self.server = nil
             self.started = false
@@ -108,6 +117,53 @@ final class BrowserBridgeService: NSObject {
         }
     }
 
+    func hasActiveInstance(_ instanceId: String) -> Bool {
+        queue.sync {
+            instances[instanceId] != nil
+        }
+    }
+
+    /// Asks an extension instance to activate a tab and focus its window.
+    func activateTab(
+        instanceId: String,
+        tabId: Int,
+        windowId: Int,
+        completion: @escaping (Bool) -> Void
+    ) {
+        sendTabCommand(
+            instanceId: instanceId,
+            builder: { requestId in
+                BrowserBridgeOutgoingMessage.activateTab(
+                    requestId: requestId,
+                    tabId: tabId,
+                    windowId: windowId
+                )
+            },
+            completion: completion
+        )
+    }
+
+    /// Asks an extension instance to return to the tab that was active before
+    /// the last `activateTab`.
+    func restoreTab(
+        instanceId: String,
+        tabId: Int,
+        windowId: Int,
+        completion: @escaping (Bool) -> Void
+    ) {
+        sendTabCommand(
+            instanceId: instanceId,
+            builder: { requestId in
+                BrowserBridgeOutgoingMessage.restoreTab(
+                    requestId: requestId,
+                    tabId: tabId,
+                    windowId: windowId
+                )
+            },
+            completion: completion
+        )
+    }
+
     // MARK: - Private
 
     private func clearPublishedEndpoint() {
@@ -119,7 +175,7 @@ final class BrowserBridgeService: NSObject {
     }
 
     private func findFreePort() -> UInt16? {
-        let fd = socket(AF_INET, SOCK_STREAM, 0)
+        let fd = Darwin.socket(AF_INET, SOCK_STREAM, 0)
         guard fd >= 0 else {
             return nil
         }
@@ -184,6 +240,97 @@ final class BrowserBridgeService: NSObject {
 
     private func instanceId(for socket: PSWebSocket) -> String? {
         connections[ObjectIdentifier(socket)]?.instanceId
+    }
+
+    private func socket(for instanceId: String) -> PSWebSocket? {
+        connections.first(where: { $0.value.instanceId == instanceId })?.value.socket
+    }
+
+    private func sendTabCommand(
+        instanceId: String,
+        builder: (String) -> Data?,
+        completion: @escaping (Bool) -> Void
+    ) {
+        let requestId = UUID().uuidString
+        guard let data = builder(requestId) else {
+            DDLogError("BrowserBridgeService: failed to encode a tab command")
+            DispatchQueue.main.async { completion(false) }
+            return
+        }
+
+        queue.async { [weak self] in
+            guard let self else {
+                DispatchQueue.main.async { completion(false) }
+                return
+            }
+            guard self.instances[instanceId] != nil, let socket = self.socket(for: instanceId) else {
+                DDLogError("BrowserBridgeService: instance \(instanceId) is not connected")
+                DispatchQueue.main.async { completion(false) }
+                return
+            }
+
+            let timeout = DispatchWorkItem { [weak self] in
+                self?.failPendingRequest(requestId, reason: "timeout")
+            }
+            self.pendingRequests[requestId] = PendingRequest(
+                instanceId: instanceId,
+                completion: completion,
+                timeout: timeout
+            )
+            self.queue.asyncAfter(deadline: .now() + self.requestTimeout, execute: timeout)
+            self.send(data, to: socket)
+        }
+    }
+
+    private func handleAck(_ ack: BrowserBridgeAck, socket: PSWebSocket) {
+        guard let pending = pendingRequests.removeValue(forKey: ack.requestId) else {
+            DDLogError("BrowserBridgeService: ack for unknown request \(ack.requestId)")
+            return
+        }
+        pending.timeout.cancel()
+
+        let matched = pending.instanceId == instanceId(for: socket)
+        if !matched {
+            DDLogError(
+                "BrowserBridgeService: ack \(ack.requestId) came from a different instance"
+            )
+        }
+        if !ack.success {
+            DDLogError(
+                "BrowserBridgeService: request \(ack.requestId) failed: \(ack.error ?? "unknown")"
+            )
+        }
+        DispatchQueue.main.async {
+            pending.completion(ack.success && matched)
+        }
+    }
+
+    private func failPendingRequest(_ requestId: String, reason: String) {
+        guard let pending = pendingRequests.removeValue(forKey: requestId) else {
+            return
+        }
+        pending.timeout.cancel()
+        DDLogError(
+            "BrowserBridgeService: request \(requestId) for \(pending.instanceId) failed: \(reason)"
+        )
+        DispatchQueue.main.async {
+            pending.completion(false)
+        }
+    }
+
+    private func failPendingRequests(for instanceId: String, reason: String) {
+        let requestIds = pendingRequests
+            .filter { $0.value.instanceId == instanceId }
+            .map(\.key)
+        for requestId in requestIds {
+            failPendingRequest(requestId, reason: reason)
+        }
+    }
+
+    private func failAllPendingRequests(reason: String) {
+        for requestId in Array(pendingRequests.keys) {
+            failPendingRequest(requestId, reason: reason)
+        }
     }
 
     private func handleHello(_ hello: BrowserBridgeHello, socket: PSWebSocket) {
@@ -295,9 +442,7 @@ extension BrowserBridgeService: PSWebSocketServerDelegate {
         case .state(let state):
             handleState(state)
         case .ack(let ack):
-            if !ack.success {
-                DDLogError("BrowserBridgeService: request \(ack.requestId) failed: \(ack.error ?? "unknown")")
-            }
+            handleAck(ack, socket: webSocket)
         case .unknown:
             DDLogError("BrowserBridgeService: unknown WebSocket message")
         }
@@ -311,6 +456,7 @@ extension BrowserBridgeService: PSWebSocketServerDelegate {
         let key = ObjectIdentifier(webSocket)
         if let instanceId = connections[key]?.instanceId {
             connections.removeValue(forKey: key)
+            failPendingRequests(for: instanceId, reason: "instance disconnected")
             if !connections.values.contains(where: { $0.instanceId == instanceId }) {
                 instances.removeValue(forKey: instanceId)
             }
