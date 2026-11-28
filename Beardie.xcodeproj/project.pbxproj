@@ -12,7 +12,9 @@
 		037CF82AA8A5403B48327594 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 780846F1EDE3B34F29F09EF5 /* CocoaLumberjack */; };
 		03A34922185EA43900C4A62B /* MediaStrategyRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 03A34921185EA43900C4A62B /* MediaStrategyRegistry.m */; };
 		045B0B434BF2139A3681B73B /* NowPlayingSnapshotCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD55C0275A2D592C8153C70 /* NowPlayingSnapshotCache.swift */; };
+		04658325BFA2A278BB5B698E /* NowPlayingSafari.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D52E249BE7140C407CCDEACE /* NowPlayingSafari.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		09F895EB97137EB272C822FA /* Debounce.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A4B18514360CD21AD907CA /* Debounce.m */; };
+		0B03233603F73A4E61B04396 /* NowPlayingSafariHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186DFEEA1DB2AA3D3A7A3E86 /* NowPlayingSafariHandler.swift */; };
 		0B064FFE1DC6A85A00CD5F35 /* BSActiveTab.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B064FFD1DC6A85A00CD5F35 /* BSActiveTab.m */; };
 		0B1AF37E1CCE4D4C0021BBEA /* BSMediaStrategyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B1AF3761CCE4D4C0021BBEA /* BSMediaStrategyTests.m */; };
 		0B1AF37F1CCE4D4C0021BBEA /* BSStrategyMockObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B1AF3781CCE4D4C0021BBEA /* BSStrategyMockObject.m */; };
@@ -45,9 +47,11 @@
 		3CD4F9B6279935D1A5B71CCE /* ShortcutsPreferencesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1A2AAAF06FBB4626AD6FFB /* ShortcutsPreferencesUITests.swift */; };
 		3D987C86935A23553DF3A11C /* globals.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC59A045B04665E5D7948F7 /* globals.m */; };
 		4C41A3726999086B9CCA45B1 /* BSShortcutEventTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4CACA789483BA07FBD96DE /* BSShortcutEventTap.swift */; };
+		4F8DFF9C94F3C6CCD5514E34 /* BrowserBridgeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C3DD602F8A829FD788F8F5 /* BrowserBridgeModels.swift */; };
 		4FD1132CBBCB9DDF9CCEF808 /* NowPlayingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9621A4C7E86CE19BD2AD4CF /* NowPlayingModels.swift */; };
 		54FAC60CEB567D53D76FD864 /* get.m in Sources */ = {isa = PBXBuildFile; fileRef = B3F8C131A161DB8E1DE077E3 /* get.m */; };
 		5AA90210622F2E2DEDBFC2A3 /* MASPreferences in Frameworks */ = {isa = PBXBuildFile; productRef = 519A1D3E8F8915A196AFEB69 /* MASPreferences */; };
+		5BCDA72714259BB61F49F54D /* BrowserBridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E33272D04E0BAE8B12EAE64 /* BrowserBridgeTests.swift */; };
 		5E80769F1D58CE180002855D /* DowncastTabAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E80769E1D58CE180002855D /* DowncastTabAdapter.m */; };
 		60749B9F458FF7C680AF171E /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1C1B7CCBA8D6E62A248DC97D /* CocoaLumberjackSwift */; };
 		60A8223A317DA3D54DE9F0C1 /* commands.m in Sources */ = {isa = PBXBuildFile; fileRef = 812A6563A5A9C98B62A10518 /* commands.m */; };
@@ -200,6 +204,8 @@
 		9FF061B0C62A1B02B909E474 /* repeat.m in Sources */ = {isa = PBXBuildFile; fileRef = 6008BAC022E492CAC19BE019 /* repeat.m */; };
 		A0C7A2090BD23B17ACD65B8D /* seek.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BBB71A2D1F1E0DF6ED19211 /* seek.m */; };
 		A2008FB2B471C0AD7B843C5D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */; };
+		A896ABBFCEC1DE0318E552F6 /* BrowserBridgeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DCE4EA841D2A64B14FFA5 /* BrowserBridgeService.swift */; };
+		A9F52E1EF622FD0AA8E8EF54 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */; };
 		AB2DDA43B6C290C4C07E180D /* ArtworkCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB956F319B9BCB7A8430C901 /* ArtworkCache.swift */; };
 		B0094B5BF82D6F445CFE7378 /* shuffle.m in Sources */ = {isa = PBXBuildFile; fileRef = C6CB680A38E914DD0538209A /* shuffle.m */; };
 		B2D1F58BBA6AC185137ADF61 /* reset.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B06D7970596243B7E71EE3D /* reset.m */; };
@@ -312,6 +318,13 @@
 			remoteGlobalIDString = 9679332B1855173100A49AC7;
 			remoteInfo = BeardedSpice;
 		};
+		B916D98038DEC8059FC3B422 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 967933241855173100A49AC7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8FA6D5F7B7732E1E23ED0939;
+			remoteInfo = NowPlayingSafari;
+		};
 		FDC1579A4F5472AC3C37D6C6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 967933241855173100A49AC7 /* Project object */;
@@ -329,6 +342,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				65384DB221874F810029D9E9 /* BS-Extension.appex in Embed App Extensions */,
+				04658325BFA2A278BB5B698E /* NowPlayingSafari.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -429,6 +443,7 @@
 		03A34921185EA43900C4A62B /* MediaStrategyRegistry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MediaStrategyRegistry.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		03F33ECB1855306A00E8F77E /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		0534FF322142FE9988BEBF4F /* BSHeadphoneStatusListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSHeadphoneStatusListener.swift; sourceTree = "<group>"; };
+		09C3DD602F8A829FD788F8F5 /* BrowserBridgeModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BrowserBridgeModels.swift; sourceTree = "<group>"; };
 		0A3CC6D1226B703B51A24800 /* helpers.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = helpers.m; sourceTree = "<group>"; };
 		0B064FFC1DC6A85A00CD5F35 /* BSActiveTab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSActiveTab.h; sourceTree = "<group>"; };
 		0B064FFD1DC6A85A00CD5F35 /* BSActiveTab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSActiveTab.m; sourceTree = "<group>"; };
@@ -447,24 +462,33 @@
 		0BF06ADF1C9513A800534083 /* BSTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSTrack.h; sourceTree = "<group>"; };
 		0BF06AE01C9513A800534083 /* BSTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSTrack.m; sourceTree = "<group>"; };
 		177EAB8018EE070F97E9501C /* AppTabKeyEventTap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppTabKeyEventTap.swift; sourceTree = "<group>"; };
+		186DFEEA1DB2AA3D3A7A3E86 /* NowPlayingSafariHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingSafariHandler.swift; sourceTree = "<group>"; };
+		191E61A21423A1777CE626BE /* manifest.json */ = {isa = PBXFileReference; includeInIndex = 1; path = manifest.json; sourceTree = "<group>"; };
 		1A1A2AAAF06FBB4626AD6FFB /* ShortcutsPreferencesUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesUITests.swift; sourceTree = "<group>"; };
 		1D2F69C18F2CD9535449C4D8 /* NowPlayingCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingCoordinator.swift; sourceTree = "<group>"; };
 		1F8B55E2E2CCA82B4505AAD7 /* stream.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = stream.m; sourceTree = "<group>"; };
 		21C96FF5FC626051AEDA3C66 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		24233D95971E5FB9DAA6E5DA /* BSShortcuts+KeyboardShortcuts.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "BSShortcuts+KeyboardShortcuts.swift"; sourceTree = "<group>"; };
+		28698E1DB447071E3ED890C3 /* manifest.json */ = {isa = PBXFileReference; includeInIndex = 1; path = manifest.json; sourceTree = "<group>"; };
+		2B81FEA055512329B72A3898 /* background.js */ = {isa = PBXFileReference; includeInIndex = 1; path = background.js; sourceTree = "<group>"; };
 		2DD55C0275A2D592C8153C70 /* NowPlayingSnapshotCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingSnapshotCache.swift; sourceTree = "<group>"; };
 		2E80BB8CFE4F17EB3DEDAF4F /* test.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = test.m; sourceTree = "<group>"; };
+		333568EBE1CAE77F492A0F43 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3569E9E4448CAEFF957E9E8C /* content.js */ = {isa = PBXFileReference; includeInIndex = 1; path = content.js; sourceTree = "<group>"; };
 		37110DB6DEBBDAF6C3F36091 /* NowPlayingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingService.swift; sourceTree = "<group>"; };
 		3763528BF58BECAC78B16609 /* NowPlayingTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingTests.swift; sourceTree = "<group>"; };
 		3B86229D8E1D338B04FCAB72 /* CMakeLists.txt */ = {isa = PBXFileReference; includeInIndex = 1; path = CMakeLists.txt; sourceTree = "<group>"; };
 		3D60449FA012EE9C34A7BF28 /* MediaRemoteAdapter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MediaRemoteAdapter.h; sourceTree = "<group>"; };
+		3E2DD6F569C2DEF9946776E7 /* Icon-16.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "Icon-16.png"; sourceTree = "<group>"; };
 		4E61A45C681C7B2C5EBE5B83 /* BeardedSpiceControllers-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BeardedSpiceControllers-Bridging-Header.h"; sourceTree = "<group>"; };
+		5A5F3203F57A6405655DC825 /* NowPlayingSafari.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = NowPlayingSafari.entitlements; sourceTree = "<group>"; };
 		5E80769C1D58CE180002855D /* Downcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Downcast.h; sourceTree = "<group>"; };
 		5E80769D1D58CE180002855D /* DowncastTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DowncastTabAdapter.h; sourceTree = "<group>"; };
 		5E80769E1D58CE180002855D /* DowncastTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DowncastTabAdapter.m; sourceTree = "<group>"; };
 		5F54992BB9A44246BD8C516F /* BeardieUITestCase.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BeardieUITestCase.swift; sourceTree = "<group>"; };
 		5F925F5162624E0C489F85F8 /* BSCService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSCService.swift; sourceTree = "<group>"; };
 		6008BAC022E492CAC19BE019 /* repeat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = repeat.m; sourceTree = "<group>"; };
+		60ACA9896F5792E6FB05E9E3 /* Icon-128.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "Icon-128.png"; sourceTree = "<group>"; };
 		65063FEA233DE94E0015F558 /* DeezerTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeezerTabAdapter.m; sourceTree = "<group>"; };
 		65063FEC233DE9660015F558 /* DeezerTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeezerTabAdapter.h; sourceTree = "<group>"; };
 		6506A714237604A800DAC132 /* Music.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Music.h; sourceTree = "<group>"; };
@@ -496,6 +520,7 @@
 		651967C11AB3A0B200B48D3A /* iTunesTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTunesTabAdapter.m; sourceTree = "<group>"; };
 		6519DAC2266D23690045C6B3 /* Components.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Components.entitlements; sourceTree = "<group>"; };
 		651F4E3B1F5365C800D7F94F /* BSPredicateToJSTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSPredicateToJSTests.m; sourceTree = "<group>"; };
+		652165144290A459CCA5A173 /* utils.js */ = {isa = PBXFileReference; includeInIndex = 1; path = utils.js; sourceTree = "<group>"; };
 		652AD3361CC04A7C005396CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/GeneralPreferencesView.xib; sourceTree = "<group>"; };
 		652AD3371CC04A7C005396CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ShortcutsPreferencesView.xib; sourceTree = "<group>"; };
 		652AD3381CC04A7D005396CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -689,6 +714,7 @@
 		8A4CACA789483BA07FBD96DE /* BSShortcutEventTap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BSShortcutEventTap.swift; sourceTree = "<group>"; };
 		8ABEB03AF4894496690FDD4E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
 		8BBB71A2D1F1E0DF6ED19211 /* seek.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = seek.m; sourceTree = "<group>"; };
+		8E33272D04E0BAE8B12EAE64 /* BrowserBridgeTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BrowserBridgeTests.swift; sourceTree = "<group>"; };
 		9679332C1855173100A49AC7 /* Beardie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beardie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9679332F1855173100A49AC7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		967933321855173100A49AC7 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -707,26 +733,33 @@
 		9CEA6800521801ED6F535969 /* keys.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = keys.m; sourceTree = "<group>"; };
 		A2969C5813B95FA63B91B3AF /* BeardieUITests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "BeardieUITests-Info.plist"; sourceTree = "<group>"; };
 		A5CA0F685E90B8DF0A7B8DB8 /* helpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = helpers.h; sourceTree = "<group>"; };
+		A93EF3EF5903CFDD359170F2 /* background.js */ = {isa = PBXFileReference; includeInIndex = 1; path = background.js; sourceTree = "<group>"; };
 		A9A4B18514360CD21AD907CA /* Debounce.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Debounce.m; sourceTree = "<group>"; };
 		AD54E77BAF3752964C718E42 /* BeardieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeardieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF599B983308676100340731 /* MediaRemoteAdapter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MediaRemoteAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3F8C131A161DB8E1DE077E3 /* get.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = get.m; sourceTree = "<group>"; };
 		B6BB87BFF0897D6F5107DEA4 /* MediaRemoteAdapterRunner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MediaRemoteAdapterRunner.swift; sourceTree = "<group>"; };
 		B6E2E21B781E707795A32737 /* NowPlayingParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingParser.swift; sourceTree = "<group>"; };
+		C1208D28C0BFF26E750514FB /* Icon-32.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "Icon-32.png"; sourceTree = "<group>"; };
 		C3DC60A14FAB3CB277B320B6 /* main.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C6CB680A38E914DD0538209A /* shuffle.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = shuffle.m; sourceTree = "<group>"; };
 		D09EFF1F1C8CD49E00B24DA9 /* VLCTabAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLCTabAdapter.m; sourceTree = "<group>"; };
 		D09EFF201C8CD49E00B24DA9 /* VLCTabAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLCTabAdapter.h; sourceTree = "<group>"; };
 		D09EFF211C8CD49E00B24DA9 /* VLC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLC.h; sourceTree = "<group>"; };
+		D52E249BE7140C407CCDEACE /* NowPlayingSafari.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NowPlayingSafari.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6BCCF66AE8D9C54CB3C3CE3 /* Debounce.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Debounce.h; sourceTree = "<group>"; };
 		D7C7CFF99A4BEC9F7B0D0222 /* PATCHES.md */ = {isa = PBXFileReference; includeInIndex = 1; path = PATCHES.md; sourceTree = "<group>"; };
+		DB3DCE4EA841D2A64B14FFA5 /* BrowserBridgeService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BrowserBridgeService.swift; sourceTree = "<group>"; };
 		DB956F319B9BCB7A8430C901 /* ArtworkCache.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ArtworkCache.swift; sourceTree = "<group>"; };
 		DE9AACFB1961D5DCA763AC70 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		E1D8E1F9C30DD053CF6C5055 /* Icon-64.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "Icon-64.png"; sourceTree = "<group>"; };
 		E2FC1583166C06395C41110D /* NowPlayingTest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = NowPlayingTest.m; sourceTree = "<group>"; };
 		E5536A04BE81540A68349955 /* env.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = env.m; sourceTree = "<group>"; };
+		E90E46FA60D797BCB5780BAE /* Icon-48.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "Icon-48.png"; sourceTree = "<group>"; };
 		E9B9C7D8C114B178336D1BA8 /* main.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		EA1176DDCF94A7DDBF34B7F2 /* MediaRemote.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MediaRemote.h; sourceTree = "<group>"; };
 		F621822BDA09C91C224A4FE7 /* BeardedSpiceControllers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BeardedSpiceControllers.swift; sourceTree = "<group>"; };
+		F6D643BD210B6BEEFA578F83 /* NowPlayingSafari-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NowPlayingSafari-Bridging-Header.h"; sourceTree = "<group>"; };
 		F778B687506EE541C4BD210C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
 		F9621A4C7E86CE19BD2AD4CF /* NowPlayingModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingModels.swift; sourceTree = "<group>"; };
 		F9A1EF6391D992FBC23E547D /* NowPlayingXPCClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingXPCClient.swift; sourceTree = "<group>"; };
@@ -814,6 +847,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CFF94E1D58E4F78007D739E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A9F52E1EF622FD0AA8E8EF54 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EDD2E54CD1CA787CEBFD5020 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -897,6 +938,7 @@
 				6507C2632002D311003D4B1A /* sharedFiles */,
 				6507C26E2002D311003D4B1A /* safari */,
 				6507C2742002D311003D4B1A /* chrome */,
+				E4736E24BD4DCE9710FF81CC /* nowplaying */,
 			);
 			path = BrowserExtensions;
 			sourceTree = SOURCE_ROOT;
@@ -1047,6 +1089,7 @@
 				65E58D3B24968BA900DB66DB /* SharedResources.swift */,
 				6C58FCDC84FC349897E1099F /* BSShortcuts.swift */,
 				E759069E0A9B7079D77761C7 /* NowPlaying */,
+				F80DB3840302F9D5D365A6DC /* BrowserBridge */,
 			);
 			path = SharedComponents;
 			sourceTree = "<group>";
@@ -1270,6 +1313,7 @@
 				177EAB8018EE070F97E9501C /* AppTabKeyEventTap.swift */,
 				F9A1EF6391D992FBC23E547D /* NowPlayingXPCClient.swift */,
 				1D2F69C18F2CD9535449C4D8 /* NowPlayingCoordinator.swift */,
+				DB3DCE4EA841D2A64B14FFA5 /* BrowserBridgeService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1304,6 +1348,16 @@
 			);
 			name = Vendor;
 			path = Vendor;
+			sourceTree = "<group>";
+		};
+		7107BB23F463D5B0A2B47BA2 /* chrome */ = {
+			isa = PBXGroup;
+			children = (
+				191E61A21423A1777CE626BE /* manifest.json */,
+				A93EF3EF5903CFDD359170F2 /* background.js */,
+			);
+			name = chrome;
+			path = chrome;
 			sourceTree = "<group>";
 		};
 		84AC779970D273C35398B72B /* adapter */ = {
@@ -1385,6 +1439,7 @@
 				65AA48F925F585A400D19C60 /* BeardieLaunchAtLogin.app */,
 				AD54E77BAF3752964C718E42 /* BeardieUITests.xctest */,
 				AF599B983308676100340731 /* MediaRemoteAdapter.framework */,
+				D52E249BE7140C407CCDEACE /* NowPlayingSafari.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1476,6 +1531,7 @@
 				65F4AC0824953654000EB61F /* BSSwiftTest.swift */,
 				65F4AC0724953654000EB61F /* BeardieTests-Bridging-Header.h */,
 				3763528BF58BECAC78B16609 /* NowPlayingTests.swift */,
+				8E33272D04E0BAE8B12EAE64 /* BrowserBridgeTests.swift */,
 			);
 			path = BeardedSpiceTests;
 			sourceTree = "<group>";
@@ -1538,6 +1594,42 @@
 			path = BeardieUITests;
 			sourceTree = "<group>";
 		};
+		CCCF9F5FEA5D246E33C49163 /* icons */ = {
+			isa = PBXGroup;
+			children = (
+				3E2DD6F569C2DEF9946776E7 /* Icon-16.png */,
+				C1208D28C0BFF26E750514FB /* Icon-32.png */,
+				E90E46FA60D797BCB5780BAE /* Icon-48.png */,
+				E1D8E1F9C30DD053CF6C5055 /* Icon-64.png */,
+				60ACA9896F5792E6FB05E9E3 /* Icon-128.png */,
+			);
+			name = icons;
+			path = icons;
+			sourceTree = "<group>";
+		};
+		E4736E24BD4DCE9710FF81CC /* nowplaying */ = {
+			isa = PBXGroup;
+			children = (
+				F441A8DACC106C02ECDAC405 /* safari */,
+				E56F63A0BD992E92EBBAA798 /* shared */,
+				7107BB23F463D5B0A2B47BA2 /* chrome */,
+				CCCF9F5FEA5D246E33C49163 /* icons */,
+			);
+			name = nowplaying;
+			path = nowplaying;
+			sourceTree = "<group>";
+		};
+		E56F63A0BD992E92EBBAA798 /* shared */ = {
+			isa = PBXGroup;
+			children = (
+				652165144290A459CCA5A173 /* utils.js */,
+				3569E9E4448CAEFF957E9E8C /* content.js */,
+				2B81FEA055512329B72A3898 /* background.js */,
+			);
+			name = shared;
+			path = shared;
+			sourceTree = "<group>";
+		};
 		E759069E0A9B7079D77761C7 /* NowPlaying */ = {
 			isa = PBXGroup;
 			children = (
@@ -1548,6 +1640,28 @@
 			);
 			name = NowPlaying;
 			path = NowPlaying;
+			sourceTree = "<group>";
+		};
+		F441A8DACC106C02ECDAC405 /* safari */ = {
+			isa = PBXGroup;
+			children = (
+				186DFEEA1DB2AA3D3A7A3E86 /* NowPlayingSafariHandler.swift */,
+				F6D643BD210B6BEEFA578F83 /* NowPlayingSafari-Bridging-Header.h */,
+				333568EBE1CAE77F492A0F43 /* Info.plist */,
+				5A5F3203F57A6405655DC825 /* NowPlayingSafari.entitlements */,
+				28698E1DB447071E3ED890C3 /* manifest.json */,
+			);
+			name = safari;
+			path = safari;
+			sourceTree = "<group>";
+		};
+		F80DB3840302F9D5D365A6DC /* BrowserBridge */ = {
+			isa = PBXGroup;
+			children = (
+				09C3DD602F8A829FD788F8F5 /* BrowserBridgeModels.swift */,
+			);
+			name = BrowserBridge;
+			path = BrowserBridge;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1748,6 +1862,24 @@
 			productReference = 65E6E0522370AC7A009C9448 /* beardie-nm-connector */;
 			productType = "com.apple.product-type.tool";
 		};
+		8FA6D5F7B7732E1E23ED0939 /* NowPlayingSafari */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB5C774FAF528542B29A78E1 /* Build configuration list for PBXNativeTarget "NowPlayingSafari" */;
+			buildPhases = (
+				1C58AF78BE79644293AD3A2F /* Sources */,
+				CFF94E1D58E4F78007D739E3 /* Frameworks */,
+				70351C13B4475FC50E5538D6 /* Resources */,
+				F0296E54DBDE9E5753318F48 /* Copy Safari Web Extension resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NowPlayingSafari;
+			productName = NowPlayingSafari;
+			productReference = D52E249BE7140C407CCDEACE /* NowPlayingSafari.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		9679332B1855173100A49AC7 /* Beardie */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9679335D1855173100A49AC7 /* Build configuration list for PBXNativeTarget "Beardie" */;
@@ -1772,6 +1904,7 @@
 				65322924200415EB004CE66E /* PBXTargetDependency */,
 				656AFFF41C8ACDCF00BD29F5 /* PBXTargetDependency */,
 				65384DB121874F810029D9E9 /* PBXTargetDependency */,
+				B99C8D1097E3157D867335D3 /* PBXTargetDependency */,
 			);
 			name = Beardie;
 			packageProductDependencies = (
@@ -1931,6 +2064,7 @@
 				65AA48F825F585A400D19C60 /* BeardieLaunchAtLogin */,
 				3929A7CAEF49C4BE3076E96D /* BeardieUITests */,
 				2CF42A8909F8AF023D081B10 /* MediaRemoteAdapter */,
+				8FA6D5F7B7732E1E23ED0939 /* NowPlayingSafari */,
 			);
 		};
 /* End PBXProject section */
@@ -1958,6 +2092,13 @@
 			files = (
 				65AA494025F61C0C00D19C60 /* Images.xcassets in Resources */,
 				65AA490625F585A500D19C60 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		70351C13B4475FC50E5538D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2025,9 +2166,35 @@
 			shellPath = /bin/bash;
 			shellScript = "\nRESOURCES=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\ncp -fpv \"${XC_CONSTANT_JS_FILE}\" \"$RESOURCES/constants.js\" || exit 1\n";
 		};
+		F0296E54DBDE9E5753318F48 /* Copy Safari Web Extension resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Safari Web Extension resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nDEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\nmkdir -p \"$DEST/shared\" \"$DEST/icons\"\ncp \"$SRCROOT/BrowserExtensions/nowplaying/safari/manifest.json\" \"$DEST/manifest.json\"\ncp \"$SRCROOT/BrowserExtensions/nowplaying/shared/\"*.js \"$DEST/shared/\"\ncp \"$SRCROOT/BrowserExtensions/nowplaying/icons/\"*.png \"$DEST/icons/\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1C58AF78BE79644293AD3A2F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B03233603F73A4E61B04396 /* NowPlayingSafariHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		20FBB3A7F219CB54E4AEE128 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2230,6 +2397,8 @@
 				045B0B434BF2139A3681B73B /* NowPlayingSnapshotCache.swift in Sources */,
 				69C66F072602A65B6429D34E /* NowPlayingXPCClient.swift in Sources */,
 				EC3957AF105033014AF68216 /* NowPlayingCoordinator.swift in Sources */,
+				4F8DFF9C94F3C6CCD5514E34 /* BrowserBridgeModels.swift in Sources */,
+				A896ABBFCEC1DE0318E552F6 /* BrowserBridgeService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2247,6 +2416,7 @@
 				65D57FCD1D02CCB00016F270 /* NSURL+Utils.m in Sources */,
 				0B1AF3801CCE4D4C0021BBEA /* BSStrategyTests.m in Sources */,
 				E46BC5A51F49D9866D73CC4D /* NowPlayingTests.swift in Sources */,
+				5BCDA72714259BB61F49F54D /* BrowserBridgeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2318,6 +2488,12 @@
 			isa = PBXTargetDependency;
 			target = 9679332B1855173100A49AC7 /* Beardie */;
 			targetProxy = 967933511855173100A49AC7 /* PBXContainerItemProxy */;
+		};
+		B99C8D1097E3157D867335D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = NowPlayingSafari;
+			target = 8FA6D5F7B7732E1E23ED0939 /* NowPlayingSafari */;
+			targetProxy = B916D98038DEC8059FC3B422 /* PBXContainerItemProxy */;
 		};
 		DE61E4D4AEB9E5C0899C9F29 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2419,6 +2595,31 @@
 			};
 			name = Beta;
 		};
+		16EEE62C265325DF9C0A0EF9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BrowserExtensions/nowplaying/safari/NowPlayingSafari.entitlements;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BrowserExtensions/nowplaying/safari/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_BUNDLE_ID).nowplaying.safari";
+				PRODUCT_MODULE_NAME = NowPlayingSafari;
+				PRODUCT_NAME = NowPlayingSafari;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "BrowserExtensions/nowplaying/safari/NowPlayingSafari-Bridging-Header.h";
+			};
+			name = Debug;
+		};
 		393A21EC33D440DBD11DA65F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2440,6 +2641,31 @@
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = Beardie;
+			};
+			name = Release;
+		};
+		63FDB83183087273D65666A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BrowserExtensions/nowplaying/safari/NowPlayingSafari.entitlements;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BrowserExtensions/nowplaying/safari/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_BUNDLE_ID).nowplaying.safari";
+				PRODUCT_MODULE_NAME = NowPlayingSafari;
+				PRODUCT_NAME = NowPlayingSafari;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "BrowserExtensions/nowplaying/safari/NowPlayingSafari-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -2863,7 +3089,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEBUGGING_SYMBOLS = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 5F2QV47DGC;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2893,7 +3118,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 5F2QV47DGC;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 27.0;
@@ -3185,7 +3409,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 5F2QV47DGC;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				MACOSX_DEPLOYMENT_TARGET = 27.0;
@@ -3641,6 +3864,31 @@
 			};
 			name = Debug;
 		};
+		D82C023F024E720569D5A1BE /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BrowserExtensions/nowplaying/safari/NowPlayingSafari.entitlements;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = BrowserExtensions/nowplaying/safari/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 27.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(BS_BUNDLE_ID).nowplaying.safari";
+				PRODUCT_MODULE_NAME = NowPlayingSafari;
+				PRODUCT_NAME = NowPlayingSafari;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "BrowserExtensions/nowplaying/safari/NowPlayingSafari-Bridging-Header.h";
+			};
+			name = Beta;
+		};
 		D9480381D56A9774CBF910D6 /* Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3787,6 +4035,16 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Beta;
+		};
+		AB5C774FAF528542B29A78E1 /* Build configuration list for PBXNativeTarget "NowPlayingSafari" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63FDB83183087273D65666A1 /* Release */,
+				16EEE62C265325DF9C0A0EF9 /* Debug */,
+				D82C023F024E720569D5A1BE /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B39A21D01C18207F242AD279 /* Build configuration list for PBXNativeTarget "BeardieUITests" */ = {
 			isa = XCConfigurationList;

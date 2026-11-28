@@ -26,5 +26,7 @@
 	<true/>
 	<key>UseSystemNowPlaying</key>
 	<false/>
+	<key>UseBrowserBridge</key>
+	<false/>
 </dict>
 </plist>

@@ -41,6 +41,7 @@ extension MessageProcessing {
         "bundleId": bundleIdCmd,
         "accepters": acceptersCmd,
         "port": portCmd,
+        "bridge": bridgeCmd,
         "serverIsAlive": serverIsAliveCmd,
         "logLevel": logLevelCmd
     ]
@@ -74,6 +75,22 @@ extension MessageProcessing {
     private static let portCmd: RequestFunc = { (message, response) in
         DDLogDebug("Port requested, value: \(BSSharedResources.tabPort)")
         response(responseDictionary(message, response: BSSharedResources.tabPort))
+    }
+
+    private static let bridgeCmd: RequestFunc = { (message, response) in
+        let defaults = BSSharedResources.sharedDefaults
+        let port = defaults?.integer(forKey: "BrowserBridgePort") ?? 0
+        let token = defaults?.string(forKey: "BrowserBridgeToken") ?? ""
+        let protocolVersion = defaults?.integer(forKey: "BrowserBridgeProtocolVersion") ?? 0
+        DDLogDebug("Bridge endpoint requested, port: \(port), protocol: \(protocolVersion)")
+        response(responseDictionary(message, response: [
+            "port": port,
+            "token": token,
+            "protocolVersion": protocolVersion,
+            "browser": bundleId,
+            "bundleId": bundleId,
+            "pid": ppid
+        ]))
     }
 
     private static let serverIsAliveCmd: RequestFunc = { (message, response) in

@@ -118,6 +118,7 @@ BOOL accessibilityApiEnabled = NO;
 
     [self newConnectionToControlService];
     [NowPlayingCoordinator startWithConnection:_connectionToService];
+    [BrowserBridgeService startIfEnabled];
 
     self.inUpdatingStrategiesState = NO;
     
@@ -183,6 +184,7 @@ BOOL accessibilityApiEnabled = NO;
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender{
     
     DDLogInfo(@"App should terminate request.");
+    [BrowserBridgeService stopIfRunning];
     
     static BOOL readyToTerminate = NO;
     

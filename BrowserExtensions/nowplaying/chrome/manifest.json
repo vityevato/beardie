@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Beardie Now Playing",
+  "short_name": "Beardie",
+  "description": "Companion extension for Beardie Now Playing sources.",
+  "version": "${BS_BUILD}",
+  "version_name": "${BS_VERSION}",
+  "homepage_url": "${BS_HOMEPAGE}",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoGPccYvItrFwPkQ9Ocm9qrw4qUfeUfN2QEWW4vl4Iqkxag51MsDyslWtEyz5qxsyuapdnR9gSwj6RUFASwadjHXAZxYBTo5f3naHL8DHZRaL/NshOHifUnQh/OGNNu7F+5hAWdppMQt+s3Pe7iG4gjTFyH3Va5aXpeEkisjEnCF/rQJnyW1frlzythtn1d/wF9gMQg95HlMCptaav4KNfIMFmWXb/jof8oJHC/donLvH+PSHT3X6gXGd04Mi2InVTzTE4np9tcMQA0S6oLHmCYDiwOnbIueuZMZ+vYbcatTsGn/V8CaPF/0uqxkrMEomfFVdhZUixKwQKXVmWZsFUQIDAQAB",
+  "icons": {
+    "16": "icons/Icon-16.png",
+    "32": "icons/Icon-32.png",
+    "48": "icons/Icon-48.png",
+    "64": "icons/Icon-64.png",
+    "128": "icons/Icon-128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "run_at": "document_idle",
+      "all_frames": true,
+      "js": ["shared/utils.js", "shared/content.js"]
+    }
+  ],
+  "permissions": ["tabs", "nativeMessaging", "storage", "alarms"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_title": "Beardie Now Playing"
+  }
+}
