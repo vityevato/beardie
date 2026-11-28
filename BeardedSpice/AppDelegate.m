@@ -618,6 +618,7 @@ BOOL accessibilityApiEnabled = NO;
         NSArray <TabAdapter *> *tabs = _browserExtensionsController.webSocketServer.tabs;
         tabs = [tabs arrayByAddingObjectsFromArray:_nativeAppTabsController.tabs];
         tabs = [tabs arrayByAddingObjectsFromArray:_sonosRoomsController.tabs];
+        tabs = [tabs arrayByAddingObjectsFromArray:[NowPlayingBrowserTabs tabs]];
 
         for (TabAdapter *tab in tabs) {
             if (tab.frontmost) {
@@ -666,6 +667,7 @@ BOOL accessibilityApiEnabled = NO;
             [tabs addObjectsFromArray:_browserExtensionsController.webSocketServer.tabs];
             [tabs addObjectsFromArray:_nativeAppTabsController.tabs];
             [tabs addObjectsFromArray:_sonosRoomsController.tabs];
+            [tabs addObjectsFromArray:[NowPlayingBrowserTabs tabs]];
             
             __block BOOL enabled = NO;
             dispatch_sync(dispatch_get_main_queue(), ^{

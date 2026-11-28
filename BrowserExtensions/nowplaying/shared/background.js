@@ -201,6 +201,20 @@
     });
   }
 
+  async function focusWindow(windowId) {
+    if (!api.windows || typeof api.windows.update !== "function") {
+      return;
+    }
+    try {
+      const result = api.windows.update(windowId, { focused: true });
+      if (result && typeof result.catch === "function") {
+        await result;
+      }
+    } catch (_) {
+      // Activating the tab is still useful when the window cannot be focused.
+    }
+  }
+
   async function activateTab(message) {
     if (previousContext === null) {
       const current = await activeTab(message.windowId);
@@ -214,14 +228,12 @@
       if (updateResult && typeof updateResult.catch === "function") {
         await updateResult;
       }
-      const windowResult = api.windows.update(message.windowId, { focused: true });
-      if (windowResult && typeof windowResult.catch === "function") {
-        await windowResult;
-      }
-      sendAck(message.requestId, true);
     } catch (error) {
       sendAck(message.requestId, false, String(error));
+      return;
     }
+    await focusWindow(message.windowId);
+    sendAck(message.requestId, true);
   }
 
   async function restoreTab(message) {
@@ -235,14 +247,12 @@
       if (updateResult && typeof updateResult.catch === "function") {
         await updateResult;
       }
-      const windowResult = api.windows.update(target.windowId, { focused: true });
-      if (windowResult && typeof windowResult.catch === "function") {
-        await windowResult;
-      }
-      sendAck(message.requestId, true);
     } catch (error) {
       sendAck(message.requestId, false, String(error));
+      return;
     }
+    await focusWindow(target.windowId);
+    sendAck(message.requestId, true);
   }
 
   function tabMessage(tabId, message) {

@@ -51,7 +51,10 @@ manifest now also allows the new extension ID.
 - tracks instances by `instanceId`, closes the previous connection when a new
   one arrives, and removes the instance on disconnect;
 - handles `hello`, `state` and `ack`;
-- exposes `activeInstances` for Stage 3;
+- exposes `activeInstances` and the Stage 3 `activateTab` / `restoreTab`
+  request/ack API;
+- exposes active bridge tabs as `BrowserBridgeTabAdapter` players through
+  `NowPlayingBrowserTabs`; see the Stage 3 section below;
 - clears the published endpoint on stop and on app termination;
 - runs only when `UseBrowserBridge` is enabled (default `NO`).
 
@@ -61,6 +64,20 @@ For local testing:
 ```sh
 open -n Beardie.app --args -UseBrowserBridge YES
 ```
+
+## Stage 3 players
+
+`NowPlayingBrowserTabs` converts every bridge tab with media metadata into a
+`BrowserBridgeTabAdapter`, and `AppDelegate.refreshTabs` /
+`setActiveTabShortcut` include those adapters next to legacy web tabs, native
+apps and Sonos rooms. The existing `autoSelectTabWithForceFocused` /
+`BSActiveTab` selection therefore chooses bridge tabs like any other player.
+
+The adapter implements `toggleTab` as `activateTab` on the first call and
+`restoreTab` on the next. Playing or paused state is not a condition for
+Raise/Hide; it only contributes to selection through `isPlaying`. The full
+flow, paused behaviour and selection/matching split are described in
+`docs/nowplaying-target-resolver.md`.
 
 The service also installs the native messaging manifest so the extension can
 discover the endpoint even when the legacy `BSWebSocketServerEnabled` option is
@@ -81,7 +98,8 @@ Server to client:
 
 - `helloAck`;
 - `getState` with a request id;
-- `activateTab` / `restoreTab` with tab/window ids (Stage 3 uses these);
+- `activateTab` / `restoreTab` with tab/window ids (used by the Stage 3
+  Raise/Hide flow; see `docs/nowplaying-target-resolver.md`);
 - `command` for play/pause/seek in the content script.
 
 Timestamps in tab state are JavaScript epoch milliseconds; the Swift decoder
@@ -167,10 +185,13 @@ for each dev session.
 
 ## Known limitations
 
-- Stage 2 only collects state. `TargetResolver`, confidence scoring and the
-  full Raise/Hide flow are Stage 3.
+- Stage 2 collected state only. Stage 3 exposes bridge tabs as
+  `BrowserBridgeTabAdapter` players and adds Raise/Hide, including paused tabs;
+  see `docs/nowplaying-target-resolver.md`.
 - Content-script commands are limited to play/pause/toggle/seek on the media
-  element; site-specific next/previous is Stage 3/4 work.
+  element; site-specific next/previous is Stage 4 work.
 - Artwork URLs are published, but artwork bytes are not downloaded yet.
-- Same-track ambiguity and background-tab refresh need the Stage 3 resolver.
+- `BrowserTargetResolver` remains a matcher for Stage 4 command routing and does
+  not select the current player. Same-track ambiguity fails closed when the
+  resolver is used; Raise/Hide follows the existing menu/frontmost selection.
 - The legacy web-strategy bridge and extensions are intentionally unchanged.
