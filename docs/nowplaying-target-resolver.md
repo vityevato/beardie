@@ -99,16 +99,34 @@ There is no separate `NowPlayingBrowserTargets.toggle` selection path anymore.
 
 ## Raise/Hide lifecycle
 
-The adapter keeps a per-tab raised flag:
+`toggleTab` decides between Raise and Hide with a live `isActive` query:
 
-1. First shortcut press sends `activateTab` with a generated `requestId`.
-2. The extension records the tab that was active in the target window before
-   the activation and focuses the target tab and window.
-3. A successful `ack` marks the tab as raised.
-4. The next shortcut press sends `restoreTab`; the extension switches back to
-   the recorded tab and focuses its window.
-5. A failed or timed-out restore is treated as handled best effort and clears
-   the raised flag.
+- the browser must be frontmost (`NSWorkspace`), and
+- the extension must report that the player tab is the active tab of the last
+  focused browser window.
+
+If the tab is not active or the browser is not frontmost, the shortcut raises:
+
+1. Record the current frontmost application, including the browser itself.
+2. Activate the browser and wait until it becomes frontmost.
+3. The extension captures the last focused Safari window and the active tab of
+   the target window.
+4. The extension switches to the player tab and focuses its window.
+5. A successful ack marks the tab as raised.
+
+When the tab is already raised and active, the shortcut hides:
+
+1. The extension restores the tab that was active in the target window before
+   the Raise.
+2. The extension focuses the previous Safari window when it differs from the
+   target window.
+3. The app re-activates the previous application unless it is the browser.
+4. A successful ack clears the raised flag; a failed restore keeps it for a
+   retry.
+
+The extension re-captures its window/tab context on **every** Raise. A Raise
+that starts after a manual tab/window switch therefore replaces stale context
+and Hide will not restore a state from an earlier Raise.
 
 `BrowserBridgeService` resolves `ack` by `requestId`, enforces a 3-second
 timeout, fails pending requests on instance disconnect or service stop, and
@@ -127,12 +145,16 @@ exactly as before.
 
 ## Verification
 
-- `BeardieTests`: 38 tests pass, including:
+- `BeardieTests`: 61 tests pass, including:
   - `BrowserTargetResolverTests`: paused player resolves, playing/paused
     selection, bundle/helper matching, conflicting artist, ambiguous metadata,
     stale data, paused tab state;
-  - `BrowserBridgeTests`: `activateTab` / `restoreTab` encoding and hello/state
-    parsing.
+  - `BrowserBridgeTests`: `activateTab` / `restoreTab` / `isActive` /
+    `configure` encoding, hello/state/ack/diagnostic parsing;
+  - `CommandRouterTests`: MediaRemote skip fallbacks (`SkipForward`/
+    `SkipBackward` by name and by numeric id), reported-name command selection,
+    unsupported-command fallback, plain-adapter pass-through and `pauseOthers`
+    selection exclusion.
 - Debug and Release builds of `Beardie` succeed.
 - Chromium 138.0.7204.49 E2E with a custom profile and the packaged
   `Beardie-NowPlaying.chrome` (`UseBrowserBridge` only):
@@ -145,21 +167,32 @@ exactly as before.
   - `chrome.tabs.query` confirmed the active tab changed to the media tab and
     back to the blank tab;
   - `BSActiveTab.displayName` returned `Chromium` for the bridge adapter.
-- Stage 4 router tests: `CommandRouterTests` covers native MediaRemote routing,
-  reported-name command selection, unsupported-command fallback, plain-adapter
-  pass-through and `pauseOthers` selection exclusion.
 - Stage 4 bridge E2E: Chromium toggle/next/previous reached the page; see
   `docs/nowplaying-browser-bridge.md`.
+- Safari Raise/Hide E2E with two windows and a different frontmost app:
+  - `isActive` is queried live before Hide;
+  - Raise activates Safari before the tab/window switch;
+  - the extension re-captures the previous window and the target window's
+    previous tab on every Raise;
+  - Hide restores the target tab and the previous Safari window; the
+    previous-app reset when the last Raise started in Safari is pending final
+    manual verification.
+- YouTube/Safari: next/previous use `SkipForward` (17) / `SkipBackward` (18)
+  and seek by 15 seconds.
 
 ## Known limitations
 
+- Stage 4.2 (player switching with `playerNext`/`playerPrevious`) is not
+  implemented: `BrowserBridgeTabAdapter` does not yet implement
+  `activateApp`/`deactivateApp`/`activateTab`/`deactivateTab`, so switching
+  players to/from a bridge tab does not use the Raise/Hide lifecycle.
 - Two tabs with identical metadata are still resolved fail-closed when the
   resolver is used; Raise/Hide follows the existing selection, so the user can
   explicitly choose one in the menu.
 - Bridge `next`/`previous` require the page to register Media Session action
   handlers in the MAIN world. Pages without handlers fall back to a targeted
-  MediaRemote command to the browser, which acts on the browser's elected media
-  session.
+  MediaRemote command: `NextTrack`/`PreviousTrack` first, then
+  `SkipForward`/`SkipBackward` (15-second skip).
 - Bridge favorite is available only when MediaRemote reports a `LikeTrack`
   command for the browser; there is no generic page-level favorite.
 - Volume for bridge and native players stays on `BSVolumeControlProtocol`;

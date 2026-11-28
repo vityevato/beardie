@@ -50,9 +50,11 @@ manifest now also allows the new extension ID.
 - validates the token and `/nowplaying` path before accepting a WebSocket;
 - tracks instances by `instanceId`, closes the previous connection when a new
   one arrives, and removes the instance on disconnect;
-- handles `hello`, `state` and `ack`;
-- exposes `activeInstances` and the Stage 3 `activateTab` / `restoreTab`
-  request/ack API;
+- handles `hello`, `state`, `ack` and `diagnostic`;
+- exposes `activeInstances`, the Stage 3 `activateTab` / `restoreTab`
+  request/ack API and the live `isActive` query;
+- sends `configure` with the debug flag after `helloAck`; diagnostics are only
+  sent when that flag is true;
 - exposes active bridge tabs as `BrowserBridgeTabAdapter` players through
   `NowPlayingBrowserTabs`; see the Stage 3 section below;
 - clears the published endpoint on stop and on app termination;
@@ -73,11 +75,19 @@ open -n Beardie.app --args -UseBrowserBridge YES
 apps and Sonos rooms. The existing `autoSelectTabWithForceFocused` /
 `BSActiveTab` selection therefore chooses bridge tabs like any other player.
 
-The adapter implements `toggleTab` as `activateTab` on the first call and
-`restoreTab` on the next. Playing or paused state is not a condition for
-Raise/Hide; it only contributes to selection through `isPlaying`. The full
-flow, paused behaviour and selection/matching split are described in
-`docs/nowplaying-target-resolver.md`.
+The adapter implements `toggleTab` around a live `isActive` query. Hide runs
+only when the browser is frontmost and the player tab is the active tab of the
+last focused browser window; otherwise the shortcut raises the player again.
+Raise records the current frontmost application (including the browser), then
+activates the browser before the extension switches the tab/window, because
+Safari can restore its last active tab when it becomes active. The extension
+re-captures the previous window and the target window's previous tab on every
+Raise, so a Raise that started in the browser replaces stale context. Hide
+restores the target tab, focuses the previous Safari window when it differs,
+and re-activates the previous application unless it is the browser. Playing or
+paused state is not a condition for Raise/Hide; it only contributes to
+selection through `isPlaying`. The full flow, paused behaviour and
+selection/matching split are described in `docs/nowplaying-target-resolver.md`.
 
 The service also installs the native messaging manifest so the extension can
 discover the endpoint even when the legacy `BSWebSocketServerEnabled` option is
@@ -92,12 +102,17 @@ Client to server:
   "bundleId":"...","processIdentifier":123}`
 - `{"type":"state","instanceId":"...","tabs":[...]}` with per-tab title, URL,
   media metadata, playback state, position, duration and artwork URLs;
-- `{"type":"ack","requestId":"...","success":true}`.
+- `{"type":"ack","requestId":"...","success":true}`;
+- `{"type":"diagnostic","event":"activate","message":"..."}` — debug only,
+  sent after `configure` enables diagnostics.
 
 Server to client:
 
 - `helloAck`;
+- `configure` with a `debug` flag; diagnostics are off by default;
 - `getState` with a request id;
+- `isActive` with tab/window ids; the ack result is true only when this tab is
+  the active tab of the last focused browser window;
 - `activateTab` / `restoreTab` with tab/window ids (used by the Stage 3
   Raise/Hide flow; see `docs/nowplaying-target-resolver.md`);
 - `command` for play/pause/toggle/seek/next/previous in the content script.
@@ -240,9 +255,27 @@ for each dev session.
     MAIN-world shim.
 - Chrome uses `alarms` only; the Safari manifest has no `alarms` permission and
   creates no alarms. There is exactly one wake-up mechanism per browser.
+- Stage 4 command routing on YouTube/Safari:
+  - MediaRemote reports `SkipForward` (17) and `SkipBackward` (18);
+  - the name-first resolver prefers `NextTrack`/`PreviousTrack`, then
+    `SkipForward`/`SkipBackward`, then numeric fallbacks;
+  - next/previous hotkeys seek the video by 15 seconds.
+- Raise/Hide lifecycle (Safari, two windows and a different frontmost app):
+  - `isActive` is queried live; Hide runs only when the player tab is the
+    active tab of the last focused browser window;
+  - Raise activates the browser before switching tabs; every Raise re-captures
+    the previous window and the target window's previous tab;
+  - Hide restores the target tab, focuses the previous Safari window when it
+    differs, and re-activates the previous app unless it is the browser itself.
+- `BeardieTests`: 61 tests pass, including command-router skip fallbacks,
+  `isActive`/`configure` encoding and diagnostic parsing.
 
 ## Known limitations
 
+- Stage 4.2 (player switching with `playerNext`/`playerPrevious`) is not
+  implemented yet; see `docs/nowplaying-target-resolver.md` and the transition
+  plan. Switching players to/from a bridge tab does not use the Raise/Hide
+  lifecycle yet.
 - Stage 2 collected state only. Stage 3 exposes bridge tabs as
   `BrowserBridgeTabAdapter` players and adds Raise/Hide, including paused tabs;
   see `docs/nowplaying-target-resolver.md`.
