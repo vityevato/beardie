@@ -49,6 +49,8 @@ dispatch_queue_t notificationQueue(void);
     } else if ([self isWebAdapter]) {
         BSMediaStrategy *strategy = [(BSWebTabAdapter *)_activeTab strategy];
         return strategy.displayName;
+    } else if ([self isBridgeAdapter]) {
+        return [(BrowserBridgeTabAdapter *)_activeTab browserDisplayName];
     }
     return nil;
 }
@@ -70,6 +72,8 @@ dispatch_queue_t notificationQueue(void);
         }
 
         return result;
+    } else if ([self isBridgeAdapter]) {
+        return [_activeTab title];
     }
     return BSLocalizedString(@"Unknown", @"Active tab title if we do not know type of the tab.");
 }
@@ -83,6 +87,10 @@ dispatch_queue_t notificationQueue(void);
 }
 - (BOOL)isSonosAdapter {
     return [_activeTab isKindOfClass:SonosTabAdapter.class];
+}
+
+- (BOOL)isBridgeAdapter {
+    return [_activeTab isKindOfClass:BrowserBridgeTabAdapter.class];
 }
 
 - (BOOL)isTabAdapter {

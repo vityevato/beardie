@@ -56,38 +56,4 @@ final class NowPlayingCoordinator: NSObject {
             }
         }
     }
-
-    /// Fetches a fresh snapshot for the Stage 3 target resolver.
-    ///
-    /// The timeout keeps the Raise/Hide shortcut from hanging when the XPC
-    /// service is unresponsive. A late reply is ignored.
-    static func fetchSnapshot(
-        timeout: TimeInterval = 5,
-        completion: @escaping (Result<NowPlayingSnapshot, Error>) -> Void
-    ) {
-        guard let client else {
-            completion(.failure(NowPlayingXPCError.proxyUnavailable))
-            return
-        }
-
-        let lock = NSLock()
-        var finished = false
-        func finish(_ result: Result<NowPlayingSnapshot, Error>) {
-            lock.lock()
-            if finished {
-                lock.unlock()
-                return
-            }
-            finished = true
-            lock.unlock()
-            completion(result)
-        }
-
-        DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + timeout) {
-            finish(.failure(NowPlayingXPCError.timedOut))
-        }
-        client.fetchSnapshot { result in
-            finish(result)
-        }
-    }
 }

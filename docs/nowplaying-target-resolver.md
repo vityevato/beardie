@@ -1,167 +1,129 @@
-# Now Playing target resolver and Raise/Hide (Stage 3)
+# Now Playing browser players and Raise/Hide (Stage 3)
 
 - Date: 2026-11-28.
 - Stage: 3 of the `beardie-nowplaying-transition-plan`.
-- Scope: match an active MediaRemote Now Playing client to a tab reported by
-  the Stage 2 browser bridge, then raise that tab and restore the previous tab
-  on the next invocation of the existing **Raise/Hide Active Player Window**
-  shortcut.
-- The legacy web-strategy bridge, the legacy extensions and all media command
+- Scope: make tabs reported by the Stage 2 browser bridge first-class players in
+  the existing player selection, and use the existing **Raise/Hide Active
+  Player Window** shortcut on the selected tab, whether it is playing or
+  paused.
+- The legacy web-strategy bridge, the legacy extensions and media command
   routing stay unchanged until Stages 4 and 6.
 
-## Why a resolver
+## Core rule: selection first, matching second
 
-MediaRemote and the browser bridge describe the same playback in different
-terms:
+Stage 3 does not introduce a second player selector. The app already has one:
 
-| Source | Browser identity | Tab identity |
-|---|---|---|
-| MediaRemote | helper bundle plus parent bundle (`com.google.Chrome.helper` → `com.google.Chrome`, `com.apple.WebKit.GPU` → `com.apple.Safari`) | title, artist, album, elapsed time, duration, playback rate |
-| Browser bridge | browser bundle and process id | `tabId`, `windowId`, title, URL, Media Session metadata, playback state, position, duration |
+- `autoSelectTabWithForceFocused:` decides the current player before every
+  action:
+  - exactly one playing player → it;
+  - otherwise the frontmost player;
+  - otherwise the current `activeTab`;
+  - otherwise the player selected in the menu.
+- `BSActiveTab` stores that choice in `activeApp.activeTab` and performs the
+  action.
 
-The helper PID cannot be compared with the browser PID, so the resolver has to
-match on bundle and media metadata. A wrong tab is worse than no action: when
-the match is uncertain the shortcut falls back to the legacy behaviour.
+`isPlaying` is a signal for **selection**. It is not a condition for Raise/Hide.
+Once the mechanism has selected a browser tab, the shortcut must raise and
+restore it even if it is paused.
 
-## Data flow
+`BrowserTargetResolver` is a matcher, not a selector. It associates a
+`NowPlayingClient` with a bridge tab by bundle and metadata, and it never
+filters clients by `isPlaying` and never overrides `activeApp.activeTab`. Stage 4
+uses it for command routing; Raise/Hide works from the selected `TabAdapter`.
+
+## Bridge tabs as players
+
+`BrowserBridgeTabAdapter` is a `TabAdapter` for one `instanceId#tabId`:
+
+- `title`, `URL`, `key`, `trackInfo` come from the bridge tab;
+- `isPlaying` comes from `playbackState`;
+- `frontmost` is true when the browser is the frontmost application and the
+  tab is its active tab;
+- `toggleTab` raises the tab on the first call and restores the previously
+  active tab on the next call;
+- `pause`, `next`, `previous`, `favorite` and volume are not routed in this
+  stage.
+
+`NowPlayingBrowserTabs` builds and caches adapters from
+`BrowserBridgeService.activeInstances` on every `refreshTabs` call. Cached
+identity keeps `BSActiveTab` and the raise state stable across menu refreshes.
+Tabs without media metadata are not exposed.
+
+`AppDelegate.refreshTabs` and `setActiveTabShortcut` include these adapters next
+to legacy web tabs, native apps and Sonos rooms, so they appear in the status
+menu and participate in the normal frontmost/menu selection.
+
+`activatePlayingTab` is back to the existing path:
 
 ```text
-Raise/Hide shortcut
-  → AppDelegate.activatePlayingTab
-      → NowPlayingBrowserTargets.toggle
-          → NowPlayingCoordinator.fetchSnapshot          (XPC, read-only)
-          → BrowserBridgeService.activeInstances         (app, Stage 2)
-          → BrowserTargetResolver.resolve
-              → BrowserBridgeService.activateTab / restoreTab
-                  → extension: tabs.update + windows.update
+autoSelectTabWithForceFocused:NO
+  → activeApp.activeTab (bridge adapter or legacy adapter)
+  → activatePlayingTab
+  → toggleTab
 ```
 
-`NowPlayingBrowserTargets` is gated by both `UseSystemNowPlaying` and
-`UseBrowserBridge`. If either flag is off, the completion immediately reports
-"not handled" and `AppDelegate` runs the legacy `BSActiveTab` path.
-
-## Matching rules
-
-1. Only clients with `isPlaying == true` and a non-empty title are considered.
-2. The client's `effectiveBundleIdentifier` (parent bundle first) must equal an
-   active bridge instance's bundle. Helper suffixes (`.helper`, `.renderer`,
-   `.gpu`, `.plugin`) are stripped before comparison.
-3. The bridge instance and the candidate tab must have been updated within the
-   last 15 seconds.
-4. A tab is considered only when it has a media title.
-5. If both the client and the tab report an artist and the normalized artists
-   differ, the candidate is rejected. Both sides read the same Media Session
-   metadata, so an artist mismatch means a different playback.
-6. When the client and tab report a duration, a difference over 30 seconds is
-   penalized; a difference within 2 seconds is rewarded.
-7. When elapsed time and tab position are both known, a difference within 5
-   seconds is rewarded.
-
-Text normalization lowercases, folds diacritics and width, replaces
-punctuation with spaces and collapses whitespace.
-
-## Scoring
-
-| Signal | Points |
-|---|---|
-| Title exactly equal | 45 |
-| Title contains the other normalized title (at least 4 characters) | 35 |
-| Title token overlap ≥ 0.75 | 30 |
-| Title token overlap ≥ 0.5 | 22 |
-| Artist exactly equal | 20 |
-| Album exactly equal | 8 |
-| Tab playback state is `playing` | 10 |
-| Tab updated ≤ 5 seconds ago | 4 |
-| Tab updated ≤ 15 seconds ago | 2 |
-| Tab is active | 2 |
-| Duration within 2 seconds | 4 |
-| Position within 5 seconds | 6 |
-| Artist missing in the tab while the client has one | −10 |
-| Album differs | −5 |
-| Position differs by more than 30 seconds | −4 |
-| Duration differs by more than 30 seconds | −10 |
-
-A candidate must score at least **45**. The best candidate must also lead the
-second-best candidate by at least **8** points (candidates pointing at the same
-tab are deduplicated first). Otherwise the result is `nil`, which is the
-fail-closed case.
-
-Typical outcomes:
-
-- exact title, artist and playing state: ~80 points, confident;
-- exact title with a playing tab and no artist data: ~60 points, confident;
-- two tabs with the same title, artist, position and duration: equal scores,
-  margin 0 → `nil`;
-- same track in a playing and a paused tab: the playing tab leads by 10, so it
-  wins;
-- a tab whose artist differs: rejected before scoring.
+There is no separate `NowPlayingBrowserTargets.toggle` selection path anymore.
 
 ## Raise/Hide lifecycle
 
-The first shortcut press:
+The adapter keeps a per-tab raised flag:
 
-1. fetches a fresh Now Playing snapshot;
-2. resolves a target;
-3. sends `activateTab` with a generated `requestId`;
-4. waits up to 3 seconds for `ack.success`;
-5. remembers `BrowserResolvedTarget(instanceId, tabId, windowId)`.
+1. First shortcut press sends `activateTab` with a generated `requestId`.
+2. The extension records the tab that was active in the target window before
+   the activation and focuses the target tab and window.
+3. A successful `ack` marks the tab as raised.
+4. The next shortcut press sends `restoreTab`; the extension switches back to
+   the recorded tab and focuses its window.
+5. A failed or timed-out restore is treated as handled best effort and clears
+   the raised flag.
 
-The extension records the tab that was active in the target window before the
-activation and focuses the target tab and window.
+`BrowserBridgeService` resolves `ack` by `requestId`, enforces a 3-second
+timeout, fails pending requests on instance disconnect or service stop, and
+delivers completions on the main queue. Requests arriving after a timeout are
+ignored.
 
-The next shortcut press sends `restoreTab` for the remembered target. The
-extension switches back to the recorded tab and focuses its window. A failed or
-timed-out restore is treated as handled and clears the remembered target, so
-the shortcut does not unexpectedly fall back to the legacy path.
+## Gating
 
-If the remembered instance disconnected, the target is cleared and the
-resolver runs again.
+Raise/Hide for browser tabs depends only on `UseBrowserBridge`, because the
+bridge already reports playback state. `UseSystemNowPlaying` is not required for
+this path; it stays the gate for the read-only MediaRemote snapshot and future
+command routing.
 
-## Bridge request handling
-
-`BrowserBridgeService` now keeps a pending-request table:
-
-- every `activateTab` / `restoreTab` gets a UUID `requestId`;
-- an `ack` resolves the matching request only when it arrives on the socket of
-  the instance the request was sent to;
-- a 3-second timeout, an instance disconnect or a service stop fails the
-  request;
-- completions are delivered on the main queue;
-- the Now Playing snapshot fetch has its own 5-second timeout, so an
-  unresponsive XPC service falls back to the legacy path instead of wedging the
-  shortcut.
+When `UseBrowserBridge` is off, no bridge tabs exist, and the app behaves
+exactly as before.
 
 ## Verification
 
-- `BeardieTests`: 38 tests pass, including 12 `BrowserTargetResolverTests`
-  (exact match, helper bundle, bundle mismatch, conflicting artist, ambiguous
-  tabs, playing preference, stale instance/tab, paused client, duplicate
-  clients, unrelated title) and `activateTab` / `restoreTab` encoding.
+- `BeardieTests`: 38 tests pass, including:
+  - `BrowserTargetResolverTests`: paused player resolves, playing/paused
+    selection, bundle/helper matching, conflicting artist, ambiguous metadata,
+    stale data, paused tab state;
+  - `BrowserBridgeTests`: `activateTab` / `restoreTab` encoding and hello/state
+    parsing.
 - Debug and Release builds of `Beardie` succeed.
-- Chromium E2E (Chromium 138.0.7204.49, custom profile, packaged
-  `Beardie-NowPlaying.chrome`, native messaging manifest copied into the
-  profile):
-  - MediaRemote `clients` reported `org.chromium.Chromium` with
-    `Stage 3 Test Track` / `Stage 3 Test Artist`, `playing=true`;
-  - the bridge received `hello` and a `state` snapshot with one media tab
-    every second;
-  - Raise resolved the tab with score 97–99; `chrome.tabs.query` in the
-    extension reported the media tab as active and the blank tab as inactive;
-  - the second invocation sent `restoreTab`, and the blank tab became active
-    again;
-  - two tabs with identical metadata produced
-    `BrowserTargetResolver: ambiguous target ... score=99 next=97`, no tab was
-    raised, and the legacy fallback ran.
+- Chromium 138.0.7204.49 E2E with a custom profile and the packaged
+  `Beardie-NowPlaying.chrome` (`UseBrowserBridge` only):
+  - bridge `state` reported one media tab and one blank tab;
+  - paused media tab selected through `updateActiveTab:` (the same path as the
+    menu) was raised with `BrowserBridgeTabAdapter: raise tab` and restored on
+    the next invocation;
+  - playing media tab was selected by `autoSelectTabWithForceFocused` and
+    raised/restored the same way;
+  - `chrome.tabs.query` confirmed the active tab changed to the media tab and
+    back to the blank tab;
+  - `BSActiveTab.displayName` returned `Chromium` for the bridge adapter.
 
 ## Known limitations
 
-- Two tabs with identical media metadata and playback state are ambiguous by
-  design; the shortcut falls back instead of guessing.
-- Only playing clients are considered. A paused browser tab cannot be raised
-  through this path.
-- The feature depends on the new extension; the legacy extension path is the
-  fallback until Stage 6.
-- "Hide" means returning to the previously active tab and focusing its window;
-  the bridge does not minimize or hide the browser window.
-- Media command routing (play/pause/next/previous/volume) is still the legacy
-  path; Stage 4 moves it to the XPC transaction model.
+- Two tabs with identical metadata are still resolved fail-closed when the
+  resolver is used; Raise/Hide follows the existing selection, so the user can
+  explicitly choose one in the menu.
+- Bridge adapters do not pause the old tab when the player is switched and do
+  not route play/pause/next/previous/volume yet; Stage 4 moves commands to the
+  router.
+- The status menu now includes bridge tabs with media metadata. This is the
+  intended way to select a paused player.
+- A tab that briefly disappears from a bridge `state` loses its cached adapter
+  and raised flag.
+- Safari release still needs Developer ID and notarization; session-scoped
+  **Allow Unsigned Extensions** is only for development.

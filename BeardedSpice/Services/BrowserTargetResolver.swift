@@ -30,42 +30,44 @@ struct BrowserResolvedTarget: Equatable {
 /// - scores every media tab by title, artist, album, playback state, elapsed
 ///   time, tab activity and data freshness;
 /// - returns `nil` when the best candidate is below the confidence floor or
-///   when two candidates are too close. Raising a wrong tab is worse than
-///   doing nothing and falling back to the legacy path.
+///   when two candidates are too close.
+///
+/// The resolver does not choose the current player and never overrides
+/// `BSActiveTab`. Stage 4 uses it for command routing; Stage 3 Raise/Hide works
+/// from the already selected `TabAdapter`.
 enum BrowserTargetResolver {
 
     static let minimumScore: Double = 45
     static let minimumMargin: Double = 8
     static let maximumDataAge: TimeInterval = 15
 
-    /// Resolves the best target across all playing clients and instances.
+    /// Resolves a bridge tab for a player that was already selected by the
+    /// app-level player selection. `isPlaying` is not a filter here: a paused
+    /// player must resolve exactly like a playing one.
     static func resolve(
-        clients: [NowPlayingClient],
+        client: NowPlayingClient,
         instances: [BrowserBridgeInstance],
         now: Date = Date()
     ) -> BrowserResolvedTarget? {
-        let playingClients = clients.filter { $0.isPlaying && normalizedText($0.title) != nil }
-        guard !playingClients.isEmpty else {
+        guard normalizedText(client.title) != nil else {
             return nil
         }
 
         var bestByTab: [String: BrowserResolvedTarget] = [:]
 
-        for client in playingClients {
-            for instance in instances where isFresh(instance.lastUpdatedAt, now: now) {
-                guard bundleMatches(client, instance) else {
+        for instance in instances where isFresh(instance.lastUpdatedAt, now: now) {
+            guard bundleMatches(client, instance) else {
+                continue
+            }
+            for tab in instance.tabs {
+                guard let target = score(client: client, instance: instance, tab: tab, now: now) else {
                     continue
                 }
-                for tab in instance.tabs {
-                    guard let target = score(client: client, instance: instance, tab: tab, now: now) else {
-                        continue
-                    }
-                    let key = "\(target.instanceId)#\(target.tabId)"
-                    if let existing = bestByTab[key], existing.score >= target.score {
-                        continue
-                    }
-                    bestByTab[key] = target
+                let key = "\(target.instanceId)#\(target.tabId)"
+                if let existing = bestByTab[key], existing.score >= target.score {
+                    continue
                 }
+                bestByTab[key] = target
             }
         }
 
@@ -269,110 +271,5 @@ enum BrowserTargetResolver {
             return 0
         }
         return Double(left.intersection(right).count) / Double(min(left.count, right.count))
-    }
-}
-
-/// App-side Raise/Hide flow for a resolved browser tab.
-///
-/// The first invocation asks the extension to activate the tab, the second
-/// restores the tab that was active before. Bridge commands are best effort:
-/// a failed restore still counts as handled so that the shortcut does not
-/// unexpectedly fall back to the legacy path.
-@objc(NowPlayingBrowserTargets)
-final class NowPlayingBrowserTargets: NSObject {
-
-    private static let queue = DispatchQueue(label: "com.calm-apps.mac.beardie.browser-targets")
-    private static var raisedTarget: BrowserResolvedTarget?
-    private static var isToggling = false
-
-    /// Toggles raise/hide for the best matching browser tab.
-    ///
-    /// The completion receives `true` when the new path handled the action and
-    /// `false` when the caller should fall back to the legacy implementation.
-    @objc(toggleWithCompletion:)
-    static func toggle(completion: @escaping (Bool) -> Void) {
-        guard isEnabled else {
-            DispatchQueue.main.async { completion(false) }
-            return
-        }
-
-        queue.async {
-            guard !isToggling else {
-                DispatchQueue.main.async { completion(true) }
-                return
-            }
-            isToggling = true
-            toggleOnQueue(completion: completion)
-        }
-    }
-
-    private static var isEnabled: Bool {
-        let defaults = UserDefaults.standard
-        return defaults.bool(forKey: "UseSystemNowPlaying")
-            && defaults.bool(forKey: "UseBrowserBridge")
-    }
-
-    private static func toggleOnQueue(completion: @escaping (Bool) -> Void) {
-        if let target = raisedTarget {
-            raisedTarget = nil
-            guard BrowserBridgeService.shared.hasActiveInstance(target.instanceId) else {
-                resolveAndRaise(completion: completion)
-                return
-            }
-            DDLogInfo("NowPlayingBrowserTargets: restore tab \(target.tabId) in \(target.instanceId)")
-            BrowserBridgeService.shared.restoreTab(
-                instanceId: target.instanceId,
-                tabId: target.tabId,
-                windowId: target.windowId
-            ) { _ in
-                finish(handled: true, completion: completion)
-            }
-            return
-        }
-
-        resolveAndRaise(completion: completion)
-    }
-
-    private static func resolveAndRaise(completion: @escaping (Bool) -> Void) {
-        NowPlayingCoordinator.fetchSnapshot { result in
-            guard case .success(let snapshot) = result else {
-                DDLogError("NowPlayingBrowserTargets: snapshot unavailable")
-                finish(handled: false, completion: completion)
-                return
-            }
-
-            let instances = BrowserBridgeService.shared.activeInstances
-            guard let target = BrowserTargetResolver.resolve(clients: snapshot.clients, instances: instances) else {
-                DDLogInfo("NowPlayingBrowserTargets: no confident browser target")
-                finish(handled: false, completion: completion)
-                return
-            }
-
-            DDLogInfo(
-                "NowPlayingBrowserTargets: raise tab \(target.tabId) in \(target.instanceId) "
-                    + "score=\(Int(target.score)) title=\(target.title ?? "untitled")"
-            )
-            BrowserBridgeService.shared.activateTab(
-                instanceId: target.instanceId,
-                tabId: target.tabId,
-                windowId: target.windowId
-            ) { success in
-                if success {
-                    queue.async {
-                        raisedTarget = target
-                        finish(handled: true, completion: completion)
-                    }
-                } else {
-                    finish(handled: false, completion: completion)
-                }
-            }
-        }
-    }
-
-    private static func finish(handled: Bool, completion: @escaping (Bool) -> Void) {
-        queue.async {
-            isToggling = false
-            DispatchQueue.main.async { completion(handled) }
-        }
     }
 }

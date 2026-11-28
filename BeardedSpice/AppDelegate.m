@@ -382,20 +382,11 @@ BOOL accessibilityApiEnabled = NO;
 
 - (void)activatePlayingTab{
     __weak typeof(self) wself = self;
-    [NowPlayingBrowserTargets toggleWithCompletion:^(BOOL handled) {
-        if (handled) {
-            return;
-        }
-        __strong typeof(wself) sself = wself;
-        if (!sself) {
-            return;
-        }
-        dispatch_async(sself->_workingQueue, ^{
-            __strong typeof(wself) strongSelf = wself;
-            [strongSelf autoSelectTabWithForceFocused:NO];
-            [strongSelf.activeApp activatePlayingTab];
-        });
-    }];
+    dispatch_async(_workingQueue, ^{
+        __strong typeof(wself) sself = self;
+        [sself autoSelectTabWithForceFocused:NO];
+        [sself.activeApp activatePlayingTab];
+    });
 }
 
 - (void)playerNext{
@@ -627,6 +618,7 @@ BOOL accessibilityApiEnabled = NO;
         NSArray <TabAdapter *> *tabs = _browserExtensionsController.webSocketServer.tabs;
         tabs = [tabs arrayByAddingObjectsFromArray:_nativeAppTabsController.tabs];
         tabs = [tabs arrayByAddingObjectsFromArray:_sonosRoomsController.tabs];
+        tabs = [tabs arrayByAddingObjectsFromArray:[NowPlayingBrowserTabs tabs]];
 
         for (TabAdapter *tab in tabs) {
             if (tab.frontmost) {
@@ -675,6 +667,7 @@ BOOL accessibilityApiEnabled = NO;
             [tabs addObjectsFromArray:_browserExtensionsController.webSocketServer.tabs];
             [tabs addObjectsFromArray:_nativeAppTabsController.tabs];
             [tabs addObjectsFromArray:_sonosRoomsController.tabs];
+            [tabs addObjectsFromArray:[NowPlayingBrowserTabs tabs]];
             
             __block BOOL enabled = NO;
             dispatch_sync(dispatch_get_main_queue(), ^{

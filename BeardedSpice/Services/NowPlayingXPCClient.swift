@@ -10,7 +10,6 @@ import Foundation
 enum NowPlayingXPCError: LocalizedError {
     case proxyUnavailable
     case invalidPayload
-    case timedOut
 
     var errorDescription: String? {
         switch self {
@@ -18,8 +17,6 @@ enum NowPlayingXPCError: LocalizedError {
             return "The controllers XPC proxy is unavailable"
         case .invalidPayload:
             return "The controllers XPC service returned an invalid payload"
-        case .timedOut:
-            return "The controllers XPC service did not answer in time"
         }
     }
 }
