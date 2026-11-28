@@ -5,6 +5,7 @@
 //  Copyright © 2026 GPL v3 http://www.gnu.org/licenses/gpl.html
 //
 
+import AppKit
 import CocoaLumberjackSwift
 import Foundation
 
@@ -124,7 +125,15 @@ final class BrowserBridgeTabAdapter: TabAdapter {
         Self.pendingKeys.insert(key)
         Self.stateLock.unlock()
 
+        let action = isRaised ? "restore" : "raise"
         let completion: (Bool) -> Void = { success in
+            DDLogInfo(
+                "BrowserBridgeTabAdapter: \(action) result=\(success) "
+                    + "tab \(current.tab.tabId) in \(current.instanceId)"
+            )
+            if success {
+                Self.activateBrowser(bundleIdentifier: current.browserBundleIdentifier)
+            }
             Self.stateLock.lock()
             Self.pendingKeys.remove(key)
             if !isRaised && success {
@@ -152,6 +161,23 @@ final class BrowserBridgeTabAdapter: TabAdapter {
         }
     }
 
+    /// Activates the browser application itself. Safari can select a tab from
+    /// the extension background but does not reliably bring its window to the
+    /// front, so Raise/Hide must also activate the browser process.
+    private static func activateBrowser(bundleIdentifier: String) {
+        guard let application = NSRunningApplication
+            .runningApplications(withBundleIdentifier: bundleIdentifier)
+            .first
+        else {
+            DDLogInfo("BrowserBridgeTabAdapter: no running browser for \(bundleIdentifier)")
+            return
+        }
+        let activated = application.activate(options: [.activateAllWindows])
+        DDLogInfo(
+            "BrowserBridgeTabAdapter: activate \(bundleIdentifier) result=\(activated)"
+        )
+    }
+
     @objc var browserDisplayName: String {
         withSnapshot { $0.browserDisplayName }
     }
@@ -170,6 +196,17 @@ final class BrowserBridgeTabAdapter: TabAdapter {
 
     @objc var bridgeBrowserBundleIdentifier: String {
         withSnapshot { $0.browserBundleIdentifier }
+    }
+
+    /// True when the bridge service still has media for this exact tab. The
+    /// cached adapter snapshot can be stale after a state gap, so selection
+    /// must ask the service, not the adapter.
+    @objc var hasCurrentMedia: Bool {
+        let current = withSnapshot { $0 }
+        return BrowserBridgeService.shared.hasMedia(
+            instanceId: current.instanceId,
+            tabId: current.tab.tabId
+        )
     }
 
     static func pruneRaisedTabs(keeping keys: Set<String>) {

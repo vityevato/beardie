@@ -67,8 +67,14 @@
 
   function sendState() {
     const state = collectState();
+    let topFrame = false;
     try {
-      api.runtime.sendMessage({ type: "mediaState", state: state });
+      topFrame = window.top === window;
+    } catch (_) {
+      // Cross-origin frames still compare by identity; this is only a fallback.
+    }
+    try {
+      api.runtime.sendMessage({ type: "mediaState", state: state, topFrame: topFrame });
     } catch (_) {
       // The background may be restarting; the next event or getState retries.
     }
@@ -129,11 +135,11 @@
     }
 
     if (message.type === "requestState") {
-      try {
-        sendResponse({ success: true, state: collectState() });
-      } catch (error) {
-        sendResponse({ success: false, error: String(error) });
-      }
+      // Publish through the normal mediaState path so the background can
+      // attribute the state to this frame. The direct response only confirms
+      // that a content script is present.
+      sendState();
+      sendResponse({ success: true });
       return false;
     }
 

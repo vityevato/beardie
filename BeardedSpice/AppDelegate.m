@@ -785,6 +785,19 @@ BOOL accessibilityApiEnabled = NO;
 // Must be invoked in workingQueue
 - (void)autoSelectTabWithForceFocused:(BOOL)forceFocused{
 
+    // A bridge tab can stay selected after its media snapshot went empty.
+    // Refresh the bridge before rebuilding the player list, otherwise the
+    // selection falls through to another playing source (for example Sonos)
+    // even though the page is still playing.
+    TabAdapter *activeTab = _activeApp.activeTab;
+    if ([activeTab isKindOfClass:[BrowserBridgeTabAdapter class]]) {
+        BrowserBridgeTabAdapter *bridgeTab = (BrowserBridgeTabAdapter *)activeTab;
+        if (![bridgeTab hasCurrentMedia]) {
+            DDLogInfo(@"Refreshing bridge state for the selected tab before player selection");
+            [BrowserBridgeService refreshState];
+        }
+    }
+
     [self refreshTabs:self];
 
     switch (playingTabs.count) {

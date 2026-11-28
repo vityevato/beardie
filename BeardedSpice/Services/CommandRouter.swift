@@ -74,6 +74,8 @@ final class CommandRouter: NSObject {
         static let pause = 1
         static let nextTrack = 4
         static let previousTrack = 5
+        static let skipForward = 17
+        static let skipBackward = 18
         static let goBackFifteenSeconds = 12
         static let skipFifteenSeconds = 13
     }
@@ -340,13 +342,16 @@ final class CommandRouter: NSObject {
             ) {
                 return identifier
             }
+            if let identifier = reportedCommand(
+                client,
+                names: ["SkipForward", "SkipForward15Seconds"],
+                fallback: MediaCommand.skipForward
+            ) {
+                return identifier
+            }
             return reportedCommand(
                 client,
-                names: [
-                    "SkipFifteenSeconds",
-                    "SkipForward15Seconds",
-                    "SkipForward"
-                ],
+                names: ["SkipFifteenSeconds"],
                 fallback: MediaCommand.skipFifteenSeconds
             )
         case .previous:
@@ -357,13 +362,16 @@ final class CommandRouter: NSObject {
             ) {
                 return identifier
             }
+            if let identifier = reportedCommand(
+                client,
+                names: ["SkipBackward", "SkipBackward15Seconds"],
+                fallback: MediaCommand.skipBackward
+            ) {
+                return identifier
+            }
             return reportedCommand(
                 client,
-                names: [
-                    "GoBackFifteenSeconds",
-                    "SkipBackward15Seconds",
-                    "SkipBackward"
-                ],
+                names: ["GoBackFifteenSeconds"],
                 fallback: MediaCommand.goBackFifteenSeconds
             )
         case .favorite:

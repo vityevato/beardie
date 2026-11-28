@@ -124,6 +124,17 @@ final class BrowserBridgeService: NSObject {
         }
     }
 
+    /// True when the current bridge state still reports media for this tab.
+    /// Used before player selection to refresh a stale empty snapshot.
+    func hasMedia(instanceId: String, tabId: Int) -> Bool {
+        queue.sync {
+            instances[instanceId]?
+                .tabs
+                .first { $0.tabId == tabId }?
+                .mediaTitle != nil
+        }
+    }
+
     /// Asks every active instance for a fresh tab snapshot and waits briefly
     /// for the state messages. State is otherwise event-driven; this is used
     /// when the user opens the status menu and needs a current list.

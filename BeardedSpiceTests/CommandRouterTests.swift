@@ -171,6 +171,30 @@ final class CommandRouterTests: XCTestCase {
         XCTAssertEqual(routing.commands.first?.identifier, 112)
     }
 
+    func testNextUsesSkipForwardNumberWhenNameIsMissing() {
+        let routing = FakeRouting()
+        routing.client = makeClient(supportedCommands: [
+            NowPlayingCommand(identifier: 17, name: nil, enabled: true)
+        ])
+        let router = CommandRouter(routing: routing)
+        let selection = makeSelection()
+
+        XCTAssertTrue(router.performNext(with: selection))
+        XCTAssertEqual(routing.commands.first?.identifier, 17)
+    }
+
+    func testPreviousUsesSkipBackwardNumberWhenNameIsMissing() {
+        let routing = FakeRouting()
+        routing.client = makeClient(supportedCommands: [
+            NowPlayingCommand(identifier: 18, name: nil, enabled: true)
+        ])
+        let router = CommandRouter(routing: routing)
+        let selection = makeSelection()
+
+        XCTAssertTrue(router.performPrevious(with: selection))
+        XCTAssertEqual(routing.commands.first?.identifier, 18)
+    }
+
     func testDisabledSkipCommandsFallBackToLegacyPath() {
         let routing = FakeRouting()
         routing.client = makeClient(supportedCommands: [

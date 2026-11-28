@@ -33,6 +33,7 @@
   let refreshPromise = null;
   let previousContext = null;
   const tabMedia = new Map();
+  const tabMediaFrames = new Map();
 
   function log() {
     NP.log.apply(null, Array.from(arguments));
@@ -196,6 +197,74 @@
     snapshotTimer = setTimeout(sendState, 250);
   }
 
+  // Content scripts run in every frame. A YouTube page can have several
+  // iframes; a frame without media must not erase the main frame's playing
+  // state. Keep state per frame and expose one effective state per tab.
+  function frameKey(sender, message) {
+    if (sender && typeof sender.frameId === "number") {
+      return sender.frameId;
+    }
+    return message && message.topFrame ? 0 : -1;
+  }
+
+  function betterFrame(state, frameId, bestState, bestFrameId) {
+    const playing = state.playbackState === "playing";
+    const bestPlaying = bestState.playbackState === "playing";
+    if (playing !== bestPlaying) {
+      return playing;
+    }
+    if (Boolean(state.title) !== Boolean(bestState.title)) {
+      return Boolean(state.title);
+    }
+    return frameId < bestFrameId;
+  }
+
+  function effectiveMedia(tabId) {
+    const frames = tabMediaFrames.get(tabId);
+    if (!frames || frames.size === 0) {
+      return null;
+    }
+    let bestState = null;
+    let bestFrameId = Number.POSITIVE_INFINITY;
+    for (const [frameId, state] of frames) {
+      if (!state) {
+        continue;
+      }
+      if (!bestState || betterFrame(state, frameId, bestState, bestFrameId)) {
+        bestState = state;
+        bestFrameId = frameId;
+      }
+    }
+    return bestState;
+  }
+
+  function updateFrameMedia(tabId, frameId, state) {
+    let frames = tabMediaFrames.get(tabId);
+    if (!frames) {
+      frames = new Map();
+      tabMediaFrames.set(tabId, frames);
+    }
+    if (state) {
+      frames.set(frameId, state);
+    } else {
+      frames.delete(frameId);
+    }
+    if (frames.size === 0) {
+      tabMediaFrames.delete(tabId);
+    }
+    const effective = effectiveMedia(tabId);
+    if (effective) {
+      tabMedia.set(tabId, effective);
+    } else {
+      tabMedia.delete(tabId);
+    }
+  }
+
+  function clearTabMedia(tabId) {
+    tabMediaFrames.delete(tabId);
+    tabMedia.delete(tabId);
+  }
+
   function activeTab(windowId) {
     return new Promise((resolve) => {
       const query = windowId ? { active: true, windowId: windowId } : { active: true, lastFocusedWindow: true };
@@ -214,15 +283,20 @@
 
   async function focusWindow(windowId) {
     if (!api.windows || typeof api.windows.update !== "function") {
-      return;
+      storageSet("BeardieNowPlayingLastFocusError", "windows.update is unavailable");
+      return false;
     }
     try {
       const result = api.windows.update(windowId, { focused: true });
       if (result && typeof result.catch === "function") {
         await result;
       }
-    } catch (_) {
-      // Activating the tab is still useful when the window cannot be focused.
+      storageSet("BeardieNowPlayingLastFocusError", "");
+      return true;
+    } catch (error) {
+      storageSet("BeardieNowPlayingLastFocusError", String(error));
+      log("window focus failed", error);
+      return false;
     }
   }
 
@@ -281,10 +355,13 @@
     });
   }
 
-  // Asks every content script for its current media state. Content scripts are
-  // event-driven, so after the background page or service worker is reloaded
-  // they will not publish state on their own. This is the recovery path used on
-  // background load and on an explicit getState request.
+  function requestTabState(tabId) {
+    return tabMessage(tabId, { type: "requestState" });
+  }
+
+  // Asks every content script for its current state. Content scripts respond
+  // with per-frame mediaState messages, so wait briefly for those messages
+  // before taking the snapshot.
   function refreshTabMedia() {
     if (refreshPromise) {
       return refreshPromise;
@@ -297,17 +374,12 @@
           if (typeof tab.id !== "number" || (tab.url && !/^(https?|file):/i.test(tab.url))) {
             return;
           }
-          const response = await tabMessage(tab.id, { type: "requestState" });
-          if (!response || !response.success) {
-            return;
-          }
-          if (response.state) {
-            tabMedia.set(tab.id, response.state);
-          } else {
-            tabMedia.delete(tab.id);
-          }
+          await requestTabState(tab.id);
         })
       );
+      await new Promise(function (resolve) {
+        setTimeout(resolve, 100);
+      });
     })();
 
     refreshPromise = refreshPromise.then(
@@ -492,11 +564,11 @@
       if (!message || message.type !== "mediaState" || !sender.tab) {
         return false;
       }
-      if (message.state) {
-        tabMedia.set(sender.tab.id, message.state);
-      } else {
-        tabMedia.delete(sender.tab.id);
-      }
+      updateFrameMedia(
+        sender.tab.id,
+        frameKey(sender, message),
+        message.state || null
+      );
       // A content script can outlive the background page or service worker.
       // Any message means the extension is active again, so reconnect instead
       // of waiting for the next alarm or reconnect timer.
@@ -510,7 +582,12 @@
     if (api.tabs.onUpdated) {
       api.tabs.onUpdated.addListener(function (tabId, changeInfo) {
         if (changeInfo && (changeInfo.url || changeInfo.status === "loading")) {
-          tabMedia.delete(tabId);
+          clearTabMedia(tabId);
+          // One-shot refresh after navigation. This is event-driven: no
+          // periodic polling and no timer per second.
+          setTimeout(function () {
+            requestTabState(tabId);
+          }, 300);
         }
         if (changeInfo && (changeInfo.status || changeInfo.title || changeInfo.url)) {
           scheduleState();
@@ -519,12 +596,17 @@
     }
     if (api.tabs.onRemoved) {
       api.tabs.onRemoved.addListener(function (tabId) {
-        tabMedia.delete(tabId);
+        clearTabMedia(tabId);
         scheduleState();
       });
     }
     if (api.tabs.onActivated) {
-      api.tabs.onActivated.addListener(scheduleState);
+      api.tabs.onActivated.addListener(function (activeInfo) {
+        scheduleState();
+        if (activeInfo && typeof activeInfo.tabId === "number") {
+          requestTabState(activeInfo.tabId);
+        }
+      });
     }
     if (api.windows && api.windows.onFocusChanged) {
       api.windows.onFocusChanged.addListener(scheduleState);
