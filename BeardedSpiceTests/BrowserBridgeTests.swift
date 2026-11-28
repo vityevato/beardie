@@ -118,6 +118,23 @@ final class BrowserBridgeTests: XCTestCase {
         XCTAssertEqual(restoreObject["type"] as? String, "restoreTab")
         XCTAssertEqual(restoreObject["requestId"] as? String, "req2")
     }
+
+    func testCommandMessageEncoding() throws {
+        let data = try XCTUnwrap(
+            BrowserBridgeOutgoingMessage.command(requestId: "req", tabId: 5, command: "next")
+        )
+        let object = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        XCTAssertEqual(object["type"] as? String, "command")
+        XCTAssertEqual(object["requestId"] as? String, "req")
+        XCTAssertEqual(object["tabId"] as? Int, 5)
+        XCTAssertEqual(object["command"] as? String, "next")
+
+        let seek = try XCTUnwrap(
+            BrowserBridgeOutgoingMessage.command(requestId: "req2", tabId: 5, command: "seek", position: 42)
+        )
+        let seekObject = try XCTUnwrap(JSONSerialization.jsonObject(with: seek) as? [String: Any])
+        XCTAssertEqual(seekObject["position"] as? Double, 42)
+    }
 }
 
 final class BrowserTargetResolverTests: XCTestCase {

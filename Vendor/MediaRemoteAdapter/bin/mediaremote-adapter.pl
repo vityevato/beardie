@@ -28,6 +28,11 @@ FUNCTION:
   clients  Prints all registered now playing clients as a JSON array
   reset    Clears a stale now playing application election override
   send     Sends a command to the now playing application
+  transaction
+           Sends a command to a specific application through a short-lived
+           election override
+  capabilities
+           Prints a JSON dictionary with the supported adapter capabilities
   seek     Seeks to a specific timeline position
   shuffle  Sets the shuffle mode
   repeat   Sets the repeat mode
@@ -38,6 +43,14 @@ FUNCTION:
 PARAMS:
   send(command)
     command: The MRCommand ID as a number (e.g. kMRPlay = 0)
+  transaction
+    --bundle-id=ID: The application bundle identifier to send the command to.
+      The client's parent application bundle identifier also matches.
+    --command=N: The MRCommand ID as a number (e.g. kMRPlay = 0).
+    --election-timeout=MS: How long to wait until MediaRemote elects the
+      target application. Defaults to 1000.
+    --hold=MS: How long to keep the election override after sending the
+      command. Defaults to 250.
   seek(position)
     position: The timeline position in microseconds
   shuffle(mode)
@@ -135,6 +148,8 @@ fail "Invalid function name: '$function_name'"
   || $function_name eq "clients"
   || $function_name eq "reset"
   || $function_name eq "send"
+  || $function_name eq "transaction"
+  || $function_name eq "capabilities"
   || $function_name eq "seek"
   || $function_name eq "shuffle"
   || $function_name eq "repeat"
@@ -214,6 +229,28 @@ if ($function_name eq "send") {
   fail "Missing ID for '$function_name' command" unless defined $id;
   set_env_param($symbol_name, 0, "command", "$id");
   $symbol_name = env_func($symbol_name);
+}
+elsif ($function_name eq "transaction") {
+  my $options = parse_options(0);
+  foreach my $key (keys %{$options}) {
+    if ($key eq "bundle-id" || $key eq "command"
+        || $key eq "election-timeout" || $key eq "hold") {
+      set_env_option_value($options, $key);
+    }
+    else {
+      fail "Unrecognized option '$key'";
+    }
+  }
+  fail "Missing option '--bundle-id'"
+    unless defined $options->{"bundle-id"};
+
+  fail "Missing option '--command'"
+    unless defined $options->{"command"};
+
+  $symbol_name = env_func($symbol_name);
+}
+elsif ($function_name eq "capabilities") {
+  $symbol_name = "adapter_capabilities";
 }
 elsif ($function_name eq "stream") {
   my $options = parse_options(0);

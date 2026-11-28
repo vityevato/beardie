@@ -70,6 +70,47 @@ final class BeardedSpiceControllers: NSObject, BeardedSpiceControllersProtocol {
         }
     }
 
+    @objc(sendNowPlayingCommand:toBundle:hold:completion:)
+    func sendNowPlayingCommand(
+        _ command: Int,
+        toBundle bundleIdentifier: String,
+        hold holdSeconds: Double,
+        completion: @escaping (Data?) -> Void
+    ) {
+        DDLogInfo(
+            "NowPlaying targeted command \(command) to \(bundleIdentifier), hold=\(holdSeconds)s"
+        )
+        BSCService.shared.nowPlayingService.sendCommand(
+            command,
+            to: bundleIdentifier,
+            hold: holdSeconds
+        ) { result in
+            switch result {
+            case .success(let commandResult):
+                completion(try? JSONEncoder().encode(commandResult))
+            case .failure(let error):
+                DDLogError(
+                    "NowPlaying targeted command \(command) to \(bundleIdentifier) failed: "
+                        + "\(error.localizedDescription)"
+                )
+                completion(nil)
+            }
+        }
+    }
+
+    @objc(pauseOtherNowPlayingClientsExceptBundle:completion:)
+    func pauseOtherNowPlayingClientsExceptBundle(
+        _ bundleIdentifier: String?,
+        completion: ((Data) -> Void)?
+    ) {
+        BSCService.shared.nowPlayingService.pauseOthers(exceptBundleIdentifier: bundleIdentifier) { result in
+            DDLogInfo(
+                "NowPlaying pauseOthers paused=\(result.paused.count) failed=\(result.failed.count)"
+            )
+            completion?((try? JSONEncoder().encode(result)) ?? Data())
+        }
+    }
+
     @objc(prepareForClosingConnectionWithCompletion:)
     func prepareForClosingConnection(completion: @escaping () -> Void) {
 

@@ -119,6 +119,19 @@ enum BrowserBridgeOutgoingMessage {
         ])
     }
 
+    static func command(requestId: String, tabId: Int, command: String, position: Double? = nil) -> Data? {
+        var object: [String: Any] = [
+            "type": "command",
+            "requestId": requestId,
+            "tabId": tabId,
+            "command": command
+        ]
+        if let position {
+            object["position"] = position
+        }
+        return encode(object)
+    }
+
     private static func encode(_ object: [String: Any]) -> Data? {
         try? JSONSerialization.data(withJSONObject: object)
     }

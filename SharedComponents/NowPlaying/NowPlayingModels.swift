@@ -48,6 +48,27 @@ struct NowPlayingClient: Codable, Equatable {
     var hasArtwork: Bool {
         artworkFingerprint != nil
     }
+
+    /// Returns the identifier of an enabled supported command by its
+    /// MediaRemote name, for example `LikeTrack`. MediaRemote command numbers
+    /// differ between macOS releases, so routing prefers the reported name.
+    func commandIdentifier(named name: String) -> Int? {
+        let normalized = name.lowercased()
+        return supportedCommands.first {
+            $0.enabled && ($0.name?.lowercased() == normalized)
+        }?.identifier
+    }
+
+    /// Returns `nil` when the client does not report supported commands, so
+    /// callers can decide whether an unknown command is worth trying.
+    func supportsCommand(identifier: Int) -> Bool? {
+        guard !supportedCommands.isEmpty else {
+            return nil
+        }
+        return supportedCommands.contains {
+            $0.identifier == identifier && $0.enabled
+        }
+    }
 }
 
 /// A point-in-time list of all registered MediaRemote clients.
@@ -65,4 +86,30 @@ struct NowPlayingHealth: Codable, Equatable {
     let lastError: String?
     let clientCount: Int
     let resetSupported: Bool
+    /// True when the adapter can run a targeted election transaction.
+    let targetedCommandsAvailable: Bool
+}
+
+/// Result of a targeted MediaRemote command transaction.
+struct NowPlayingCommandResult: Codable, Equatable {
+    let target: String
+    let command: Int
+    let elected: Bool
+    let sent: Bool
+    let error: String?
+}
+
+/// Result of pausing every other MediaRemote client through separate
+/// transactions. Bundle identifiers are reported for each outcome.
+struct NowPlayingPauseOthersResult: Codable, Equatable {
+    let paused: [String]
+    let failed: [String]
+}
+
+/// Capabilities reported by the vendored MediaRemote adapter self-test.
+struct NowPlayingCapabilities: Codable, Equatable {
+    let readClients: Bool
+    let targetedCommands: Bool
+    let supportedCommands: Bool
+    let electionOverride: Bool
 }

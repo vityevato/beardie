@@ -67,6 +67,8 @@ BOOL accessibilityApiEnabled = NO;
     NSMutableSet    *openedWindows;
     
     NSXPCConnection *_connectionToService;
+    NSUInteger _connectionGeneration;
+    BOOL _terminating;
     
     BSBrowserExtensionsController *_browserExtensionsController;
     BSNativeAppTabsController *_nativeAppTabsController;
@@ -85,6 +87,50 @@ BOOL accessibilityApiEnabled = NO;
 
     [self removeSystemEventsCallback];
 }
+
+#if DEBUG
+/// Debug-only command bridge for local E2E runs. Enabled with
+/// `-BeardieDebugCommands YES`; never registered in Release builds.
+- (void)debugCommand:(NSNotification *)notification {
+    NSString *command = notification.object;
+    DDLogInfo(@"Debug command: %@", command);
+
+    if ([command isEqualToString:@"toggle"]) {
+        [self playPauseToggle];
+    }
+    else if ([command isEqualToString:@"next"]) {
+        [self nextTrack];
+    }
+    else if ([command isEqualToString:@"previous"]) {
+        [self previousTrack];
+    }
+    else if ([command isEqualToString:@"favorite"]) {
+        [self favorite];
+    }
+    else if ([command isEqualToString:@"pauseOthers"]) {
+        BOOL result = [[CommandRouter shared] pauseOthersExceptSelection:self.activeApp];
+        DDLogInfo(@"Debug pauseOthers result: %@", result ? @"YES" : @"NO");
+    }
+    else if ([command isEqualToString:@"logState"]) {
+        [NowPlayingCoordinator logCurrentState];
+    }
+    else if ([command hasPrefix:@"target:"]) {
+        NSArray<NSString *> *parts = [command componentsSeparatedByString:@":"];
+        if (parts.count >= 3) {
+            NSString *bundleIdentifier = parts[1];
+            NSInteger mediaCommand = [parts[2] integerValue];
+            double hold = parts.count >= 4 ? [parts[3] doubleValue] : 0.25;
+            dispatch_async(_workingQueue, ^{
+                BOOL result = [NowPlayingCoordinator debugSendCommandToBundle:bundleIdentifier
+                                                                      command:mediaCommand
+                                                                         hold:hold];
+                DDLogInfo(@"Debug target %@ command=%ld hold=%.2f result=%@",
+                          bundleIdentifier, (long)mediaCommand, hold, result ? @"YES" : @"NO");
+            });
+        }
+    }
+}
+#endif
 
 /////////////////////////////////////////////////////////////////////////
 #pragma mark Application Delegates
@@ -117,8 +163,17 @@ BOOL accessibilityApiEnabled = NO;
     [registry setUserDefaults:BeardedSpiceActiveControllers];
 
     [self newConnectionToControlService];
-    [NowPlayingCoordinator startWithConnection:_connectionToService];
     [BrowserBridgeService startIfEnabled];
+
+#if DEBUG
+    if ([NSUserDefaults.standardUserDefaults boolForKey:@"BeardieDebugCommands"]) {
+        [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+                                                            selector:@selector(debugCommand:)
+                                                                name:@"com.calm-apps.mac.beardie.debugCommand"
+                                                              object:nil];
+        DDLogInfo(@"Debug command notifications enabled");
+    }
+#endif
 
     self.inUpdatingStrategiesState = NO;
     
@@ -184,6 +239,7 @@ BOOL accessibilityApiEnabled = NO;
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender{
     
     DDLogInfo(@"App should terminate request.");
+    _terminating = YES;
     [BrowserBridgeService stopIfRunning];
     
     static BOOL readyToTerminate = NO;
@@ -203,12 +259,12 @@ BOOL accessibilityApiEnabled = NO;
     dispatch_block_t stopControllerService = ^{
         if (self->_connectionToService) {
             [[self->_connectionToService remoteObjectProxy] prepareForClosingConnectionWithCompletion:^{
-                [self->_connectionToService invalidate];
+                [self invalidateControlServiceConnection];
                 exitBlock();
             }];
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(COMMAND_EXEC_TIMEOUT * NSEC_PER_SEC)), self->_workingQueue, ^{
-                [self->_connectionToService invalidate];
+                [self invalidateControlServiceConnection];
                 exitBlock();
             });
         }
@@ -301,6 +357,7 @@ BOOL accessibilityApiEnabled = NO;
     ASSIGN_WEAK(self);
     dispatch_async(_workingQueue, ^{
         ASSIGN_STRONG(self);
+        [BrowserBridgeService refreshState];
         [USE_STRONG(self) autoSelectTabWithForceFocused:NO];
 
         dispatch_sync(dispatch_get_main_queue(), ^{
@@ -332,7 +389,9 @@ BOOL accessibilityApiEnabled = NO;
     dispatch_async(_workingQueue, ^{
         __strong typeof(wself) sself = self;
         [sself autoSelectTabWithForceFocused:YES];
-        [sself.activeApp toggle];
+        if (![[CommandRouter shared] performToggleWithSelection:sself.activeApp]) {
+            [sself.activeApp toggle];
+        }
     });
 }
 - (void)nextTrack {
@@ -340,7 +399,9 @@ BOOL accessibilityApiEnabled = NO;
     dispatch_async(_workingQueue, ^{
         __strong typeof(wself) sself = self;
         [sself autoSelectTabWithForceFocused:NO];
-        [sself.activeApp next];
+        if (![[CommandRouter shared] performNextWithSelection:sself.activeApp]) {
+            [sself.activeApp next];
+        }
     });
 }
 
@@ -349,7 +410,9 @@ BOOL accessibilityApiEnabled = NO;
     dispatch_async(_workingQueue, ^{
         __strong typeof(wself) sself = self;
         [sself autoSelectTabWithForceFocused:NO];
-        [sself.activeApp previous];
+        if (![[CommandRouter shared] performPreviousWithSelection:sself.activeApp]) {
+            [sself.activeApp previous];
+        }
     });
 }
 
@@ -358,7 +421,9 @@ BOOL accessibilityApiEnabled = NO;
     dispatch_async(_workingQueue, ^{
         __strong typeof(wself) sself = self;
         [sself autoSelectTabWithForceFocused:NO];
-        [sself.activeApp favorite];
+        if (![[CommandRouter shared] performFavoriteWithSelection:sself.activeApp]) {
+            [sself.activeApp favorite];
+        }
     });
 }
 
@@ -1094,30 +1159,71 @@ BOOL accessibilityApiEnabled = NO;
 
 - (BOOL)newConnectionToControlService{
 
-    if (_connectionToService) {
-        [_connectionToService invalidate];
-        _connectionToService = nil;
-    }
-     _connectionToService = [[NSXPCConnection alloc] initWithServiceName:BS_CONTROLLER_BUNDLE_ID];
-     _connectionToService.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(BeardedSpiceControllersProtocol)];
+    [self invalidateControlServiceConnection];
+
+    NSUInteger generation = ++_connectionGeneration;
+
+    _connectionToService = [[NSXPCConnection alloc] initWithServiceName:BS_CONTROLLER_BUNDLE_ID];
+    _connectionToService.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(BeardedSpiceControllersProtocol)];
 
     _connectionToService.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(BeardedSpiceHostAppProtocol)];
     _connectionToService.exportedObject = self;
 
-    id __weak wSelf = self;
+    __weak typeof(self) wSelf = self;
     _connectionToService.interruptionHandler = ^{
-        [wSelf resetConnectionToControlService];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [wSelf controlServiceConnectionLost:generation];
+        });
+    };
+    _connectionToService.invalidationHandler = ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [wSelf controlServiceConnectionLost:generation];
+        });
     };
 
     if (_connectionToService) {
 
         [_connectionToService resume];
         [self resetConnectionToControlService];
+        [NowPlayingCoordinator startWithConnection:_connectionToService];
 
         return YES;
     }
 
     return NO;
+}
+
+- (void)invalidateControlServiceConnection {
+
+    NSXPCConnection *connection = _connectionToService;
+    if (connection) {
+        connection.interruptionHandler = nil;
+        connection.invalidationHandler = nil;
+        [connection invalidate];
+        if (_connectionToService == connection) {
+            _connectionToService = nil;
+        }
+    }
+}
+
+/// The controllers service died or its connection became invalid. Recreate
+/// the connection and rebind the Now Playing client so a restarted service
+/// gets its settings and runs the startup reset.
+- (void)controlServiceConnectionLost:(NSUInteger)generation {
+
+    if (_terminating || generation != _connectionGeneration) {
+        return;
+    }
+
+    DDLogError(@"Connection to the controllers service was lost; reconnecting");
+    __weak typeof(self) wSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        __strong typeof(wSelf) sself = wSelf;
+        if (sself == nil || sself->_terminating || generation != sself->_connectionGeneration) {
+            return;
+        }
+        [sself newConnectionToControlService];
+    });
 }
 
 - (void)resetConnectionToControlService{

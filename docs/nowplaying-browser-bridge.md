@@ -100,10 +100,31 @@ Server to client:
 - `getState` with a request id;
 - `activateTab` / `restoreTab` with tab/window ids (used by the Stage 3
   Raise/Hide flow; see `docs/nowplaying-target-resolver.md`);
-- `command` for play/pause/seek in the content script.
+- `command` for play/pause/toggle/seek/next/previous in the content script.
+  `next`/`previous` go through a MAIN-world Media Session shim
+  (`shared/mediasession-main.js`) that wraps the page's
+  `navigator.mediaSession.setActionHandler`; the isolated content script and the
+  shim exchange DOM CustomEvents. Pages without handlers report failure and the
+  app may fall back to a targeted MediaRemote command.
 
 Timestamps in tab state are JavaScript epoch milliseconds; the Swift decoder
 uses `.millisecondsSince1970`.
+
+State is event-driven. A content script publishes `mediaState` once when it
+loads, then on media and visibility events (`play`, `pause`, `ended`,
+`loadedmetadata`, `durationchange`, `seeked`, `ratechange`, `volumechange`);
+there is no periodic page polling. The background also publishes on tab and
+window changes and on an explicit `getState`. The app sends `getState` when the
+status menu opens, so the player list and the selected player are refreshed at
+the moment the user acts, not on a timer.
+
+Recovery after the background page or service worker is unloaded uses
+`requestState`: on background load and on `getState` the background asks every
+content script for its current state, refills the in-memory media cache and
+only then publishes `state`. Content scripts stay event-driven and are never
+polled on a timer. When a content-script message arrives while the WebSocket is
+closed, the background calls `connect()` instead of waiting for the next
+reconnect timer.
 
 ## Chrome MV3 extension
 
@@ -115,6 +136,10 @@ Source: `BrowserExtensions/nowplaying/`.
 - `shared/content.js` publishes Media Session and media-element state from all
   frames; `shared/background.js` handles discovery, WebSocket, tab snapshots
   and commands.
+- MV3 service workers are non-persistent. The 30-second `alarms` timer is the
+  only wake-up and reconnect mechanism; there is no app-side ping or second
+  keepalive. When the worker is woken after being stopped, `connect()` plus
+  `requestState` restore the socket and the media snapshot.
 - The manifest uses a fixed `key` so the extension ID is stable:
   `gbkdkokkajlogmoiecfmbicbhkhalpog`. The matching
   `BS_CHROME_NOWPLAYING_EXTENSION_ID` is in `Config.xcconfig` and is included
@@ -133,9 +158,11 @@ copied to `<user-data-dir>/NativeMessagingHosts/`. The normal user profile uses
 Target: `NowPlayingSafari` (`com.apple.Safari.web-extension` appex), embedded
 in `Beardie.app/Contents/PlugIns`.
 
-- `BrowserExtensions/nowplaying/safari/manifest.json` uses an event page:
-  `background.scripts` + `persistent: false` (the Stage 0 spike showed that the
-  service-worker WebSocket does not connect in Safari).
+- `BrowserExtensions/nowplaying/safari/manifest.json` uses a persistent
+  background page: `background.scripts` + `persistent: true`. macOS-only: iOS
+  and iPadOS require non-persistent background pages. The Safari manifest has
+  no `alarms` permission; with a persistent background page a second keepalive
+  would be redundant.
 - `NowPlayingSafariHandler` implements `NSExtensionRequestHandling`, reads the
   shared app-group defaults and returns port/token/protocol version plus the
   running Safari PID (the app-extension process itself is not Safari).
@@ -169,7 +196,7 @@ for each dev session.
   - unpacked MV3 extension loaded with the fixed ID;
   - native messaging `bridge` returned port/token/PID;
   - WebSocket hello arrived with `org.chromium.Chromium` and the Chromium PID;
-  - `state` messages reported one media tab every second.
+  - `state` messages reported one media tab during the test.
 - Native messaging connector smoke:
   - `{"msg":"bridge"}` returns `port`, `token`, `protocolVersion`, `browser`,
     `bundleId`, `pid`.
@@ -177,21 +204,61 @@ for each dev session.
   - native messaging `bridge` returned `port`, `token`, `protocolVersion`;
   - WebSocket hello arrived with `com.apple.Safari`;
   - `state` messages reported one media tab with `Safari Test Track` by
-    `Safari Test Artist` every second.
+    `Safari Test Artist`.
   - Diagnostic keys in `browser.storage.local`:
     `BeardieNowPlayingStatus=connected`, `BeardieNowPlayingBridgePort`,
     `BeardieNowPlayingLastError=""`.
 - Safari appex: built, signed, embedded and registered (`pluginkit`).
+- Stage 4 bridge command E2E (Chromium 138, packaged extension, local media
+  page):
+  - the bridge reported one media tab with `Bridge Test Track`;
+  - `CommandRouter: bridge next` invoked the page's `nexttrack` handler through
+    the MAIN-world shim;
+  - `previous` invoked `previoustrack`;
+  - `toggle` paused and resumed the media element.
+- Stage 4.1 Chrome background recovery (Chromium 138, clean profile):
+  - the MV3 service worker was stopped through the DevTools
+    `ServiceWorker.stopWorker` command while the media tab was playing and the
+    bridge was connected (content scripts stay alive, as in a normal idle
+    stop);
+  - the app logged `instance ... disconnected`;
+  - the 30-second alarm restarted the worker; the bridge reconnected
+    (`hello org.chromium.Chromium`) and the `state` sent immediately after
+    hello already reported the media tab again (`requestState` recovery);
+  - no app-side ping or second keepalive is installed.
+- Stage 4.1 Safari background lifecycle (macOS 27.2.1, signed Debug build,
+  session-scoped **Allow Unsigned Extensions**):
+  - `hello com.apple.Safari` and `state` with `Bridge Test Track` were
+    reported after enabling the extension;
+  - the Safari tab played for more than 60 seconds without Web Inspector and
+    the bridge stayed connected (no `instance ... disconnected`);
+  - restarting the app changed the bridge port; the persistent background
+    reconnected on its own within five seconds and published `state` again;
+  - after selecting the Safari tab in the Beardie menu, `next` and `previous`
+    produced `CommandRouter: bridge next/previous` and the page logged
+    `nexttrack` / `previoustrack` through the dynamically registered
+    MAIN-world shim.
+- Chrome uses `alarms` only; the Safari manifest has no `alarms` permission and
+  creates no alarms. There is exactly one wake-up mechanism per browser.
 
 ## Known limitations
 
 - Stage 2 collected state only. Stage 3 exposes bridge tabs as
   `BrowserBridgeTabAdapter` players and adds Raise/Hide, including paused tabs;
   see `docs/nowplaying-target-resolver.md`.
-- Content-script commands are limited to play/pause/toggle/seek on the media
-  element; site-specific next/previous is Stage 4 work.
+- Content-script commands: play/pause/toggle/seek operate on the primary media
+  element; next/previous invoke the page's Media Session handlers through the
+  MAIN-world shim. Site-specific actions that are not exposed as Media Session
+  handlers are not reachable generically.
+- Safari supports `world: "MAIN"` only for dynamically registered content
+  scripts, not for the MV2 manifest used here. The background registers
+  `shared/mediasession-main.js` through `browser.scripting`; Safari E2E
+  verified `nexttrack` / `previoustrack` through that registration. If
+  registration is unavailable, next/previous fall back to a targeted
+  MediaRemote command to the browser.
 - Artwork URLs are published, but artwork bytes are not downloaded yet.
 - `BrowserTargetResolver` remains a matcher for Stage 4 command routing and does
   not select the current player. Same-track ambiguity fails closed when the
-  resolver is used; Raise/Hide follows the existing menu/frontmost selection.
+  resolver is used; command routing follows the existing menu/frontmost
+  selection.
 - The legacy web-strategy bridge and extensions are intentionally unchanged.

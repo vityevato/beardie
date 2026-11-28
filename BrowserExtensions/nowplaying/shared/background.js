@@ -26,8 +26,11 @@
   let socket = null;
   let bridgeInfo = null;
   let connectTimer = null;
+  let connecting = false;
   let snapshotTimer = null;
   let snapshotInFlight = false;
+  let statePending = false;
+  let refreshPromise = null;
   let previousContext = null;
   const tabMedia = new Map();
 
@@ -159,7 +162,11 @@
   }
 
   async function sendState() {
-    if (snapshotInFlight || !socket || socket.readyState !== WebSocket.OPEN) {
+    if (!socket || socket.readyState !== WebSocket.OPEN) {
+      return;
+    }
+    if (snapshotInFlight) {
+      statePending = true;
       return;
     }
     snapshotInFlight = true;
@@ -175,6 +182,10 @@
       log("state snapshot failed", error);
     } finally {
       snapshotInFlight = false;
+      if (statePending) {
+        statePending = false;
+        sendState();
+      }
     }
   }
 
@@ -270,6 +281,56 @@
     });
   }
 
+  // Asks every content script for its current media state. Content scripts are
+  // event-driven, so after the background page or service worker is reloaded
+  // they will not publish state on their own. This is the recovery path used on
+  // background load and on an explicit getState request.
+  function refreshTabMedia() {
+    if (refreshPromise) {
+      return refreshPromise;
+    }
+
+    refreshPromise = (async function () {
+      const tabs = await queryTabs();
+      await Promise.all(
+        tabs.map(async function (tab) {
+          if (typeof tab.id !== "number" || (tab.url && !/^(https?|file):/i.test(tab.url))) {
+            return;
+          }
+          const response = await tabMessage(tab.id, { type: "requestState" });
+          if (!response || !response.success) {
+            return;
+          }
+          if (response.state) {
+            tabMedia.set(tab.id, response.state);
+          } else {
+            tabMedia.delete(tab.id);
+          }
+        })
+      );
+    })();
+
+    refreshPromise = refreshPromise.then(
+      function () {
+        refreshPromise = null;
+      },
+      function (error) {
+        refreshPromise = null;
+        log("state refresh failed", error);
+      }
+    );
+    return refreshPromise;
+  }
+
+  async function refreshAndSendState() {
+    try {
+      await refreshTabMedia();
+      await sendState();
+    } catch (error) {
+      log("state publish failed", error);
+    }
+  }
+
   async function commandTab(message) {
     const response = await tabMessage(message.tabId, {
       type: "command",
@@ -292,7 +353,7 @@
 
     switch (message.type) {
       case "getState":
-        sendState();
+        refreshAndSendState();
         break;
       case "activateTab":
         activateTab(message);
@@ -319,64 +380,111 @@
   }
 
   async function connect() {
+    if (connecting) {
+      return;
+    }
     if (socket && (socket.readyState === WebSocket.OPEN || socket.readyState === WebSocket.CONNECTING)) {
       return;
     }
 
+    connecting = true;
+    let ws = null;
     try {
-      await ensureInstanceId();
-      bridgeInfo = await discoverBridge();
-    } catch (error) {
-      log("bridge discovery failed", error);
-      storageSet("BeardieNowPlayingLastError", String(error));
-      if (connectTimer) {
-        clearTimeout(connectTimer);
+      try {
+        await ensureInstanceId();
+        bridgeInfo = await discoverBridge();
+      } catch (error) {
+        log("bridge discovery failed", error);
+        storageSet("BeardieNowPlayingLastError", String(error));
+        if (connectTimer) {
+          clearTimeout(connectTimer);
+        }
+        connectTimer = setTimeout(() => {
+          connectTimer = null;
+          connect();
+        }, NATIVE_RETRY_DELAY);
+        return;
       }
-      connectTimer = setTimeout(() => {
-        connectTimer = null;
-        connect();
-      }, NATIVE_RETRY_DELAY);
+
+      storageSet("BeardieNowPlayingLastError", "");
+      storageSet("BeardieNowPlayingBridgePort", bridgeInfo.port);
+
+      const url = `ws://${HOST}:${bridgeInfo.port}${PATH}?token=${encodeURIComponent(bridgeInfo.token)}`;
+      try {
+        ws = new WebSocket(url);
+      } catch (error) {
+        log("WebSocket construction failed", error);
+        scheduleReconnect();
+        return;
+      }
+
+      socket = ws;
+
+      ws.onopen = function () {
+        if (socket !== ws) {
+          return;
+        }
+        log("bridge connected");
+        storageSet("BeardieNowPlayingStatus", "connected");
+        sendJSON({
+          type: "hello",
+          protocolVersion: PROTOCOL_VERSION,
+          instanceId: instanceId,
+          browser: bridgeInfo.bundleId || bridgeInfo.browser || "unknown",
+          bundleId: bridgeInfo.bundleId || null,
+          processIdentifier: bridgeInfo.pid || null
+        });
+        refreshAndSendState();
+      };
+
+      ws.onmessage = handleServerMessage;
+
+      ws.onerror = function () {
+        log("bridge socket error");
+        storageSet("BeardieNowPlayingStatus", "error");
+      };
+
+      ws.onclose = function () {
+        if (socket === ws) {
+          socket = null;
+        }
+        storageSet("BeardieNowPlayingStatus", "closed");
+        scheduleReconnect();
+      };
+    } finally {
+      connecting = false;
+    }
+  }
+
+  function registerSafariMediaSessionShim() {
+    const manifest = api.runtime.getManifest ? api.runtime.getManifest() : null;
+    if (!manifest || manifest.manifest_version !== 2) {
+      return;
+    }
+    if (!api.scripting || typeof api.scripting.registerContentScripts !== "function") {
       return;
     }
 
-    storageSet("BeardieNowPlayingLastError", "");
-    storageSet("BeardieNowPlayingBridgePort", bridgeInfo.port);
+    const registration = {
+      id: "beardie-mediasession-main",
+      matches: ["<all_urls>"],
+      js: ["shared/mediasession-main.js"],
+      runAt: "document_start",
+      allFrames: true,
+      world: "MAIN",
+      persistAcrossSessions: true
+    };
 
-    const url = `ws://${HOST}:${bridgeInfo.port}${PATH}?token=${encodeURIComponent(bridgeInfo.token)}`;
     try {
-      socket = new WebSocket(url);
-    } catch (error) {
-      log("WebSocket construction failed", error);
-      scheduleReconnect();
-      return;
+      const result = api.scripting.registerContentScripts([registration]);
+      if (result && typeof result.catch === "function") {
+        result.catch(function () {
+          // Already registered or unsupported by this Safari build.
+        });
+      }
+    } catch (_) {
+      // Safari without MAIN-world support keeps the MediaRemote fallback.
     }
-
-    socket.onopen = function () {
-      log("bridge connected");
-      storageSet("BeardieNowPlayingStatus", "connected");
-      sendJSON({
-        type: "hello",
-        protocolVersion: PROTOCOL_VERSION,
-        instanceId: instanceId,
-        browser: bridgeInfo.bundleId || bridgeInfo.browser || "unknown",
-        bundleId: bridgeInfo.bundleId || null,
-        processIdentifier: bridgeInfo.pid || null
-      });
-      sendState();
-    };
-
-    socket.onmessage = handleServerMessage;
-
-    socket.onerror = function () {
-      log("bridge socket error");
-      storageSet("BeardieNowPlayingStatus", "error");
-    };
-
-    socket.onclose = function () {
-      socket = null;
-      storageSet("BeardieNowPlayingStatus", "closed");
-      scheduleReconnect();
-    };
   }
 
   function registerListeners() {
@@ -389,12 +497,21 @@
       } else {
         tabMedia.delete(sender.tab.id);
       }
+      // A content script can outlive the background page or service worker.
+      // Any message means the extension is active again, so reconnect instead
+      // of waiting for the next alarm or reconnect timer.
+      if (!socket || socket.readyState !== WebSocket.OPEN) {
+        connect();
+      }
       scheduleState();
       return false;
     });
 
     if (api.tabs.onUpdated) {
-      api.tabs.onUpdated.addListener(function (_tabId, changeInfo) {
+      api.tabs.onUpdated.addListener(function (tabId, changeInfo) {
+        if (changeInfo && (changeInfo.url || changeInfo.status === "loading")) {
+          tabMedia.delete(tabId);
+        }
         if (changeInfo && (changeInfo.status || changeInfo.title || changeInfo.url)) {
           scheduleState();
         }
@@ -413,23 +530,29 @@
       api.windows.onFocusChanged.addListener(scheduleState);
     }
 
-    if (api.alarms) {
+    // Chrome MV3 service workers are non-persistent and need one wake-up
+    // mechanism. Safari uses a persistent background page and gets no alarms.
+    const manifest = api.runtime.getManifest ? api.runtime.getManifest() : null;
+    const usesServiceWorker = Boolean(manifest && manifest.background && manifest.background.service_worker);
+    if (usesServiceWorker && api.alarms) {
       try {
         api.alarms.create("beardie-nowplaying-keepalive", { periodInMinutes: 0.5 });
         api.alarms.onAlarm.addListener(function (alarm) {
           if (alarm && alarm.name === "beardie-nowplaying-keepalive") {
             sendState();
-            if (!socket) {
+            if (!socket || socket.readyState !== WebSocket.OPEN) {
               connect();
             }
           }
         });
       } catch (_) {
-        // Alarms are optional; Safari may not expose them.
+        // Alarms are optional; a persistent background does not need them.
       }
     }
   }
 
+  refreshTabMedia();
+  registerSafariMediaSessionShim();
   registerListeners();
   connect();
 })();

@@ -137,4 +137,89 @@ final class NowPlayingTests: XCTestCase {
         let decoded = try JSONDecoder().decode(NowPlayingSnapshot.self, from: data)
         XCTAssertEqual(decoded, snapshot)
     }
+
+    func testCommandLookupUsesReportedIdentifier() throws {
+        let client = NowPlayingClient(
+            sourceIdentifier: "test.player#1",
+            bundleIdentifier: "test.player",
+            parentBundleIdentifier: nil,
+            processIdentifier: 1,
+            displayName: "Player",
+            title: "Song",
+            artist: "Artist",
+            album: nil,
+            isPlaying: true,
+            playbackRate: 1,
+            duration: 200,
+            elapsedTime: 10,
+            timestamp: nil,
+            supportedCommands: [
+                NowPlayingCommand(identifier: 21, name: "LikeTrack", enabled: true),
+                NowPlayingCommand(identifier: 4, name: "NextTrack", enabled: false)
+            ],
+            artworkMimeType: nil,
+            artworkFingerprint: nil
+        )
+
+        XCTAssertEqual(client.commandIdentifier(named: "liketrack"), 21)
+        XCTAssertNil(client.commandIdentifier(named: "NextTrack"))
+        XCTAssertEqual(client.supportsCommand(identifier: 21), true)
+        XCTAssertEqual(client.supportsCommand(identifier: 4), false)
+        XCTAssertEqual(client.supportsCommand(identifier: 99), false)
+    }
+
+    func testMissingSupportedCommandsMeansUnknown() {
+        let client = NowPlayingClient(
+            sourceIdentifier: "test.player#1",
+            bundleIdentifier: "test.player",
+            parentBundleIdentifier: nil,
+            processIdentifier: 1,
+            displayName: "Player",
+            title: "Song",
+            artist: nil,
+            album: nil,
+            isPlaying: true,
+            playbackRate: 1,
+            duration: nil,
+            elapsedTime: nil,
+            timestamp: nil,
+            supportedCommands: [],
+            artworkMimeType: nil,
+            artworkFingerprint: nil
+        )
+
+        XCTAssertNil(client.supportsCommand(identifier: 4))
+    }
+
+    func testCommandResultCodableRoundTrip() throws {
+        let result = NowPlayingCommandResult(
+            target: "test.player",
+            command: 2,
+            elected: true,
+            sent: true,
+            error: nil
+        )
+        let data = try JSONEncoder().encode(result)
+        XCTAssertEqual(try JSONDecoder().decode(NowPlayingCommandResult.self, from: data), result)
+
+        let capabilities = NowPlayingCapabilities(
+            readClients: true,
+            targetedCommands: true,
+            supportedCommands: true,
+            electionOverride: true
+        )
+        let capabilitiesData = Data(
+            #"{"readClients":true,"targetedCommands":true,"supportedCommands":true,"electionOverride":true}"#.utf8
+        )
+        XCTAssertEqual(
+            try JSONDecoder().decode(NowPlayingCapabilities.self, from: capabilitiesData),
+            capabilities
+        )
+    }
+
+    func testPauseOthersResultCodableRoundTrip() throws {
+        let result = NowPlayingPauseOthersResult(paused: ["a"], failed: ["b"])
+        let data = try JSONEncoder().encode(result)
+        XCTAssertEqual(try JSONDecoder().decode(NowPlayingPauseOthersResult.self, from: data), result)
+    }
 }

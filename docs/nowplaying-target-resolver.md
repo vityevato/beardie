@@ -31,6 +31,39 @@ restore it even if it is paused.
 filters clients by `isPlaying` and never overrides `activeApp.activeTab`. Stage 4
 uses it for command routing; Raise/Hide works from the selected `TabAdapter`.
 
+## Stage 4 command routing
+
+`CommandRouter` sits between the existing selection and the transports. It
+receives `BSActiveTab` after `autoSelectTabWithForceFocused:` has already
+chosen the player and returns `true` only when it delivered the command.
+Otherwise the caller runs the legacy adapter method.
+
+| Selected player | toggle | next / previous | favorite | volume |
+|---|---|---|---|---|
+| `BrowserBridgeTabAdapter` | bridge `command` (`toggle`) | bridge `next` / `previous` via the Media Session shim; MediaRemote fallback | MediaRemote `LikeTrack` only | legacy |
+| native application | targeted MediaRemote `TogglePlayPause` (or `Play`/`Pause`) | targeted `NextTrack` / `PreviousTrack` | targeted `LikeTrack` | legacy |
+| Sonos / legacy web | legacy adapter | legacy adapter | legacy adapter | legacy |
+
+Routing conditions:
+
+- targeted MediaRemote commands require `UseSystemNowPlaying`, healthy XPC, a
+  matching client and an enabled supported command;
+- bridge commands require `UseBrowserBridge` and a connected instance;
+- the router never changes `activeApp.activeTab` and never asks
+  `autoSelectTabWithForceFocused:` to select again;
+- MediaRemote command numbers are taken from the client's reported
+  `supportedCommands` when available (for example `LikeTrack = 21` on macOS
+  27.2.1).
+
+The command UI does not change. The status menu keeps only the player list and
+the existing application items; commands are triggered by hotkeys and media
+keys. Capability checks are internal to the router: they decide whether a
+targeted MediaRemote command can be used or the legacy adapter path must run.
+
+`pauseOthers` is exposed by `ElectionController` and `CommandRouter`; it pauses
+every other playing MediaRemote client through separate transactions. No UI
+trigger is added in Stage 4; Stage 5 uses it when native adapters are removed.
+
 ## Bridge tabs as players
 
 `BrowserBridgeTabAdapter` is a `TabAdapter` for one `instanceId#tabId`:
@@ -112,15 +145,25 @@ exactly as before.
   - `chrome.tabs.query` confirmed the active tab changed to the media tab and
     back to the blank tab;
   - `BSActiveTab.displayName` returned `Chromium` for the bridge adapter.
+- Stage 4 router tests: `CommandRouterTests` covers native MediaRemote routing,
+  reported-name command selection, unsupported-command fallback, plain-adapter
+  pass-through and `pauseOthers` selection exclusion.
+- Stage 4 bridge E2E: Chromium toggle/next/previous reached the page; see
+  `docs/nowplaying-browser-bridge.md`.
 
 ## Known limitations
 
 - Two tabs with identical metadata are still resolved fail-closed when the
   resolver is used; Raise/Hide follows the existing selection, so the user can
   explicitly choose one in the menu.
-- Bridge adapters do not pause the old tab when the player is switched and do
-  not route play/pause/next/previous/volume yet; Stage 4 moves commands to the
-  router.
+- Bridge `next`/`previous` require the page to register Media Session action
+  handlers in the MAIN world. Pages without handlers fall back to a targeted
+  MediaRemote command to the browser, which acts on the browser's elected media
+  session.
+- Bridge favorite is available only when MediaRemote reports a `LikeTrack`
+  command for the browser; there is no generic page-level favorite.
+- Volume for bridge and native players stays on `BSVolumeControlProtocol`;
+  MediaRemote has no per-application volume command.
 - The status menu now includes bridge tabs with media metadata. This is the
   intended way to select a paused player.
 - A tab that briefly disappears from a bridge `state` loses its cached adapter

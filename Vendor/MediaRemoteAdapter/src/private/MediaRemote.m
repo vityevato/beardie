@@ -67,6 +67,8 @@ CFStringRef MRMediaRemoteSetShuffleMode = CFSTR("MRMediaRemoteSetShuffleMode");
 CFStringRef MRMediaRemoteSetRepeatMode = CFSTR("MRMediaRemoteSetRepeatMode");
 CFStringRef MRMediaRemoteSetNowPlayingApplicationOverrideEnabled =
     CFSTR("MRMediaRemoteSetNowPlayingApplicationOverrideEnabled");
+CFStringRef MRMediaRemoteSetOverriddenNowPlayingApplication =
+    CFSTR("MRMediaRemoteSetOverriddenNowPlayingApplication");
 
 CFStringRef MRMediaRemoteRegisterForNowPlayingNotifications = CFSTR("MRMediaRemoteRegisterForNowPlayingNotifications");
 CFStringRef MRMediaRemoteUnregisterForNowPlayingNotifications = CFSTR("MRMediaRemoteUnregisterForNowPlayingNotifications");
@@ -100,6 +102,7 @@ static NSString *MediaRemoteFrameworkBundleURL = @"/System/Library/PrivateFramew
 @synthesize setShuffleMode;
 @synthesize setRepeatMode;
 @synthesize setNowPlayingApplicationOverrideEnabled;
+@synthesize setOverriddenNowPlayingApplication;
 @synthesize registerForNowPlayingNotifications;
 @synthesize unregisterForNowPlayingNotifications;
 @synthesize setWantsSupportedCommandsChangedNotifications;
@@ -135,6 +138,7 @@ static NSString *MediaRemoteFrameworkBundleURL = @"/System/Library/PrivateFramew
     setShuffleMode = (MRMediaRemoteSetShuffleMode_t)CFBundleGetFunctionPointerForName(bundle, MRMediaRemoteSetShuffleMode);
     setRepeatMode = (MRMediaRemoteSetRepeatMode_t)CFBundleGetFunctionPointerForName(bundle, MRMediaRemoteSetRepeatMode);
     setNowPlayingApplicationOverrideEnabled = (MRMediaRemoteSetNowPlayingApplicationOverrideEnabled_t)CFBundleGetFunctionPointerForName(bundle, MRMediaRemoteSetNowPlayingApplicationOverrideEnabled);
+    setOverriddenNowPlayingApplication = (MRMediaRemoteSetOverriddenNowPlayingApplication_t)CFBundleGetFunctionPointerForName(bundle, MRMediaRemoteSetOverriddenNowPlayingApplication);
     registerForNowPlayingNotifications = (MRMediaRemoteRegisterForNowPlayingNotifications_t)CFBundleGetFunctionPointerForName(bundle, MRMediaRemoteRegisterForNowPlayingNotifications);
     unregisterForNowPlayingNotifications = (MRMediaRemoteUnregisterForNowPlayingNotifications_t)CFBundleGetFunctionPointerForName(bundle, MRMediaRemoteUnregisterForNowPlayingNotifications);
     setWantsSupportedCommandsChangedNotifications = (MRMediaRemoteSetWantsSupportedCommandsChangedNotifications_t)CFBundleGetFunctionPointerForName(bundle, CFSTR("MRMediaRemoteSetWantsSupportedCommandsChangedNotifications"));

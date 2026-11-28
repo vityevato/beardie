@@ -44,3 +44,12 @@
 - Run UI tests selectively with `-only-testing:`; they need an unlocked GUI session.
 - UI tests are local only and must not be added to CI.
 - For UI changes, capture `before`/`after` screenshots and compare them for layout, clipping and readability; pixel-perfect similarity is not required.
+
+## Safari web extension E2E
+
+- The Safari extension cannot be tested like the Chrome one. Load
+  `.agents/skills/beardie-safari-extension-testing/SKILL.md` before running a
+  Safari Web Extension E2E test.
+- Safari needs a session-scoped **Allow Unsigned Extensions** flag, and the
+  extension must be enabled in Safari Settings. Ask the user to do both through
+  a confirmation card and wait for their answer before continuing.

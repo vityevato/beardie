@@ -36,6 +36,7 @@ final class BrowserBridgeService: NSObject {
     private var connections: [ObjectIdentifier: Connection] = [:]
     private var instances: [String: BrowserBridgeInstance] = [:]
     private var pendingRequests: [String: PendingRequest] = [:]
+    private var stateWaiters: [String: [() -> Void]] = [:]
     private var started = false
 
     static let shared = BrowserBridgeService()
@@ -123,6 +124,59 @@ final class BrowserBridgeService: NSObject {
         }
     }
 
+    /// Asks every active instance for a fresh tab snapshot and waits briefly
+    /// for the state messages. State is otherwise event-driven; this is used
+    /// when the user opens the status menu and needs a current list.
+    @objc static func refreshState() {
+        shared.refreshState(timeout: 0.3)
+    }
+
+    private func refreshState(timeout: TimeInterval) {
+        let active = activeInstances
+        guard !active.isEmpty else {
+            return
+        }
+
+        let semaphores = active.map { _ in DispatchSemaphore(value: 0) }
+
+        queue.async {
+            for (index, instance) in active.enumerated() {
+                guard
+                    self.instances[instance.instanceId] != nil,
+                    let socket = self.socket(for: instance.instanceId),
+                    let request = BrowserBridgeOutgoingMessage.getState(requestId: UUID().uuidString)
+                else {
+                    semaphores[index].signal()
+                    continue
+                }
+
+                self.stateWaiters[instance.instanceId, default: []].append {
+                    semaphores[index].signal()
+                }
+                self.send(request, to: socket)
+
+                self.queue.asyncAfter(deadline: .now() + timeout) { [weak self] in
+                    guard let self else {
+                        semaphores[index].signal()
+                        return
+                    }
+                    if let waiters = self.stateWaiters.removeValue(forKey: instance.instanceId) {
+                        for waiter in waiters {
+                            waiter()
+                        }
+                    } else {
+                        semaphores[index].signal()
+                    }
+                }
+            }
+        }
+
+        let deadline = DispatchTime.now() + timeout + 0.1
+        for semaphore in semaphores {
+            _ = semaphore.wait(timeout: deadline)
+        }
+    }
+
     /// Asks an extension instance to activate a tab and focus its window.
     func activateTab(
         instanceId: String,
@@ -158,6 +212,29 @@ final class BrowserBridgeService: NSObject {
                     requestId: requestId,
                     tabId: tabId,
                     windowId: windowId
+                )
+            },
+            completion: completion
+        )
+    }
+
+    /// Sends a media command to the content script of one tab. Supported
+    /// commands are `play`, `pause`, `toggle`, `next`, `previous` and `seek`.
+    func sendCommand(
+        instanceId: String,
+        tabId: Int,
+        command: String,
+        position: Double? = nil,
+        completion: @escaping (Bool) -> Void
+    ) {
+        sendTabCommand(
+            instanceId: instanceId,
+            builder: { requestId in
+                BrowserBridgeOutgoingMessage.command(
+                    requestId: requestId,
+                    tabId: tabId,
+                    command: command,
+                    position: position
                 )
             },
             completion: completion
@@ -383,6 +460,13 @@ final class BrowserBridgeService: NSObject {
         instance.tabs = state.tabs
         instance.lastUpdatedAt = Date()
         instances[state.instanceId] = instance
+
+        if let waiters = stateWaiters.removeValue(forKey: state.instanceId) {
+            for waiter in waiters {
+                waiter()
+            }
+        }
+
         let media = state.tabs
             .filter { $0.mediaTitle != nil }
             .map { "\($0.mediaTitle ?? "untitled") by \($0.artist ?? "unknown")" }

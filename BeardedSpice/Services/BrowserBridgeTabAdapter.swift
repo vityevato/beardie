@@ -156,6 +156,22 @@ final class BrowserBridgeTabAdapter: TabAdapter {
         withSnapshot { $0.browserDisplayName }
     }
 
+    @objc var bridgeInstanceId: String {
+        withSnapshot { $0.instanceId }
+    }
+
+    @objc var bridgeTabId: Int {
+        withSnapshot { $0.tab.tabId }
+    }
+
+    @objc var bridgeWindowId: Int {
+        withSnapshot { $0.tab.windowId }
+    }
+
+    @objc var bridgeBrowserBundleIdentifier: String {
+        withSnapshot { $0.browserBundleIdentifier }
+    }
+
     static func pruneRaisedTabs(keeping keys: Set<String>) {
         stateLock.lock()
         raisedKeys.formIntersection(keys)

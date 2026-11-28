@@ -90,6 +90,19 @@ extern void adapter_stream_env();
 extern void adapter_send(int command);
 extern void adapter_send_env();
 
+// Sends the given MediaRemote command to the application with the given
+// bundle identifier. Points the now playing election at that application for
+// one transaction, waits until MediaRemote elected it, sends the command,
+// holds the override for the given time and clears it. Exits non-zero and
+// clears the override when the election does not happen in time.
+extern void adapter_transaction(NSString *bundleIdentifier, int command,
+                                int electionTimeoutMillis, int holdMillis);
+extern void adapter_transaction_env();
+
+// Prints a JSON dictionary with the MediaRemote capabilities available on
+// this system, including whether targeted command transactions are supported.
+extern void adapter_capabilities(void);
+
 // Seeks the timeline of the nowplaying application to the given position.
 // The position must be given in microseconds.
 extern void adapter_seek(long position);
